@@ -5,15 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "tailwind" : "npx tailwindcss -i ./src/index.css -o ./public/index.css --watch",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@types/react-router-dom": "5.3.3",
+    "@types/react-router-dom": "^5.3.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "5.3.0"
+    "react-router-dom": "^6.18.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
