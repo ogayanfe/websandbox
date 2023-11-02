@@ -3,9 +3,9 @@ import Header from "./Header";
 
 export default function RouteComponent() {
   return (
-    <div>
+    <div className="flex flex-col w-full h-screen">
       <Header />
-      <main>
+      <main className="flex-grow">
         <Outlet />
       </main>
     </div>
