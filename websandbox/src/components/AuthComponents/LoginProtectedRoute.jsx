@@ -1,11 +1,11 @@
-import { redirect } from "react-router-dom";
+import { Outlet, redirect } from "react-router-dom";
+import useAuthContext from "../../contexts/authContext";
 
-export default () => {
-  return <></>;
-};
+function LoginProtectedRouteLoader() {
+  const authContext = useAuthContext();
 
-async function loginProtectedRouteLoader() {
-  return redirect("/");
+  if (!authContext.isLoggedIn()) return redirect("/login");
+  return <Outlet />;
 }
 
-export { loginProtectedRouteLoader };
+export default LoginProtectedRouteLoader;
