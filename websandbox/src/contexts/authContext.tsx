@@ -1,24 +1,20 @@
 import { createContext, useContext } from "react";
-import { isLoggedIn, login, logout } from "../utils/authutils";
+import { AuthTokenType, getAuthTokens, login, logout, CredentialsType } from "../utils/authutils";
 
 interface AuthContextType {
-  isLoggedIn: () => Boolean;
-  login: () => void;
+  login: (credentials: CredentialsType) => Promise<Boolean>;
   logout: () => void;
+  tokens: () => AuthTokenType | null;
+  authenticated: () => Boolean;
 }
 
-const defaultContext = {
-  isLoggedIn: isLoggedIn,
-  login: login,
-  logout: logout,
-};
-
-const authContext = createContext<AuthContextType>(defaultContext);
+const authContext = createContext<AuthContextType | null>(null);
 
 function AuthContextProvider({ children }: { children: React.ReactNode }) {
   const context: AuthContextType = {
-    isLoggedIn: isLoggedIn,
+    tokens: getAuthTokens,
     login: login,
+    authenticated: () => getAuthTokens() !== null,
     logout: logout,
   };
   return <authContext.Provider value={context}>{children}</authContext.Provider>;

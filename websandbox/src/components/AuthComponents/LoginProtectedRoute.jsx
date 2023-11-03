@@ -4,7 +4,7 @@ import useAuthContext from "../../contexts/authContext";
 function LoginProtectedRouteLoader() {
   const authContext = useAuthContext();
 
-  if (!authContext.isLoggedIn()) return redirect("/login");
+  if (!authContext.authenticated()) return redirect("/login");
   return <Outlet />;
 }
 
