@@ -1,13 +1,22 @@
-import { Link, Form, redirect } from "react-router-dom";
+import { Link, Form, redirect, useActionData } from "react-router-dom";
 import { login } from "../../utils/authutils";
 
-export async function loginAction() {
-  console.log("Hello WOrld");
-  login();
-  return redirect("/dashboard");
+export async function loginAction({ request }) {
+  let formData = await request.formData();
+  let credentials = {
+    username: formData.get("username"),
+    password: formData.get("password"),
+  };
+  if (await login(credentials)) {
+    return redirect("/dashboard");
+  }
+  return { error: true };
 }
 
 export default function Login() {
+  const data = useActionData();
+  let error = data === undefined ? false : true;
+
   return (
     <main className="w-full h-full flex items-center justify-center">
       <div className="w-[90vw] bg-gray-50 max-w-lg p-6 h-max-content rounded-lgz border-l-4">
@@ -16,6 +25,7 @@ export default function Login() {
           Login To
           <span className="italic">WebSandbox</span>
         </h1>
+        {error && <p>Invalid username or password</p>}
         <Form className="w-full flex flex-col gap-3" method="POST">
           <label htmlFor="signup-username">Username</label>
           <input
