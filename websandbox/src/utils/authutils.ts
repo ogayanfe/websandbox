@@ -184,6 +184,11 @@ function redirectAuthenticatedUserRouteLoader() {
   return null;
 }
 
+function loginProtectedRouteLoader() {
+  if (getAuthTokens() === null) return redirect("/login");
+  return null;
+}
+
 export type {
   AuthTokenType,
   AccessTokenDecodedType,
@@ -196,6 +201,7 @@ export {
   getAuthTokens,
   login,
   BASE_URL,
+  loginProtectedRouteLoader,
   logout,
   updateAuthTokens,
   clearAuthTokens,
