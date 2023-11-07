@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     # Local Apps
     'accounts', 
+    'sandbox',
 
     # Third Party Apps
     'rest_framework', 
