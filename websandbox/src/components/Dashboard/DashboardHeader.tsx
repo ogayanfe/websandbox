@@ -1,9 +1,11 @@
 import { IconButton, Button, Avatar } from "@mui/material";
 import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import useAuthContext from "../../contexts/authContext";
 
 export default function DashboardHeader() {
   const textColor = " rgb(134 134 134);";
+  const authContext = useAuthContext();
   return (
     <div className="W-full p-2 px-4 text-lg">
       <nav className="flex w-fill items-center justify-between">
@@ -26,7 +28,7 @@ export default function DashboardHeader() {
             <NotificationsRoundedIcon className="bg-inherit" sx={{ color: textColor }} />
           </IconButton>
           <Avatar sx={{ width: 30, height: 30 }} variant="circular">
-            A
+            {authContext?.user?.username[0].toUpperCase()}
           </Avatar>
         </div>
       </nav>

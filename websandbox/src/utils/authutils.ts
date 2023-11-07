@@ -17,12 +17,6 @@ interface UserType {
   id: number;
   email: string;
   username: string;
-  is_admin: boolean;
-  creator: null | {
-    id: number;
-    username: string;
-    email: string;
-  };
 }
 
 interface CredentialsType {
@@ -139,6 +133,7 @@ function addInterceptors(apiClient: AxiosInstance) {
     // The interceptor does nothing if the users don't have tokens or if refresh tokens expires,
     //so if a request returns a 401 unautherized response, then we can log the user out
 
+    const authTokens = getAuthTokens();
     if (!authTokens) {
       // If the users don't have tokens do nothing
       return config;
@@ -154,10 +149,9 @@ function addInterceptors(apiClient: AxiosInstance) {
 
     // request new access tokens
     const tokens = await newAccessTokens(authTokens.refresh);
-    if (!tokens) {
-      return config;
+    if (tokens) {
+      config.headers.Authorization = `Bearer ${tokens.access}`; // set authorization token
     }
-    config.headers.Authorization = `Bearer ${tokens.access}`; // set authorization token
 
     return config;
   });
@@ -184,11 +178,6 @@ function redirectAuthenticatedUserRouteLoader() {
   return null;
 }
 
-function loginProtectedRouteLoader() {
-  if (getAuthTokens() === null) return redirect("/login");
-  return null;
-}
-
 export type {
   AuthTokenType,
   AccessTokenDecodedType,
@@ -201,7 +190,6 @@ export {
   getAuthTokens,
   login,
   BASE_URL,
-  loginProtectedRouteLoader,
   logout,
   updateAuthTokens,
   clearAuthTokens,
