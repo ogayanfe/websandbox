@@ -13,7 +13,6 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
 const BASE_URL = local
   ? "http://localhost:8000"
   : "https://friendly-space-lamp-jp5rxjxj4ggfvv4-8000.app.github.dev";
-console.log(BASE_URL);
 
 const TOKEN_OBTAIN_URL = `${BASE_URL}/accounts/token/`;
 

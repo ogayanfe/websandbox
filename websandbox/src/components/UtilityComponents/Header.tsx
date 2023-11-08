@@ -34,11 +34,11 @@ export default function DashboardHeader() {
   return (
     <div className="W-full p-2 px-4 text-lg">
       <nav className="flex w-fill items-center justify-between">
-        <div className="flex items-center gap-4">
+        <div className="text-gray-900 dark:text-gray-200 flex items-center gap-4">
           <span className="flex items-center scale-150">
             <iconify-icon icon="teenyicons:box-outline"></iconify-icon>
           </span>
-          <h1 className="dark:text-gray-200 text-2xl italic">WebSandbox</h1>
+          <h1 className="text-2xl italic font-bold">WebSandbox</h1>
         </div>
 
         <div className="flex items-center gap-2">
@@ -51,11 +51,11 @@ export default function DashboardHeader() {
           >
             {authContext?.authenticated() ? "Create" : "Login"}
           </Button>
-          <IconButton aria-label="Notification">
+          <IconButton aria-label="Notification" onClick={themeContext?.toggleTheme}>
             {themeContext?.darkTheme ? (
-              <DarkModeIcon className="bg-inherit" sx={{ color: textColor }} />
-            ) : (
               <LightModeIcon className="bg-inherit" sx={{ color: textColor }} />
+            ) : (
+              <DarkModeIcon className="bg-inherit" sx={{ color: textColor }} />
             )}
           </IconButton>
           <a
