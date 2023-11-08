@@ -1,25 +1,31 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
 interface ThemeContextType {
-  darkTheme: false;
-  setDarkTheme: (theme: boolean) => void;
+  darkTheme: boolean;
+  turnDarkThemeOn: () => void;
+  turnLightThemeOn: () => void;
 }
 
 const themeContext = createContext<ThemeContextType | null>(null);
 
-export function ThemeContextProvide({ children }: { children: ReactNode }) {
-  const [darkTheme, setDarkTheme] = useState<boolean>(false);
-
-  const themeContext = {
-    darkTheme: darkTheme,
-    setDarkTheme: (t: boolean) => {
-      setDarkTheme(t);
-      return;
+function ThemeContextProvider({ children }: { children: React.ReactNode }) {
+  const [darkTheme, setDarkTheme] = useState(false);
+  const context = {
+    darkTheme,
+    turnDarkThemeOn: () => {
+      setDarkTheme(true);
+    },
+    turnLightThemeOn: () => {
+      setDarkTheme(false);
     },
   };
-  return <themeContext.Provider value={themeContext}>{children}</themeContext.Provider>;
+  return <themeContext.Provider value={context}>{children}</themeContext.Provider>;
 }
 
-export default function useThemeContext() {
+function useThemeContext() {
   return useContext(themeContext);
 }
+
+export { themeContext, ThemeContextProvider };
+
+export default useThemeContext;

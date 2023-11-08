@@ -1,13 +1,13 @@
 import { Outlet } from "react-router-dom";
-import Header from "./Header";
+import DashboardHeader from "../UtilityComponents/Header";
 
-export default function RouteComponent() {
+export default function DashboardRoot() {
   return (
-    <div className="flex flex-col bg-[rgb(14,14,14)] w-full h-screen">
-      <Header />
-      <main className="flex-grow">
+    <div className="dark:bg-[RGB(14,_14,_14)] w-screen h-screen text-main flex flex-col">
+      <DashboardHeader />
+      <div className="flex-grow overflow-y-auto">
         <Outlet />
-      </main>
+      </div>
     </div>
   );
 }

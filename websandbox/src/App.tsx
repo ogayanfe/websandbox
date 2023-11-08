@@ -22,9 +22,9 @@ const router = createBrowserRouter(
           <Route path="signup" element={<Signup />} action={loginAction}></Route>
         </Route>
         <Route />
-      </Route>
-      <Route path="" loader={loginProtectedRouteLoader} element={<LoginProtectedRouteRoot />}>
-        <Route path="dashboard" element={<DashboardRoot />}></Route>
+        <Route path="" loader={loginProtectedRouteLoader} element={<LoginProtectedRouteRoot />}>
+          <Route path="dashboard" element={<DashboardRoot />}></Route>
+        </Route>
       </Route>
     </Route>
   )
