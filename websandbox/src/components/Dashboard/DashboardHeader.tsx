@@ -14,7 +14,7 @@ export default function DashboardHeader() {
   return (
     <div className="W-full p-2 px-4 text-lg">
       <nav className="flex w-fill items-center justify-between">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <span className="flex items-center scale-150">
             <iconify-icon icon="teenyicons:box-outline"></iconify-icon>
           </span>

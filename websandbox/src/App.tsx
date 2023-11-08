@@ -23,7 +23,7 @@ const router = createBrowserRouter(
         </Route>
         <Route />
       </Route>
-      <Route path="/" loader={loginProtectedRouteLoader} element={<LoginProtectedRouteRoot />}>
+      <Route path="" loader={loginProtectedRouteLoader} element={<LoginProtectedRouteRoot />}>
         <Route path="dashboard" element={<DashboardRoot />}></Route>
       </Route>
     </Route>
