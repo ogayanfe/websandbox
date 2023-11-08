@@ -22,7 +22,7 @@ export default function Login() {
 
   return (
     <main className="w-full h-full flex items-center justify-center">
-      <div className="w-[90vw] dark:bg-[rgb(0,0,0)] bg-gray-100 max-w-lg p-6 h-max-content rounded-lgz border-l-4">
+      <div className="w-[90vw] dark:bg-[rgb(0,0,0)] shadow-2xl bg-gray-100 max-w-lg p-6 h-max-content rounded-lgz border-l-4">
         <h2 className="text-2xl text-gray-800 font-semibold dark:text-gray-300 flex justify-center gap-1 items-center m-2">
           <span className="text-3xl hidden">LOGO</span>
           Login To
@@ -38,7 +38,7 @@ export default function Login() {
             autoFocus
             name="username"
             required
-            className="p-2 text-sm text-gray-900 dark:text-gray-200 bg-inherit border-2"
+            className="p-2 text-sm text-gray-900 border-gray-400 dark:border-white dark:text-gray-200 bg-inherit border-2"
             placeholder="username"
             id="signup-username"
           />
@@ -47,7 +47,7 @@ export default function Login() {
           </label>
           <input
             type="password"
-            className="p-2 text-sm text-gray-900 dark:text-gray-200 bg-inherit border-2"
+            className="p-2 text-sm text-gray-900 border-gray-400 dark:border-white dark:text-gray-200 bg-inherit border-2"
             name="password"
             id="signup-password"
             required

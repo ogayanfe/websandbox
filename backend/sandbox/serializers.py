@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, ValidationError
 
 from sandbox.models import Sandbox
 
@@ -18,3 +18,9 @@ class SandboxSerializer(ModelSerializer):
         validated_data["owner"] = validated_data.get("owner", request.user)
         obj = super().create(validated_data)
         return obj
+
+    def validate_title(self, value):
+        request = self.context.get("request")
+        if request and Sandbox.objects.filter(owner=request.user, title=value).exists(): 
+            raise ValidationError("You have created a sandbox with similar name already")
+        return value

@@ -8,7 +8,7 @@ function FolderListElementComponent() {
       <div className="flex-grow text-grow flex items-center justify-center">
         <FolderIcon sx={{ fontSize: "90px" }} />
       </div>
-      <h3 className="text-gray-900 dark:text-white p-3 rounded-b-md  bg-gray-200 dark:bg-[rgb(21,21,21)]">
+      <h3 className="text-gray-900 dark:text-white p-3 rounded-b-md  bg-gray-300 dark:bg-[rgb(21,21,21)]">
         Name:
       </h3>
     </div>

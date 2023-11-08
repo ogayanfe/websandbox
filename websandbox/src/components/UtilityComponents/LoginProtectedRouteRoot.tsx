@@ -1,6 +1,7 @@
 import { Outlet, redirect, useLoaderData } from "react-router-dom";
 import { getAuthTokens, getApiClient, clearAuthTokens, UserType } from "../../utils/authutils";
 import useAuthContext from "../../contexts/authContext";
+import { useEffect } from "react";
 
 export async function loginProtectedRouteLoader() {
   if (!getAuthTokens()) {
@@ -24,6 +25,9 @@ async function userProfileDataLoader() {
 export default function LoginProtectedRouteRoot() {
   const data = useLoaderData() as UserType;
   const authContext = useAuthContext();
-  authContext?.updateUserInfo(data);
-  return <div>{<Outlet />}</div>;
+  useEffect(() => {
+    authContext?.updateUserInfo(data);
+  }, []);
+
+  return <>{<Outlet />}</>;
 }
