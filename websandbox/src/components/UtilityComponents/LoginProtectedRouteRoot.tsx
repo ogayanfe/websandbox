@@ -6,7 +6,6 @@ export async function loginProtectedRouteLoader() {
   if (!getAuthTokens()) {
     return redirect("/login");
   }
-  await userProfileDataLoader();
   try {
     const data = await userProfileDataLoader();
     return data;

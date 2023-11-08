@@ -5,13 +5,15 @@ import { redirect } from "react-router-dom";
 
 let axiosClient: AxiosInstance | null = null;
 
-let local = false
-if (location.hostname === "localhost" || location.hostname === "127.0.0.1"){
-  local = true
+let local = false;
+if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+  local = true;
 }
 
-const BASE_URL = local? "https://localhost:8000": "https://friendly-space-lamp-jp5rxjxj4ggfvv4-8000.app.github.dev"
-console.log(BASE_URL)
+const BASE_URL = local
+  ? "http://localhost:8000"
+  : "https://friendly-space-lamp-jp5rxjxj4ggfvv4-8000.app.github.dev";
+console.log(BASE_URL);
 
 const TOKEN_OBTAIN_URL = `${BASE_URL}/accounts/token/`;
 
