@@ -41,7 +41,7 @@ interface FolderListElementComponentType {
 function FolderListElementComponent({ info, onDelete }: FolderListElementComponentType) {
   const textColor = "rgb(134 134 134);";
   return (
-    <div className="relative p-z3 rounded-md h-44 bg-gray-200 dark:bg-[RGB(29,_29,_29)] flex-col first-letter:shadow-xl flex">
+    <div className="relative p-z3 rounded-md h-44 bg-gray-100 dark:bg-[RGB(29,_29,_29)] flex-col first-letter:shadow-xl flex">
       <div className="flex-grow text-grow flex items-center justify-center">
         <FolderIcon sx={{ fontSize: "90px" }} />
       </div>
@@ -50,7 +50,7 @@ function FolderListElementComponent({ info, onDelete }: FolderListElementCompone
       </h3>
       <nav className="absolute flex gap-1 right-0">
         <Tooltip title="Open sandbox">
-          <IconButton to={`/sandbox/${info.id}/`} component={Link} sx={{ color: textColor }}>
+          <IconButton to={`/sandbox/${info.id}/`} component={Link}>
             <LaunchIcon />
           </IconButton>
         </Tooltip>
@@ -60,7 +60,7 @@ function FolderListElementComponent({ info, onDelete }: FolderListElementCompone
               deleteSandbox(info.id, info.title, onDelete);
             }}
           >
-            <DeleteIcon sx={{ color: textColor }} />
+            <DeleteIcon />
           </IconButton>
         </Tooltip>
       </nav>

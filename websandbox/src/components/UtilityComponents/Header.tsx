@@ -11,7 +11,6 @@ import useThemeContext from "../../contexts/themeContext";
 import LightModeIcon from "@mui/icons-material/LightMode";
 
 export default function DashboardHeader() {
-  const textColor = "rgb(134 134 134);";
   const authContext = useAuthContext();
   const themeContext = useThemeContext();
 
@@ -46,9 +45,9 @@ export default function DashboardHeader() {
           >
             <IconButton aria-label="Toggle Theme" onClick={themeContext?.toggleTheme}>
               {themeContext?.darkTheme ? (
-                <LightModeIcon className="bg-inherit" sx={{ color: textColor }} />
+                <LightModeIcon className="bg-inherit" />
               ) : (
-                <DarkModeIcon className="bg-inherit" sx={{ color: textColor }} />
+                <DarkModeIcon className="bg-inherit" />
               )}
             </IconButton>
           </Tooltip>
@@ -59,7 +58,7 @@ export default function DashboardHeader() {
               className="flex items-center"
             >
               <span className="fixed left-[-1000000000000px]">Open project github</span>
-              <GitHubIcon sx={{ color: textColor }} />
+              <GitHubIcon />
             </IconButton>
           </Tooltip>
           <Tooltip title={`@${authContext?.user?.username}`}>
