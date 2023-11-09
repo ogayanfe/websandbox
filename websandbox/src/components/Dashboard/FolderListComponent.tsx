@@ -39,7 +39,6 @@ interface FolderListElementComponentType {
 }
 
 function FolderListElementComponent({ info, onDelete }: FolderListElementComponentType) {
-  const textColor = "rgb(134 134 134);";
   return (
     <div className="relative p-z3 rounded-md h-44 bg-gray-100 dark:bg-[RGB(29,_29,_29)] flex-col first-letter:shadow-xl flex">
       <div className="flex-grow text-grow flex items-center justify-center">

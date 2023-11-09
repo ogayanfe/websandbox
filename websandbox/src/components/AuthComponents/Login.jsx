@@ -24,7 +24,6 @@ export default function Login() {
     <main className="w-full h-full flex items-center justify-center">
       <div className="w-[90vw] dark:bg-[rgb(0,0,0)] shadow-2xl bg-gray-100 max-w-lg p-6 h-max-content rounded-lgz border-l-4">
         <h2 className="text-2xl text-gray-800 font-semibold dark:text-gray-300 flex justify-center gap-1 items-center m-2">
-          <span className="text-3xl hidden">LOGO</span>
           Login To
           <span className="">WebSandbox</span>
         </h2>
@@ -53,7 +52,7 @@ export default function Login() {
             required
             placeholder="password"
           />
-          <p className="mt-3">
+          <p className="mt-3 text-gray-700 font-semibold dark:text-gray-200">
             Don't have an account,{" "}
             <Link to="/signup" className="underline text-blue-600">
               Signup

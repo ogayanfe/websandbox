@@ -34,7 +34,7 @@ export default function DashboardHeader() {
             component={Link}
             variant="contained"
             color="primary"
-            size="medium"
+            size="small"
             to={authContext?.authenticated() ? "/logout" : "/login"}
             startIcon={authContext?.authenticated() ? <LogoutIcon /> : <LoginIcon />}
           >

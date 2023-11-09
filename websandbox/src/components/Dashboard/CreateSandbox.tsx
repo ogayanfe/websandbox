@@ -38,7 +38,7 @@ export function CreateSandboxComponent() {
         {data?.error && <p className="text-center text-red-500">{JSON.stringify(data?.data)}</p>}
         <Form className="w-full flex flex-col gap-3" method="POST">
           <label htmlFor="sandbox-name" className=" text-gray-900 dark:text-gray-200">
-            Username
+            Sandbox name
           </label>
           <input
             type="text"
@@ -46,7 +46,7 @@ export function CreateSandboxComponent() {
             name="name"
             required
             className="p-2 text-sm text-gray-900 border-gray-400 dark:border-white dark:text-gray-200 bg-inherit border-2"
-            placeholder="sandbox name"
+            placeholder="sandbox name (e.g Project X)"
             id="sandbox-name"
           />
           <div className="flex justify-end pr-10 p-2">
