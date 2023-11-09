@@ -10,7 +10,7 @@ import { redirectAuthenticatedUserRouteLoader } from "./utils/authutils";
 import LoginProtectedRouteRoot, {
   loginProtectedRouteLoader,
 } from "./components/UtilityComponents/LoginProtectedRouteRoot";
-import DashboardHome from "./components/Dashboard/Home";
+import DashboardHome, { dashboardHomeLoader } from "./components/Dashboard/Home";
 import createSandboxAction, { CreateSandboxComponent } from "./components/Dashboard/CreateSandbox";
 
 const router = createBrowserRouter(
@@ -24,8 +24,15 @@ const router = createBrowserRouter(
         </Route>
         <Route />
         <Route path="" loader={loginProtectedRouteLoader} element={<LoginProtectedRouteRoot />}>
-          <Route path="dashboard" element={<DashboardHome />} />
-          <Route path="create" element={<CreateSandboxComponent />} action={createSandboxAction} />
+          <Route path="dashboard">
+            <Route path="" element={<DashboardHome />} loader={dashboardHomeLoader} />
+            <Route
+              path="create"
+              element={<CreateSandboxComponent />}
+              action={createSandboxAction}
+            />
+            <Route />
+          </Route>
         </Route>
       </Route>
     </Route>

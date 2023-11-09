@@ -9,6 +9,9 @@ class SandboxSerializer(ModelSerializer):
         extra_kwargs = {
             "owner": {
                 "read_only": True, 
+            }, 
+            "files": {
+                "read_only": True
             }           
         }
 

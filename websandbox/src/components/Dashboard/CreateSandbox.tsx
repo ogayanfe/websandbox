@@ -12,20 +12,22 @@ export default async function createSandboxAction({ request }: ActionFunctionArg
   const apiClient = getApiClient();
   const name = formData.get("name");
   try {
-    const response = await apiClient.post("/sandbox/", {
+    await apiClient.post("/sandbox/", {
       title: name,
       files: null,
     });
     return redirect("/dashboard");
-  } catch (error: AxiosError) {
-    return { error: true, data: await error.response.data.title[0] };
+  } catch (error) {
+    console.log(error);
+    if (error instanceof AxiosError) {
+      return { error: true, data: await error?.response?.data.title[0] };
+    }
+    return { error: true, data: "Something went wrong, check connection and try again" };
   }
 }
 
 export function CreateSandboxComponent() {
   const data = useActionData() as CreateSandboxActionType | undefined;
-  console.log(data);
-
   return (
     <main className="w-full h-full flex items-center justify-center">
       <div className="w-[90vw] dark:bg-[rgb(0,0,0)] shadow-2xl bg-gray-100 max-w-lg p-6 h-max-content rounded-lgz border-l-4">

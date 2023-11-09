@@ -1,4 +1,5 @@
-import { useEffect, createContext, useContext, useState, ReactNode } from "react";
+import { useMemo, useEffect, createContext, useContext, useState, ReactNode } from "react";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 interface ThemeContextType {
   darkTheme: boolean;
@@ -13,7 +14,6 @@ function ThemeContextProvider({ children }: { children: ReactNode }) {
   const [darkTheme, setDarkTheme] = useState<boolean>(() =>
     Boolean(localStorage.getItem("darkTheme"))
   );
-
   const turnLightThemeOn = () => {
     localStorage.removeItem("darkTheme");
     setDarkTheme(false);
@@ -36,6 +36,15 @@ function ThemeContextProvider({ children }: { children: ReactNode }) {
     turnDarkThemeOn,
     toggleTheme,
   };
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: darkTheme ? "dark" : "light",
+        },
+      }),
+    [darkTheme]
+  );
 
   useEffect(() => {
     const htmlElement = document.querySelector("html");
@@ -46,7 +55,11 @@ function ThemeContextProvider({ children }: { children: ReactNode }) {
     htmlElement?.classList.remove("dark");
   }, [darkTheme]);
 
-  return <themeContext.Provider value={context}>{children}</themeContext.Provider>;
+  return (
+    <themeContext.Provider value={context}>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+    </themeContext.Provider>
+  );
 }
 
 function useThemeContext() {

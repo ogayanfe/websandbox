@@ -1,27 +1,14 @@
 import { IconButton, Button, Avatar } from "@mui/material";
-import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import Tooltip from "@mui/material/Tooltip";
 import useAuthContext from "../../contexts/authContext";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import { ReactNode, useEffect } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import LoginIcon from "@mui/icons-material/Login";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LogoutIcon from "@mui/icons-material/Logout";
 import useThemeContext from "../../contexts/themeContext";
 import LightModeIcon from "@mui/icons-material/LightMode";
-
-function HeaderButtonLink(props: { children: ReactNode }) {
-  let url = "/login";
-  const authContext = useAuthContext();
-  if (authContext?.authenticated()) {
-    url = "/create";
-  }
-
-  return (
-    <Link to={url} {...props}>
-      {props.children}
-    </Link>
-  );
-}
 
 export default function DashboardHeader() {
   const textColor = "rgb(134 134 134);";
@@ -38,37 +25,48 @@ export default function DashboardHeader() {
           <span className="flex items-center scale-150">
             <iconify-icon icon="teenyicons:box-outline"></iconify-icon>
           </span>
-          <h1 className="text-2xl italic font-bold">WebSandbox</h1>
+          <h1 className="text-2xl italic font-bold">
+            <Link to="/">WebSandbox</Link>
+          </h1>
         </div>
 
         <div className="flex items-center gap-2">
           <Button
-            component={HeaderButtonLink}
+            component={Link}
             variant="contained"
             color="primary"
-            size="small"
-            startIcon={authContext?.authenticated() ? <AddRoundedIcon /> : <LoginIcon />}
+            size="medium"
+            to={authContext?.authenticated() ? "/logout" : "/login"}
+            startIcon={authContext?.authenticated() ? <LogoutIcon /> : <LoginIcon />}
           >
-            {authContext?.authenticated() ? "Create" : "Login"}
+            {authContext?.authenticated() ? "Logout" : "Login"}
           </Button>
-          <IconButton aria-label="Notification" onClick={themeContext?.toggleTheme}>
-            {themeContext?.darkTheme ? (
-              <LightModeIcon className="bg-inherit" sx={{ color: textColor }} />
-            ) : (
-              <DarkModeIcon className="bg-inherit" sx={{ color: textColor }} />
-            )}
-          </IconButton>
-          <a
-            href="https://github.com/ogayanfe/websandbox"
-            target="_blank"
-            className="flex items-center"
+          <Tooltip
+            title={themeContext?.darkTheme ? "Switch to light theme" : "Switch to dark Theme"}
           >
-            <span className="fixed left-[-1000000000000px]">Github Link</span>
-            <GitHubIcon sx={{ color: textColor }} />
-          </a>
-          <Avatar sx={{ width: 30, height: 30 }} variant="circular">
-            {authContext?.user?.username[0].toUpperCase()}
-          </Avatar>
+            <IconButton aria-label="Toggle Theme" onClick={themeContext?.toggleTheme}>
+              {themeContext?.darkTheme ? (
+                <LightModeIcon className="bg-inherit" sx={{ color: textColor }} />
+              ) : (
+                <DarkModeIcon className="bg-inherit" sx={{ color: textColor }} />
+              )}
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Open project github">
+            <IconButton
+              href="https://github.com/ogayanfe/websandbox"
+              target="_blank"
+              className="flex items-center"
+            >
+              <span className="fixed left-[-1000000000000px]">Open project github</span>
+              <GitHubIcon sx={{ color: textColor }} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={`@${authContext?.user?.username}`}>
+            <Avatar sx={{ width: 30, height: 30 }} variant="circular">
+              {authContext?.user?.username[0].toUpperCase()}
+            </Avatar>
+          </Tooltip>
         </div>
       </nav>
     </div>
