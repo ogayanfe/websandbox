@@ -12,29 +12,23 @@ import LoginProtectedRouteRoot, {
 } from "./components/UtilityComponents/LoginProtectedRouteRoot";
 import DashboardHome, { dashboardHomeLoader } from "./components/Dashboard/Home";
 import createSandboxAction, { CreateSandboxComponent } from "./components/Dashboard/CreateSandbox";
+import Error from "./components/UtilityComponents/Error";
 
 const router = createBrowserRouter(
   createRoutesFromChildren(
-    <Route path="/">
-      <Route path="" element={<BaseRootComponent />}>
-        <Route loader={redirectAuthenticatedUserRouteLoader}>
-          <Route path="" index element={<HomeRoute />}></Route>
-          <Route path="login" element={<Login />} action={loginAction}></Route>
-          <Route path="signup" element={<Signup />} action={signupAction}></Route>
-        </Route>
-        <Route />
-        <Route path="logout" element={<LogoutRoute />} />
-        <Route path="" loader={loginProtectedRouteLoader} element={<LoginProtectedRouteRoot />}>
-          <Route path="dashboard">
-            <Route path="" element={<DashboardHome />} loader={dashboardHomeLoader} />
-            <Route
-              path="create"
-              element={<CreateSandboxComponent />}
-              action={createSandboxAction}
-            />
-            <Route />
-          </Route>
-          R
+    <Route path="/" element={<BaseRootComponent />} errorElement={<Error />}>
+      <Route loader={redirectAuthenticatedUserRouteLoader}>
+        <Route path="" index element={<HomeRoute />}></Route>
+        <Route path="login" element={<Login />} action={loginAction}></Route>
+        <Route path="signup" element={<Signup />} action={signupAction}></Route>R
+      </Route>
+      <Route />
+      <Route path="logout" element={<LogoutRoute />} />
+      <Route path="" loader={loginProtectedRouteLoader} element={<LoginProtectedRouteRoot />}>
+        <Route path="dashboard">
+          <Route path="" element={<DashboardHome />} loader={dashboardHomeLoader} />
+          <Route path="create" element={<CreateSandboxComponent />} action={createSandboxAction} />
+          <Route />
         </Route>
       </Route>
     </Route>

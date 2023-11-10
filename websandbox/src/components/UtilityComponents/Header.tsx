@@ -61,7 +61,11 @@ export default function DashboardHeader() {
               <GitHubIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title={`@${authContext?.user?.username}`}>
+          <Tooltip
+            title={`${
+              authContext?.user?.username ? "@" + authContext.user.username : "Anonymous user"
+            }`}
+          >
             <Avatar sx={{ width: 30, height: 30 }} variant="circular">
               {authContext?.user?.username[0].toUpperCase()}
             </Avatar>
