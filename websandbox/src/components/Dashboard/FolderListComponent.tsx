@@ -1,6 +1,6 @@
 import FolderIcon from "@mui/icons-material/Folder";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useLoaderData, useRevalidator } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import LaunchIcon from "@mui/icons-material/Launch";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -86,6 +86,7 @@ function CreateSandboxElementComponent() {
 
 function FolderListComponent() {
   const data = useLoaderData() as WebSandboxType[];
+  const validator = useRevalidator();
   const [alert, setAlert] = useState({
     deleteSuccess: false,
   });
@@ -112,7 +113,10 @@ function FolderListComponent() {
           <FolderListElementComponent
             info={p}
             key={p.title + Math.random()}
-            onDelete={() => setAlert((p) => ({ ...p, deleteSuccess: true }))}
+            onDelete={() => {
+              validator.revalidate();
+              setAlert((p) => ({ ...p, deleteSuccess: true }));
+            }}
           />
         ))}
       </div>
