@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import dayjs from "dayjs";
 import { jwtDecode } from "jwt-decode";
 import { redirect } from "react-router-dom";
@@ -178,6 +178,19 @@ async function login(credentials: CredentialsType): Promise<Boolean> {
   return false;
 }
 
+async function signup(credentials: CredentialsType): Promise<AxiosResponse | null> {
+  const apiClient = getApiClient();
+  try {
+    const response = await apiClient.post<AuthTokenType>("/accounts/signup/", credentials);
+    updateAuthTokens(response.data);
+    return null;
+  } catch (error) {
+    console.log(error);
+    if (error instanceof AxiosError) return error.response ? error.response : null;
+    return null;
+  }
+}
+
 function redirectAuthenticatedUserRouteLoader() {
   if (getAuthTokens() !== null) {
     return redirect("/dashboard");
@@ -196,8 +209,9 @@ export {
   getApiClient,
   getAuthTokens,
   login,
-  BASE_URL,
+  signup,
   logout,
+  BASE_URL,
   updateAuthTokens,
   clearAuthTokens,
   TOKEN_OBTAIN_URL,

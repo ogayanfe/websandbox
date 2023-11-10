@@ -3,7 +3,7 @@ import { createBrowserRouter, createRoutesFromChildren, Route } from "react-rout
 import HomeRoute from "./components/HomePage";
 import LogoutRoute from "./components/AuthComponents/logout";
 import Login, { loginAction } from "./components/AuthComponents/Login";
-import Signup from "./components/AuthComponents/Signup";
+import Signup, { signupAction } from "./components/AuthComponents/Signup";
 import "./index.css";
 import BaseRootComponent from "./components/UtilityComponents/BaseRootComponent";
 import { redirectAuthenticatedUserRouteLoader } from "./utils/authutils";
@@ -20,7 +20,7 @@ const router = createBrowserRouter(
         <Route loader={redirectAuthenticatedUserRouteLoader}>
           <Route path="" index element={<HomeRoute />}></Route>
           <Route path="login" element={<Login />} action={loginAction}></Route>
-          <Route path="signup" element={<Signup />} action={loginAction}></Route>
+          <Route path="signup" element={<Signup />} action={signupAction}></Route>
         </Route>
         <Route />
         <Route path="logout" element={<LogoutRoute />} />

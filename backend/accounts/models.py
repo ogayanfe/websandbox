@@ -5,7 +5,7 @@ from django.utils.translation import gettext as _
 
 
 class User(AbstractUser):
-    email = models.EmailField(_('email address'), unique=True)
+    # email = models.EmailField(_('email address'), unique=True)
     username_validator = UnicodeUsernameValidator()
     first_name = None
     last_name = None
@@ -22,7 +22,7 @@ class User(AbstractUser):
             "unique": _("A user with that username already exists."),
         },
     )
-    EMAIL_FIELD = "email"
+    # EMAIL_FIELD = "email"
     REQUIRED_FIELDS = []
     USERNAME_FIELD = "username"
 

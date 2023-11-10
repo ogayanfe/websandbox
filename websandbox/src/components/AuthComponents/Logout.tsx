@@ -6,8 +6,8 @@ export default function LogoutRoute() {
   const authContext = useAuthContext();
   const navigate = useNavigate();
   useEffect(() => {
-    authContext.logout();
-    authContext.updateUserInfo(null);
+    authContext?.logout();
+    authContext?.updateUserInfo(null);
     navigate("/", { replace: true });
   }, []);
   return <></>;

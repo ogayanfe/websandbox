@@ -95,7 +95,6 @@ function FolderListComponent() {
         <Alert
           sx={{ marginX: "2.5rem", marginBottomz: "1rem" }}
           severity="success"
-          // variant="outlined"
           action={
             <Tooltip title="Close">
               <IconButton onClick={() => setAlert((prev) => ({ ...prev, deleteSuccess: false }))}>

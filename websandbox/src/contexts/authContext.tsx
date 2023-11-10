@@ -14,7 +14,7 @@ interface AuthContextType {
   tokens: () => AuthTokenType | null;
   authenticated: () => Boolean;
   user: UserType | null;
-  updateUserInfo: (user: UserType) => void;
+  updateUserInfo: (user: UserType | null) => void;
 }
 
 const authContext = createContext<AuthContextType | null>(null);
