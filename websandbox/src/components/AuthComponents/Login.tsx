@@ -1,7 +1,8 @@
-import { Link, Form, redirect, useActionData } from "react-router-dom";
+import { Link, Form, redirect, useActionData, ActionFunctionArgs } from "react-router-dom";
 import { login } from "../../utils/authutils";
+import Alert from "@mui/material/Alert";
 
-export async function loginAction({ request }) {
+export async function loginAction({ request }: ActionFunctionArgs) {
   let formData = await request.formData();
   let credentials = {
     username: formData.get("username"),
@@ -27,7 +28,7 @@ export default function Login() {
           Login To
           <span className="">WebSandbox</span>
         </h2>
-        {error && <p className="text-center text-red-500">Invalid username or password</p>}
+        {error && <Alert severity="error">Invalid username or password</Alert>}
         <Form className="w-full flex flex-col gap-3" method="POST">
           <label htmlFor="signup-username" className=" text-gray-900 dark:text-gray-200">
             Username

@@ -1,6 +1,7 @@
 import { ActionFunctionArgs, Form, redirect, useActionData } from "react-router-dom";
 import { getApiClient } from "../../utils/authutils";
 import { AxiosError } from "axios";
+import Alert from "@mui/material/Alert";
 
 interface CreateSandboxActionType {
   error: boolean;
@@ -35,7 +36,7 @@ export function CreateSandboxComponent() {
           <span className="text-3xl hidden">LOGO</span>
           Create Sandbox
         </h2>
-        {data?.error && <p className="text-center text-red-500">{JSON.stringify(data?.data)}</p>}
+        {data?.error && <Alert severity="error">{data?.data.toString()}</Alert>}
         <Form className="w-full flex flex-col gap-3" method="POST">
           <label htmlFor="sandbox-name" className=" text-gray-900 dark:text-gray-200">
             Sandbox name
