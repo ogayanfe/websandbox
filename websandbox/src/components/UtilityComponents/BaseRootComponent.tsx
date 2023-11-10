@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import DashboardHeader from "../UtilityComponents/Header";
 
-export default function DashboardRoot({ children }: { children: React.ReactNode }) {
+export default function DashboardRoot({ children }: { children?: React.ReactNode }) {
   return (
     <div className="dark:bg-[RGB(14,_14,_14)] w-screen h-screen text-main flex flex-col">
       <DashboardHeader />

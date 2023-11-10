@@ -17,8 +17,8 @@ import Error from "./components/UtilityComponents/Error";
 const router = createBrowserRouter(
   createRoutesFromChildren(
     <Route path="/" element={<BaseRootComponent />} errorElement={<Error />}>
+      <Route path="" index element={<HomeRoute />}></Route>
       <Route loader={redirectAuthenticatedUserRouteLoader}>
-        <Route path="" index element={<HomeRoute />}></Route>
         <Route path="login" element={<Login />} action={loginAction}></Route>
         <Route path="signup" element={<Signup />} action={signupAction}></Route>R
       </Route>
