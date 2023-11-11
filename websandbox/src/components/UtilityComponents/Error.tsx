@@ -21,7 +21,7 @@ export default function Error() {
           variant="contained"
           startIcon={<ArrowLeftIcon />}
         >
-          {authContext?.authenticated() ? "Dashboard To Dashboard" : "Back To Home"}
+          {authContext?.authenticated() ? "Back To Dashboard" : "Back To Home"}
         </Button>
       </div>
     </BaseRootCompenent>

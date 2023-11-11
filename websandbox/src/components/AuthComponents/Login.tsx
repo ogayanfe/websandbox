@@ -10,7 +10,8 @@ export async function loginAction({ request }: ActionFunctionArgs) {
   };
   try {
     await login(credentials);
-    return redirect("/dashboard");
+    const response = new Response()
+    return redirect("/dashboard",response);
   } catch (e) {
     console.log(e);
     return { error: true };

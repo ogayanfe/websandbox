@@ -5,7 +5,9 @@ import LogoutRoute from "./components/AuthComponents/logout";
 import Login, { loginAction } from "./components/AuthComponents/Login";
 import Signup, { signupAction } from "./components/AuthComponents/Signup";
 import "./index.css";
-import BaseRootComponent from "./components/UtilityComponents/BaseRootComponent";
+import BaseRootComponent, {
+  baseRouteLoader,
+} from "./components/UtilityComponents/BaseRootComponent";
 import { redirectAuthenticatedUserRouteLoader } from "./utils/authutils";
 import LoginProtectedRouteRoot, {
   loginProtectedRouteLoader,
@@ -16,7 +18,12 @@ import Error from "./components/UtilityComponents/Error";
 
 const router = createBrowserRouter(
   createRoutesFromChildren(
-    <Route path="/" element={<BaseRootComponent />} errorElement={<Error />}>
+    <Route
+      path="/"
+      element={<BaseRootComponent />}
+      errorElement={<Error />}
+      loader={baseRouteLoader}
+    >
       <Route path="" index element={<HomeRoute />}></Route>
       <Route loader={redirectAuthenticatedUserRouteLoader}>
         <Route path="login" element={<Login />} action={loginAction}></Route>
