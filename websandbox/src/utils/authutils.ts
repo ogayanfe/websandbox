@@ -185,7 +185,6 @@ async function signup(credentials: CredentialsType): Promise<AxiosResponse | nul
     updateAuthTokens(response.data);
     return null;
   } catch (error) {
-    console.log(error);
     if (error instanceof AxiosError) return error.response ? error.response : null;
     return null;
   }

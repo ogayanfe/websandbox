@@ -1,6 +1,6 @@
 import FolderIcon from "@mui/icons-material/Folder";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import { Link, useLoaderData, useRevalidator } from "react-router-dom";
+import { Link, useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import LaunchIcon from "@mui/icons-material/Launch";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -9,6 +9,7 @@ import { getApiClient } from "../../utils/authutils";
 import { useState } from "react";
 import Alert from "@mui/material/Alert";
 import CloseIcon from "@mui/icons-material/Close";
+import useAuthContext from "../../contexts/authContext";
 
 interface WebSandboxType {
   id: number;
@@ -39,6 +40,12 @@ interface FolderListElementComponentType {
 }
 
 function FolderListElementComponent({ info, onDelete }: FolderListElementComponentType) {
+  const authContext = useAuthContext();
+  const navigate = useNavigate();
+  if (authContext !== null && authContext.user === null) {
+    navigate("/login");
+  }
+
   return (
     <div className="relative p-z3 rounded-md h-44 bg-gray-100 dark:bg-[RGB(29,_29,_29)] flex-col first-letter:shadow-xl flex">
       <div className="flex-grow text-grow flex items-center justify-center">
@@ -49,7 +56,7 @@ function FolderListElementComponent({ info, onDelete }: FolderListElementCompone
       </h3>
       <nav className="absolute flex gap-1 right-0">
         <Tooltip title="Open sandbox">
-          <IconButton to={`/sandbox/${info.id}/`} component={Link}>
+          <IconButton to={`/@${authContext?.user?.username}/${info.title}/`} component={Link}>
             <LaunchIcon />
           </IconButton>
         </Tooltip>
@@ -112,7 +119,7 @@ function FolderListComponent() {
         {data.map((p) => (
           <FolderListElementComponent
             info={p}
-            key={p.title + Math.random()}
+            key={p.title + Math.random()} // Just for safety, to make sure key remain unique
             onDelete={() => {
               validator.revalidate();
               setAlert((p) => ({ ...p, deleteSuccess: true }));

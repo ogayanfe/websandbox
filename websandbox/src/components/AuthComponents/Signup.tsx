@@ -21,12 +21,12 @@ function validatePassword(password1: string, password2: string): string {
 }
 
 function validateUsername(username: string): string {
-  const pattern = /^[\w.@+-]+$/;
+  const pattern = /^[\w.+-]+$/;
   if (username.length < 3) {
     return "Username must be three characters minimum";
   }
   if (!pattern.test(username)) {
-    return "Enter a valid username. This value may contain only letters, numbers, and @/./+/-/_ characters.";
+    return "Enter a valid username. This value may contain only letters, numbers, and ./+/-/_ characters.";
   }
   return "";
 }
@@ -96,7 +96,7 @@ export default function Signup() {
             name="password"
             id="signup-password"
             required
-            placeholder="password"
+            placeholder="Password"
           />
           <label htmlFor="signup-password-2" className=" text-gray-900 dark:text-gray-200">
             Password Again
@@ -107,7 +107,7 @@ export default function Signup() {
             name="password2"
             id="signup-password-2"
             required
-            placeholder="password-2"
+            placeholder="Password Again"
           />
           <p className="mt-3 text-gray-700 font-semibold dark:text-gray-200">
             Already have an account,{" "}

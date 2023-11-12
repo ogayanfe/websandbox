@@ -22,8 +22,8 @@ class SandboxSerializer(ModelSerializer):
         obj = super().create(validated_data)
         return obj
 
-    def validate_title(self, value):
+    def validate_title(self, value: str) -> str:
         request = self.context.get("request")
-        if request and Sandbox.objects.filter(owner=request.user, title=value).exists(): 
+        if request and Sandbox.objects.filter(owner=request.user, title__iexact=value).exists(): 
             raise ValidationError("You have created a sandbox with similar name already")
-        return value
+        return value.lower()

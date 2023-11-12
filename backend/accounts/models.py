@@ -4,9 +4,16 @@ from django.db import models
 from django.utils.translation import gettext as _
 
 
+class UsernameValidator(UnicodeUsernameValidator):
+    regex = r"^[\w.+-]+\Z"
+    message = _(
+        "Enter a valid username. This value may contain only letters, "
+        "numbers, and ./+/-/_ characters."
+    )
+
 class User(AbstractUser):
     # email = models.EmailField(_('email address'), unique=True)
-    username_validator = UnicodeUsernameValidator()
+    username_validator = UsernameValidator()
     first_name = None
     last_name = None
     username = models.CharField(
@@ -15,7 +22,7 @@ class User(AbstractUser):
         null=False,
         unique=True, 
         help_text=_(
-            "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+            "Required. 150 characters or fewer. Letters, digits and ./+/-/_ only."
         ),
         validators=[username_validator],
         error_messages={
