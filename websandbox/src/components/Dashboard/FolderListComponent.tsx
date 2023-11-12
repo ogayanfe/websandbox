@@ -49,7 +49,7 @@ function FolderListElementComponent({ info, onDelete }: FolderListElementCompone
     }
   });
   return (
-    <div className="relative p-z3 rounded-md h-44 bg-gray-100 dark:bg-[RGB(29,_29,_29)] flex-col first-letter:shadow-xl flex">
+    <div className="relative rounded-md h-44 bg-gray-100 dark:bg-[RGB(29,_29,_29)] flex-col first-letter:shadow-xl flex">
       <div className="flex-grow text-grow flex items-center justify-center">
         <FolderIcon sx={{ fontSize: "90px" }} />
       </div>
@@ -80,7 +80,7 @@ function CreateSandboxElementComponent() {
   return (
     <Link
       to="./create"
-      className="p-z3 rounded-md border-gray-500 dark:border-gray-300 h-44 border-2 flex-col first-letter:shadow-xl flex border-dashed"
+      className="rounded-md border-gray-500 dark:border-gray-300 h-44 border-2 flex-col first-letter:shadow-xl flex border-dashed"
     >
       <div className="flex-grow text-grow flex items-center justify-center">
         <AddRoundedIcon sx={{ fontSize: "90px" }} />
@@ -116,7 +116,7 @@ function FolderListComponent() {
           Successfully Deleted from sandbox
         </Alert>
       )}
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 p-5 gap-6 sm:px-20">
+      <div className="grid grid-cols-1 xm:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 p-5 gap-6 sm:px-20">
         <CreateSandboxElementComponent />
         {data.map((p) => (
           <FolderListElementComponent

@@ -21,25 +21,36 @@ export default function DashboardHeader() {
     <div className="W-full p-2 px-4 text-lg">
       <nav className="flex w-fill items-center justify-between">
         <div className="text-gray-900 dark:text-gray-200 flex items-center gap-4">
-          <span className="flex items-center scale-150">
-            <iconify-icon icon="teenyicons:box-outline"></iconify-icon>
-          </span>
+          <Tooltip title="Logo">
+            <span className="flex items-center scale-150">
+              <iconify-icon icon="teenyicons:box-outline"></iconify-icon>
+            </span>
+          </Tooltip>
           <h1 className="text-2xl italic font-bold">
-            <Link to="/">WebSandbox</Link>
+            <Link to="/" className="hidden xxm:inline-block">
+              WebSandbox
+            </Link>
+            <div className="xxm:hidden" aria-hidden>
+              <Tooltip title="Websandbox">
+                <Link to="/">WSb</Link>
+              </Tooltip>
+            </div>
           </h1>
         </div>
-
         <div className="flex items-center gap-2">
-          <Button
-            component={Link}
-            variant="contained"
-            color="primary"
-            size="small"
-            to={authContext?.authenticated() ? "/logout" : "/login"}
-            startIcon={authContext?.authenticated() ? <LogoutIcon /> : <LoginIcon />}
-          >
-            {authContext?.authenticated() ? "Logout" : "Login"}
-          </Button>
+          <div className="hidden xm:inline-block">
+            <Button
+              component={Link}
+              variant="contained"
+              color="primary"
+              size="small"
+              to={authContext?.authenticated() ? "/logout" : "/login"}
+              startIcon={authContext?.authenticated() ? <LogoutIcon /> : <LoginIcon />}
+            >
+              {authContext?.authenticated() ? "Logout" : "Login"}
+            </Button>
+          </div>
+
           <Tooltip
             title={themeContext?.darkTheme ? "Switch to light theme" : "Switch to dark Theme"}
           >
@@ -70,6 +81,21 @@ export default function DashboardHeader() {
               {authContext?.user?.username[0].toUpperCase()}
             </Avatar>
           </Tooltip>
+          <div className="xm:hidden" aria-hidden>
+            <Tooltip title={authContext?.authenticated() ? "Logout" : "Login"}>
+              <IconButton
+                component={Link}
+                target="_blank"
+                to={authContext?.authenticated() ? "/Logout" : "/login"}
+                className="flex items-center"
+              >
+                <span className="fixed left-[-1000000000000px]">
+                  {authContext?.authenticated() ? "Logout" : "Login"}
+                </span>
+                {authContext?.authenticated() ? <LogoutIcon /> : <LoginIcon />}
+              </IconButton>
+            </Tooltip>
+          </div>
         </div>
       </nav>
     </div>
