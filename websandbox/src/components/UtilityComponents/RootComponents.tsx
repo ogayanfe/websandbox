@@ -1,7 +1,7 @@
 import { Outlet, useLoaderData } from "react-router-dom";
-import DashboardHeader from "../UtilityComponents/Header";
+import DashboardHeader from "./Header";
 import { clearAuthTokens, getApiClient, UserType } from "../../utils/authutils";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import getAuthContext from "../../contexts/authContext";
 
 export async function baseRouteLoader() {
@@ -21,7 +21,16 @@ async function getUserProfileData() {
   return response.data;
 }
 
-export default function DashboardRoot({ children }: { children?: React.ReactNode }) {
+function BaseRootComponent({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="dark:bg-[RGB(14,_14,_14)] w-screen h-screen text-main flex flex-col">
+      <DashboardHeader />
+      <div className="flex-grow overflow-y-auto w-full">{children}</div>
+    </div>
+  );
+}
+
+export function RootComponent() {
   const data = useLoaderData() as UserType;
   const authContext = getAuthContext();
 
@@ -29,13 +38,9 @@ export default function DashboardRoot({ children }: { children?: React.ReactNode
     authContext?.updateUserInfo(data);
   });
 
-  return (
-    <div className="dark:bg-[RGB(14,_14,_14)] w-screen h-screen text-main flex flex-col">
-      <DashboardHeader />
-      <div className="flex-grow overflow-y-auto w-full">
-        {children}
-        <Outlet />
-      </div>
-    </div>
-  );
+  return <BaseRootComponent>{<Outlet />}</BaseRootComponent>;
+}
+
+export function ErrorComponentContainer({ children }: { children: React.ReactNode }) {
+  return <BaseRootComponent>{children}</BaseRootComponent>;
 }

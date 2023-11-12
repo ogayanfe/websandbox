@@ -6,7 +6,7 @@ import LaunchIcon from "@mui/icons-material/Launch";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
 import { getApiClient } from "../../utils/authutils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Alert from "@mui/material/Alert";
 import CloseIcon from "@mui/icons-material/Close";
 import useAuthContext from "../../contexts/authContext";
@@ -42,10 +42,12 @@ interface FolderListElementComponentType {
 function FolderListElementComponent({ info, onDelete }: FolderListElementComponentType) {
   const authContext = useAuthContext();
   const navigate = useNavigate();
-  if (authContext !== null && authContext.user === null) {
-    navigate("/login");
-  }
 
+  useEffect(() => {
+    if (authContext !== null && authContext.user === null) {
+      navigate("/login");
+    }
+  });
   return (
     <div className="relative p-z3 rounded-md h-44 bg-gray-100 dark:bg-[RGB(29,_29,_29)] flex-col first-letter:shadow-xl flex">
       <div className="flex-grow text-grow flex items-center justify-center">
