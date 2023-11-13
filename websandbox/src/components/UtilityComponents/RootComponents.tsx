@@ -1,4 +1,4 @@
-import { Outlet, useLoaderData } from "react-router-dom";
+import { Outlet, useRouteLoaderData } from "react-router-dom";
 import DashboardHeader from "./Header";
 import { clearAuthTokens, getApiClient, UserType } from "../../utils/authutils";
 import React, { useEffect } from "react";
@@ -23,7 +23,7 @@ async function getUserProfileData() {
 
 function BaseRootComponent({ children }: { children: React.ReactNode }) {
   return (
-    <div className="dark:bg-[RGB(14,_14,_14)] w-screen h-screen text-main flex flex-col">
+    <div className="dark:bg-[rgb(14,_14,_14)] w-screen h-screen text-main flex flex-col">
       <DashboardHeader />
       <div className="flex-grow overflow-y-auto w-full">{children}</div>
     </div>
@@ -31,7 +31,7 @@ function BaseRootComponent({ children }: { children: React.ReactNode }) {
 }
 
 export function RootComponent() {
-  const data = useLoaderData() as UserType;
+  const data = useRouteLoaderData("base-route") as UserType;
   const authContext = getAuthContext();
 
   useEffect(() => {

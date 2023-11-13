@@ -68,7 +68,7 @@ export default function DashboardHeader() {
               target="_blank"
               className="flex items-center"
             >
-              <span className="fixed left-[-1000000000000px]">Open project github</span>
+              <span className="fixed left-[-1000000000000px]">Open project on github</span>
               <GitHubIcon />
             </IconButton>
           </Tooltip>

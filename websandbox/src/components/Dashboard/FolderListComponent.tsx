@@ -58,7 +58,7 @@ function FolderListElementComponent({ info, onDelete }: FolderListElementCompone
       </h3>
       <nav className="absolute flex gap-1 right-0">
         <Tooltip title="Open sandbox">
-          <IconButton to={`/@${authContext?.user?.username}/${info.title}/`} component={Link}>
+          <IconButton to={`/${authContext?.user?.username}/${info.title}/`} component={Link}>
             <LaunchIcon />
           </IconButton>
         </Tooltip>

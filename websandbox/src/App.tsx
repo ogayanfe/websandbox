@@ -13,24 +13,32 @@ import LoginProtectedRouteRoot, {
 import DashboardHome, { dashboardHomeLoader } from "./components/Dashboard/Home";
 import createSandboxAction, { CreateSandboxComponent } from "./components/Dashboard/CreateSandbox";
 import Error from "./components/UtilityComponents/Error";
+import SandboxHome, { sandboxHomeLoader } from "./components/SandboxComponents";
 
 const router = createBrowserRouter(
   createRoutesFromChildren(
-    <Route path="/" element={<RootComponent />} errorElement={<Error />} loader={baseRouteLoader}>
-      <Route path="" index element={<HomeRoute />}></Route>
-      <Route loader={redirectAuthenticatedUserRouteLoader}>
-        <Route path="login" element={<Login />} action={loginAction}></Route>
-        <Route path="signup" element={<Signup />} action={signupAction}></Route>R
-      </Route>
-      <Route />
-      <Route path="logout" element={<LogoutRoute />} />
-      <Route path="" loader={loginProtectedRouteLoader} element={<LoginProtectedRouteRoot />}>
-        <Route path="dashboard">
-          <Route path="" element={<DashboardHome />} loader={dashboardHomeLoader} />
-          <Route path="create" element={<CreateSandboxComponent />} action={createSandboxAction} />
-          <Route />
+    <Route loader={baseRouteLoader} id="base-route">
+      <Route element={<RootComponent />} errorElement={<Error />}>
+        <Route path="" index element={<HomeRoute />}></Route>
+        <Route path="logout" element={<LogoutRoute />} />
+        <Route loader={redirectAuthenticatedUserRouteLoader}>
+          <Route path="login" element={<Login />} action={loginAction}></Route>
+          <Route path="signup" element={<Signup />} action={signupAction}></Route>R
+        </Route>
+        <Route />
+        <Route loader={loginProtectedRouteLoader} element={<LoginProtectedRouteRoot />}>
+          <Route path="dashboard">
+            <Route path="" element={<DashboardHome />} loader={dashboardHomeLoader} />
+            <Route
+              path="create"
+              element={<CreateSandboxComponent />}
+              action={createSandboxAction}
+            />
+            <Route />
+          </Route>
         </Route>
       </Route>
+      <Route path=":username/:project" element={<SandboxHome />} loader={sandboxHomeLoader}></Route>
     </Route>
   )
 );
