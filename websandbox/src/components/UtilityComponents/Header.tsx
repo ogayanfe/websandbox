@@ -10,15 +10,16 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import useThemeContext from "../../contexts/themeContext";
 import LightModeIcon from "@mui/icons-material/LightMode";
 
-export default function DashboardHeader() {
+export default function DashboardHeader({ className }: { className: string }) {
   const authContext = useAuthContext();
   const themeContext = useThemeContext();
+  const _className = className ? className : "";
 
   useEffect(() => {
     document.title = "WebSandbox | Dashboard";
   }, []);
   return (
-    <div className="W-full p-2 px-4 text-lg">
+    <div className={_className + " W-full p-2 px-4 text-lg"}>
       <nav className="flex w-fill items-center justify-between">
         <div className="text-gray-900 dark:text-gray-200 flex items-center gap-4">
           <Tooltip title="Logo">
