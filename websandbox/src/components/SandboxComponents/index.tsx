@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import Header from "../UtilityComponents/Header";
 import getAuthContext from "../../contexts/authContext";
 import { UserType } from "../../utils/authutils";
+import Sidebar from "./Sidebar";
+import useSandboxContext from "../../contexts/sandboxContext";
 
 export async function sandboxHomeLoader({ params }: LoaderFunctionArgs) {
   const pattern = /^[\w.+-]+$/; // This pattern validates the username in the url
@@ -29,17 +31,19 @@ export default function SandboxHome() {
 
   return (
     <div className="flex flex-col w-screen h-screen dark:bg-[rgb(14,_14,_14)]">
-      <Header className="bg-gray-200 dark:bg-black border-b-[1px] dark:border-[#343434]" />
+      <Header className="bg-stone-100 dark:bg-black border-b-[1px] dark:border-[#343434]" />
       <div className="h-full w-full flex-grow">
         <SplitPane
           split="vertical"
           minSize={250}
-          maxSize={width / 2}
+          maxSize={width * 0.3}
           defaultSize={300}
           style={{ position: "relative" }}
         >
-          <div className="absolute top-0 w-full h-full"></div>
-          <div className="w-full h-full border-l-[1px] dark:border-[#343434]"></div>
+          <div className="absolute top-0 w-full h-full border-r-[1px] dark:border-[#343434]">
+            {<Sidebar />}
+          </div>
+          <div className="w-full h-full"></div>
         </SplitPane>
       </div>
     </div>

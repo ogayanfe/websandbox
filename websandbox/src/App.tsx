@@ -1,7 +1,7 @@
 import { createBrowserRouter, createRoutesFromChildren, Route } from "react-router-dom";
 
 import HomeRoute from "./components/HomePage";
-import LogoutRoute from "./components/AuthComponents/logout";
+import LogoutRoute from "./components/AuthComponents/Logout";
 import Login, { loginAction } from "./components/AuthComponents/Login";
 import Signup, { signupAction } from "./components/AuthComponents/Signup";
 import "./index.css";
@@ -14,6 +14,7 @@ import DashboardHome, { dashboardHomeLoader } from "./components/Dashboard/Home"
 import createSandboxAction, { CreateSandboxComponent } from "./components/Dashboard/CreateSandbox";
 import Error from "./components/UtilityComponents/Error";
 import SandboxHome, { sandboxHomeLoader } from "./components/SandboxComponents";
+import { SandboxContextProvider } from "./contexts/sandboxContext";
 
 const router = createBrowserRouter(
   createRoutesFromChildren(
@@ -38,7 +39,15 @@ const router = createBrowserRouter(
           </Route>
         </Route>
       </Route>
-      <Route path=":username/:project" element={<SandboxHome />} loader={sandboxHomeLoader}></Route>
+      <Route
+        path=":username/:project"
+        element={
+          <SandboxContextProvider>
+            <SandboxHome />
+          </SandboxContextProvider>
+        }
+        loader={sandboxHomeLoader}
+      ></Route>
     </Route>
   )
 );
