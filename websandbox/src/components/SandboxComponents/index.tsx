@@ -35,9 +35,9 @@ export default function SandboxHome() {
       <div className="h-full w-full flex-grow">
         <SplitPane
           split="vertical"
-          minSize={250}
+          minSize={200}
           maxSize={width * 0.3}
-          defaultSize={300}
+          defaultSize={250}
           style={{ position: "relative" }}
         >
           <div className="absolute top-0 w-full h-full border-r-[1px] dark:border-[#343434]">

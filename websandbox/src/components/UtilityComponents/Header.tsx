@@ -9,6 +9,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LogoutIcon from "@mui/icons-material/Logout";
 import useThemeContext from "../../contexts/themeContext";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import { Icon } from "@iconify/react";
 
 export default function DashboardHeader({ className }: { className: string }) {
   const authContext = useAuthContext();
@@ -24,7 +25,7 @@ export default function DashboardHeader({ className }: { className: string }) {
         <div className="text-gray-900 dark:text-gray-200 flex items-center gap-4">
           <Tooltip title="Logo">
             <span className="flex items-center scale-150">
-              <iconify-icon icon="teenyicons:box-outline"></iconify-icon>
+              <Icon icon="teenyicons:box-outline"></Icon>
             </span>
           </Tooltip>
           <h1 className="text-2xl italic font-bold">

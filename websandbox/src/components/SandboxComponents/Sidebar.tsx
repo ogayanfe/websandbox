@@ -17,10 +17,10 @@ function SidebarHeader() {
         <Tooltip title={sandboxContext?.visibleSidebar ? "Close Sidebar" : "Open Sidebar"}>
           <MenuOpenIcon />
         </Tooltip>
-        <p className="text-lg capitalize font-bold">{params.project}</p>
+        <p className="text-lg capitalize font-bold text-blue-600">{params.project}</p>
       </div>
       <TextField
-        sx={{ width: "100%", height: "1rem", fontSize: "normal" }}
+        sx={{ width: "100%", height: "1rem", fontStyle: "normal" }}
         size="small"
         placeholder="Go to file"
         value={sandboxContext.searchTerm}
@@ -43,8 +43,11 @@ export default function Sidebar() {
   return (
     <div className="flex flex-col w-full overflow-hidden px-3">
       <SidebarHeader />
-      <div className="flex-grow w-full h-full mt-6">
+      <div className="flex-grow w-full h-full mt-8">
         <DirectoryTree />
+      </div>
+      <div className="bg-black absolute text-gray-200 text-center bottom-0 left-0 w-full z-10">
+        Placeholder {"{Footer}"}
       </div>
     </div>
   );

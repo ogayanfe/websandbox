@@ -19,6 +19,8 @@ interface SandboxContextType {
   updateTreeNode: (id: string, name: string) => void;
   createTreeNode: (parentId: string | null, type: "leaf" | "internal") => null;
   moveTreeNode: (ids: string[], parentId: string | null) => void;
+  selectedFileId: string;
+  selectFileId: (nodeId: string) => void;
 }
 
 const sandboxContext = createContext<SandboxContextType>({
@@ -37,12 +39,15 @@ const sandboxContext = createContext<SandboxContextType>({
   updateTreeNode: console.log,
   createTreeNode: () => null,
   moveTreeNode: console.log,
+  selectedFileId: "",
+  selectFileId: console.log,
 });
 
 function SandboxContextProvider({ children }: { children: React.ReactNode }) {
   const [visibleSidebar, setVisibleSidebar] = useState<Boolean>(true);
   const [treeData, setTreeData] = useState<TreeDataType>(data);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [selectedFileId, setSelectedFileId] = useState<string>("");
 
   function deleteTreeNode(ids: string[]) {
     const treeCopy = { ...treeData };
@@ -88,6 +93,8 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
     updateTreeNode,
     createTreeNode,
     moveTreeNode,
+    selectedFileId,
+    selectFileId: (id: string) => setSelectedFileId(id),
   };
 
   return <sandboxContext.Provider value={context}>{children}</sandboxContext.Provider>;

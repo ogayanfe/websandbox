@@ -1,3 +1,5 @@
+import { Icon } from "@iconify/react";
+
 interface TreeNodeType {
   id: string;
   name: string;
@@ -43,6 +45,19 @@ function addNodeAttributes(name: string, id: string, type: "internal" | "leaf") 
   const output: TreeNodeType = { id: id, name: name };
   if (type === "internal") output.children = [];
   return output;
+}
+
+function getFileIcon(name: string): React.ReactNode {
+  if (name.endsWith(".js") || name.endsWith(".jsx")) return <Icon icon="logos:javascript" />;
+  if (name.endsWith(".css")) return <Icon icon="vscode-icons:file-type-css" />;
+  if (name.endsWith(".html")) return <Icon icon="logos:html-5" />;
+  if (name.endsWith(".json")) return <Icon icon="vscode-icons:file-type-json" />;
+  if (name.endsWith(".md")) return <Icon icon="octicon:markdown-16" />;
+  if (name.endsWith(".txt")) return <Icon icon="mdi:text" />;
+  if (name.endsWith(".svg")) return <Icon icon="carbon:svg" />;
+  if (name.endsWith(".ico")) return <Icon icon="carbon:svg" />;
+  if (name.endsWith(".rtf")) return <Icon icon="grommet-icons:document-rtf" />;
+  return <Icon icon="solar:file-line-duotone" />;
 }
 
 function createNode(
@@ -102,9 +117,11 @@ const data: TreeDataType = {
     },
     { id: "3", name: "package.json" },
     { id: "4", name: "README.md" },
+    { id: "5", name: "random.txt" },
+    { id: "6", name: "svg.svg" },
   ],
 };
 
 export type { TreeNodeType, TreeDataType };
-export { deleteNode, updateNode, createNode, getNode, moveNode };
+export { deleteNode, updateNode, createNode, getNode, moveNode, getFileIcon };
 export default data;
