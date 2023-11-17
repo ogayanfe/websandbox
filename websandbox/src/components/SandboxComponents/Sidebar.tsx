@@ -5,6 +5,7 @@ import SearchOutlined from "@mui/icons-material/SearchOutlined";
 import { useParams } from "react-router-dom";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import useSandboxContext from "../../contexts/sandboxContext";
+import DirectoryTree from "./DirectoryTree";
 
 function SidebarHeader() {
   const params = useParams();
@@ -16,12 +17,14 @@ function SidebarHeader() {
         <Tooltip title={sandboxContext?.visibleSidebar ? "Close Sidebar" : "Open Sidebar"}>
           <MenuOpenIcon />
         </Tooltip>
-        <p className="text-lg lowercase font-bold">{params.project}</p>
+        <p className="text-lg capitalize font-bold">{params.project}</p>
       </div>
       <TextField
         sx={{ width: "100%", height: "1rem", fontSize: "normal" }}
         size="small"
         placeholder="Go to file"
+        value={sandboxContext.searchTerm}
+        onChange={sandboxContext.updateSearchTerm}
         InputProps={{
           "aria-label": "Search",
           sx: { transform: "scaleY(.85)", fontStyle: "normal" },
@@ -38,6 +41,11 @@ function SidebarHeader() {
 
 export default function Sidebar() {
   return (
-    <div className="flex flex-col w-full h-full overflow-hidden px-3">{<SidebarHeader />}</div>
+    <div className="flex flex-col w-full overflow-hidden px-3">
+      <SidebarHeader />
+      <div className="flex-grow w-full h-full mt-6">
+        <DirectoryTree />
+      </div>
+    </div>
   );
 }
