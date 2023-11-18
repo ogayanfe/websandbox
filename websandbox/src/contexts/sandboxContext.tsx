@@ -5,6 +5,7 @@ import data, {
   deleteNode,
   moveNode,
   updateNode,
+  getNodePath,
 } from "../utils/sandboxUtils";
 
 interface SandboxContextType {
@@ -21,6 +22,8 @@ interface SandboxContextType {
   moveTreeNode: (ids: string[], parentId: string | null) => void;
   selectedFileId: string;
   selectFileId: (nodeId: string) => void;
+  getSelectedPath: () => string[] | null;
+  getNodePath: (id: string | null) => string[] | null;
 }
 
 const sandboxContext = createContext<SandboxContextType>({
@@ -41,6 +44,8 @@ const sandboxContext = createContext<SandboxContextType>({
   moveTreeNode: console.log,
   selectedFileId: "",
   selectFileId: console.log,
+  getSelectedPath: () => null,
+  getNodePath: () => null,
 });
 
 function SandboxContextProvider({ children }: { children: React.ReactNode }) {
@@ -53,6 +58,7 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
     const treeCopy = { ...treeData };
     for (let id of ids) {
       deleteNode(id, treeCopy);
+      if (selectedFileId === id) setSelectedFileId("");
     }
     setTreeData(treeCopy);
   }
@@ -61,6 +67,7 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
     const treeCopy = { ...treeData };
     updateNode(id, name, treeCopy);
     setTreeData(treeCopy);
+    setSelectedFileId(id);
   }
 
   function createTreeNode(parentId: string | null, type: "leaf" | "internal") {
@@ -94,6 +101,8 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
     createTreeNode,
     moveTreeNode,
     selectedFileId,
+    getSelectedPath: () => getNodePath(selectedFileId, treeData),
+    getNodePath: (id: string | null) => getNodePath(id, treeData),
     selectFileId: (id: string) => setSelectedFileId(id),
   };
 

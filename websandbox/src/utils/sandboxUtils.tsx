@@ -97,6 +97,21 @@ function updateNode(id: string, newName: string, rootNode: NodeType) {
   }
 }
 
+function getNodePath(id: string | null, node: NodeType): string[] | null {
+  function _(id: string | null, node: NodeType, path: string[]): string[] | null {
+    if (id === null) return [node.name];
+    if (node.id === id) return [...path, node.name];
+    if (node.children) {
+      for (let subNode of node.children) {
+        const _path = _(id, subNode, [...path, node.name]);
+        if (_path !== null) return _path;
+      }
+    }
+    return null;
+  }
+  return _(id, node, []);
+}
+
 const data: TreeDataType = {
   id: null,
   name: "Root",
@@ -123,5 +138,5 @@ const data: TreeDataType = {
 };
 
 export type { TreeNodeType, TreeDataType };
-export { deleteNode, updateNode, createNode, getNode, moveNode, getFileIcon };
+export { deleteNode, updateNode, createNode, getNode, moveNode, getFileIcon, getNodePath };
 export default data;

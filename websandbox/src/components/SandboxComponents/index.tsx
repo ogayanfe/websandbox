@@ -6,6 +6,7 @@ import getAuthContext from "../../contexts/authContext";
 import { UserType } from "../../utils/authutils";
 import Sidebar from "./Sidebar";
 import useSandboxContext from "../../contexts/sandboxContext";
+import NoFileOpenComponent, { FileContentComponent } from "./FileContent";
 
 export async function sandboxHomeLoader({ params }: LoaderFunctionArgs) {
   const pattern = /^[\w.+-]+$/; // This pattern validates the username in the url
@@ -22,6 +23,7 @@ export default function SandboxHome() {
   };
   const data = useRouteLoaderData("base-route") as UserType;
   const authContext = getAuthContext();
+  const sandboxContext = useSandboxContext();
 
   useEffect(() => {
     window.addEventListener("resize", onWidthChange);
@@ -43,7 +45,9 @@ export default function SandboxHome() {
           <div className="absolute top-0 w-full h-full border-r-[1px] dark:border-[#343434]">
             {<Sidebar />}
           </div>
-          <div className="w-full h-full"></div>
+          <div className="w-full h-full">
+            {sandboxContext.selectedFileId ? <FileContentComponent /> : <NoFileOpenComponent />}
+          </div>
         </SplitPane>
       </div>
     </div>
