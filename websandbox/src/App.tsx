@@ -18,8 +18,8 @@ import { SandboxContextProvider } from "./contexts/sandboxContext";
 
 const router = createBrowserRouter(
   createRoutesFromChildren(
-    <Route loader={baseRouteLoader} id="base-route">
-      <Route element={<RootComponent />} errorElement={<Error />}>
+    <Route loader={baseRouteLoader} id="base-route" errorElement={<Error />}>
+      <Route element={<RootComponent />}>
         <Route path="" index element={<HomeRoute />}></Route>
         <Route path="logout" element={<LogoutRoute />} />
         <Route loader={redirectAuthenticatedUserRouteLoader}>

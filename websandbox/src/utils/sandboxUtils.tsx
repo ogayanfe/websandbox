@@ -1,14 +1,24 @@
 import { Icon } from "@iconify/react";
 
-interface TreeNodeType {
+interface FolderNodeType {
   id: string;
   name: string;
-  children?: TreeNodeType[];
+  content?: undefined;
+  children: (FileNodeType | FolderNodeType)[];
 }
 
-interface TreeDataType {
+interface FileNodeType {
+  id: string;
   name: string;
+  content: string;
+  children?: undefined;
+}
+
+type TreeNodeType = FileNodeType | FolderNodeType;
+
+interface TreeDataType {
   id: null;
+  name: string;
   children: TreeNodeType[];
 }
 
@@ -42,9 +52,10 @@ function moveNode(nodeId: string, parentId: string | null, tree: NodeType) {
 }
 
 function addNodeAttributes(name: string, id: string, type: "internal" | "leaf") {
-  const output: TreeNodeType = { id: id, name: name };
-  if (type === "internal") output.children = [];
-  return output;
+  if (type === "internal") {
+    return { id: id, name: name, children: [] };
+  }
+  return { id: id, name: name, content: "" };
 }
 
 function getFileIcon(name: string): React.ReactNode {
@@ -97,6 +108,20 @@ function updateNode(id: string, newName: string, rootNode: NodeType) {
   }
 }
 
+function updateFileContent(id: string, newContent: string, rootNode: NodeType) {
+  if (!rootNode.children) return;
+  rootNode.children = rootNode.children.map((node) => {
+    if (node.id === id && node.content !== undefined) {
+      return { ...node, content: newContent };
+    }
+    return { ...node };
+  });
+
+  for (let node of rootNode.children) {
+    updateFileContent(id, newContent, node);
+  }
+}
+
 function getNodePath(id: string | null, node: NodeType): string[] | null {
   function _(id: string | null, node: NodeType, path: string[]): string[] | null {
     if (id === null) return [node.name];
@@ -112,6 +137,15 @@ function getNodePath(id: string | null, node: NodeType): string[] | null {
   return _(id, node, []);
 }
 
+function getFileMode(name: string): string {
+  if (name.endsWith(".js") || name.endsWith(".ts")) return "Javascript";
+  if (name.endsWith(".css")) return "css";
+  if (name.endsWith(".html") || name.endsWith(".svg")) return "html";
+  if (name.endsWith(".json")) return "json";
+  if (name.endsWith(".md")) return "markdown";
+  return "text";
+}
+
 const data: TreeDataType = {
   id: null,
   name: "Root",
@@ -119,24 +153,34 @@ const data: TreeDataType = {
     {
       id: "1",
       name: "public",
-      children: [{ id: "c1-1", name: "index.html" }],
+      children: [{ id: "c1-1", name: "index.html", content: "" }],
     },
     {
       id: "2",
       name: "src",
       children: [
-        { id: "c2-1", name: "App.js" },
-        { id: "c2-2", name: "index.js" },
-        { id: "c2-3", name: "styles.css" },
+        { id: "c2-1", name: "App.js", content: "" },
+        { id: "c2-2", name: "index.js", content: "" },
+        { id: "c2-3", name: "styles.css", content: "" },
       ],
     },
-    { id: "3", name: "package.json" },
-    { id: "4", name: "README.md" },
-    { id: "5", name: "random.txt" },
-    { id: "6", name: "svg.svg" },
+    { id: "3", name: "package.json", content: "" },
+    { id: "4", name: "README.md", content: "" },
+    { id: "5", name: "random.txt", content: "" },
+    { id: "6", name: "svg.svg", content: "" },
   ],
 };
 
-export type { TreeNodeType, TreeDataType };
-export { deleteNode, updateNode, createNode, getNode, moveNode, getFileIcon, getNodePath };
+export type { TreeNodeType, TreeDataType, FileNodeType, FolderNodeType, NodeType };
+export {
+  deleteNode,
+  updateNode,
+  createNode,
+  getFileMode,
+  getNode,
+  moveNode,
+  getFileIcon,
+  getNodePath,
+  updateFileContent,
+};
 export default data;

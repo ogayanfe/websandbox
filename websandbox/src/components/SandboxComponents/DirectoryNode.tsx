@@ -46,7 +46,7 @@ export default function DirectoryNode({
               autoFocus
             />
           ) : (
-            <span className="text-xm font-semibold dark:font-light">{node.data.name}</span>
+            <span className="text-sm font-semibold dark:font-light">{node.data.name}</span>
           )}
         </span>
       </div>

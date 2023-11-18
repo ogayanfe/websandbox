@@ -3,6 +3,8 @@ import BreadCrumbs from "@mui/material/Breadcrumbs";
 import { Button } from "@mui/material";
 import useSandboxContext from "../../contexts/sandboxContext";
 import { getFileIcon } from "../../utils/sandboxUtils";
+import CodeEditor from "./CodeEditor";
+import useAuthContext from "../../contexts/authContext";
 
 export default function NoFileOpenComponent() {
   return (
@@ -19,6 +21,7 @@ export default function NoFileOpenComponent() {
 function FileContentHeaderComponent() {
   const sandboxContext = useSandboxContext();
   const selectedPath = sandboxContext.getSelectedPath();
+  const authContext = useAuthContext();
 
   return (
     <header className="flex w-full px-4 p-1.5 items-center justify-between">
@@ -39,6 +42,7 @@ function FileContentHeaderComponent() {
       </BreadCrumbs>
       <div className="flex items-center justify-center gap-2">
         <Button
+          disabled={!authContext?.authenticated()}
           startIcon={<Icon icon="ion:save-sharp" />}
           size="small"
           sx={{ paddingX: "1rem" }}
@@ -54,8 +58,11 @@ function FileContentHeaderComponent() {
 
 export function FileContentComponent() {
   return (
-    <div className="flex flex-col w-full h-full">
+    <div className="flex flex-col w-full h-full ml-2">
       <FileContentHeaderComponent />
+      <div className="flex-grow w-full h-full">
+        <CodeEditor />
+      </div>
     </div>
   );
 }

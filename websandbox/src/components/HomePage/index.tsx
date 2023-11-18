@@ -27,6 +27,7 @@ export default function HomeRoute() {
         variant="contained"
         color="secondary"
         component={Link}
+        target="_blank"
         to="https://github.com/ogayanfe/websandbox"
       >
         Open Project Github

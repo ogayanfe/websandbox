@@ -21,7 +21,7 @@ export default function DirectoryTree() {
       data={sandboxContext.treeData.children}
       width="100%"
       indent={13}
-      height={window.innerHeight - 190}
+      height={windowHeight - 190}
       onSelect={(node) => {
         for (let n of node) {
           if (n.isLeaf) sandboxContext.selectFileId(n.id);

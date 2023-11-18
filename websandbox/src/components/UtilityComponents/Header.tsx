@@ -11,7 +11,7 @@ import useThemeContext from "../../contexts/themeContext";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { Icon } from "@iconify/react";
 
-export default function DashboardHeader({ className }: { className: string }) {
+export default function DashboardHeader({ className }: { className?: string }) {
   const authContext = useAuthContext();
   const themeContext = useThemeContext();
   const _className = className ? className : "";
