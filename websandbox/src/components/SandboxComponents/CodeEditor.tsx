@@ -32,8 +32,16 @@ export default function CodeEditor() {
       height="100%"
       showPrintMargin={true}
       showGutter={true}
+      placeholder="github.com/ogayanfe/websandbox"
       tabSize={2}
-      setOptions={{ useWorker: false }}
+      setOptions={{
+        useWorker: false,
+        enableBasicAutocompletion: true,
+        enableLiveAutocompletion: true,
+        enableSnippets: true,
+        showLineNumbers: true,
+        tabSize: 2,
+      }}
     />
   );
 }
