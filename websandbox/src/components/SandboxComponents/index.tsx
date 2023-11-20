@@ -1,12 +1,13 @@
 import { useRouteLoaderData, LoaderFunctionArgs } from "react-router-dom";
-import SplitPane from "react-split-pane";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Header from "../UtilityComponents/Header";
 import getAuthContext from "../../contexts/authContext";
 import { UserType } from "../../utils/authutils";
 import Sidebar from "./Sidebar";
 import useSandboxContext from "../../contexts/sandboxContext";
-import NoFileOpenComponent, { FileContentComponent } from "./FileContent";
+import { FileContentComponent } from "./FileContent";
+import SplitPane from "split-pane-react";
+import "split-pane-react/esm/themes/default.css";
 
 export async function sandboxHomeLoader({ params }: LoaderFunctionArgs) {
   const pattern = /^[\w.+-]+$/; // This pattern validates the username in the url
@@ -17,39 +18,43 @@ export async function sandboxHomeLoader({ params }: LoaderFunctionArgs) {
 }
 
 export default function SandboxHome() {
-  const [width, setScreenWidth] = useState(window.innerWidth);
-  const onWidthChange = () => {
-    setScreenWidth(window.innerWidth);
-  };
   const data = useRouteLoaderData("base-route") as UserType;
+  const [sizes, setSizes] = useState([250, "auto"]);
   const authContext = getAuthContext();
   const sandboxContext = useSandboxContext();
 
   useEffect(() => {
-    window.addEventListener("resize", onWidthChange);
     authContext?.updateUserInfo(data);
-    return () => window.removeEventListener("resize", onWidthChange);
   }, []);
+
+  useEffect(() => {
+    if (sandboxContext.visibleSidebar) {
+      setSizes([250, "auto"]);
+      return;
+    }
+    setSizes([0, "auto"]);
+  }, [sandboxContext.visibleSidebar]);
 
   return (
     <div className="flex flex-col w-screen h-screen dark:bg-[rgb(14,_14,_14)]">
-      <Header className="bg-stone-100 dark:bg-black border-b-[1px] dark:border-[#343434]" />
+      <Header className="border-b-[1px] dark:border-[#343434]" />
       <div className="h-full w-full flex-grow">
         <SplitPane
           split="vertical"
-          minSize={200}
-          maxSize={width * 0.3}
-          defaultSize={250}
-          style={{ position: "relative" }}
+          sizes={sizes}
+          onChange={([width, height]: number[]) => {
+            width < 400 && setSizes([width, height]);
+          }}
+          //@ts-ignore
+          allowResize={sandboxContext.visibleSidebar}
         >
-          <div className="absolute top-0 w-full h-full border-r-[1px] dark:border-[#343434]">
+          <div className={`absolute w-full top-0 h-full border-r-[1px] dark:border-[#343434]`}>
             {<Sidebar />}
           </div>
-          <div className="w-full h-full">
-            {sandboxContext.selectedFileId ? <FileContentComponent /> : <NoFileOpenComponent />}
-          </div>
+          <FileContentComponent />
         </SplitPane>
       </div>
+      <footer className="bg-[rgb(52,52,52)]">Footer</footer>
     </div>
   );
 }

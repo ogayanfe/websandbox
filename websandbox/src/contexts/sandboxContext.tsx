@@ -52,7 +52,7 @@ const sandboxContext = createContext<SandboxContextType>({
 });
 
 function SandboxContextProvider({ children }: { children: React.ReactNode }) {
-  const [visibleSidebar, setVisibleSidebar] = useState<Boolean>(true);
+  const [visibleSidebar, setVisibleSidebar] = useState<Boolean>(window.innerWidth > 800);
   const [treeData, setTreeData] = useState<TreeDataType>(data);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedFileId, setSelectedFileId] = useState<string>("");
@@ -99,7 +99,10 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
     visibleSidebar,
     showSidebar: () => setVisibleSidebar(true),
     hideSidebar: () => setVisibleSidebar(false),
-    toggleSidebar: () => setVisibleSidebar((p) => !p),
+    toggleSidebar: () => {
+      console.log("Hello World");
+      setVisibleSidebar((p) => !p);
+    },
     updateSearchTerm: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setSearchTerm(e.target.value);
     },

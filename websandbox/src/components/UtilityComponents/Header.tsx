@@ -29,12 +29,15 @@ export default function DashboardHeader({ className }: { className?: string }) {
             </span>
           </Tooltip>
           <h1 className="text-2xl italic font-bold">
-            <Link to="/" className="hidden xxm:inline-block">
+            <Link
+              to={authContext?.authenticated ? "/dashboard" : "/"}
+              className="hidden xxm:inline-block"
+            >
               WebSandbox
             </Link>
             <div className="xxm:hidden" aria-hidden>
               <Tooltip title="Websandbox">
-                <Link to="/">WSb</Link>
+                <Link to={authContext?.authenticated ? "/dashboard" : "/"}>WSb</Link>
               </Tooltip>
             </div>
           </h1>

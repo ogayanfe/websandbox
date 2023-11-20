@@ -6,12 +6,12 @@ import { useState, useEffect } from "react";
 /* This is the simplest tree */
 export default function DirectoryTree() {
   const sandboxContext = useSandboxContext();
-  const [windowHeight, setWindowHeight] = useState(0);
+  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
 
-  function updateHeight() {
-    setWindowHeight(window.innerHeight);
-  }
   useEffect(() => {
+    function updateHeight() {
+      setWindowHeight(window.innerHeight);
+    }
     window.addEventListener("resize", updateHeight);
     return () => window.removeEventListener("resize", updateHeight);
   }, []);
