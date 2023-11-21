@@ -1,9 +1,9 @@
-import { IconButton, Button, Avatar } from "@mui/material";
+import { IconButton, Button, Avatar, LinearProgress } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import useAuthContext from "../../contexts/authContext";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigation } from "react-router-dom";
 import LoginIcon from "@mui/icons-material/Login";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -15,12 +15,16 @@ export default function DashboardHeader({ className }: { className?: string }) {
   const authContext = useAuthContext();
   const themeContext = useThemeContext();
   const _className = className ? className : "";
+  const navigation = useNavigation();
 
   useEffect(() => {
     document.title = "WebSandbox | Dashboard";
   }, []);
   return (
     <div className={_className + " W-full p-2 px-4 text-lg"}>
+      {(navigation.state === "submitting" || navigation.state === "loading") && (
+        <LinearProgress sx={{ position: "fixed", width: "100%", left: 0, top: 0 }} />
+      )}
       <nav className="flex w-fill items-center justify-between">
         <div className="text-gray-900 dark:text-gray-200 flex items-center gap-4">
           <Tooltip title="Logo">
