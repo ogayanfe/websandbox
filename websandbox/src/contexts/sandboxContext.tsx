@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import data, {
+import tempData, {
   TreeDataType,
   createNode,
   deleteNode,
@@ -22,6 +22,7 @@ interface SandboxContextType {
   createTreeNode: (parentId: string | null, type: "leaf" | "internal") => null;
   moveTreeNode: (ids: string[], parentId: string | null) => void;
   selectedFileId: string;
+  updateTreeData: (d: TreeDataType) => void;
   selectFileId: (nodeId: string) => void;
   getSelectedPath: () => string[] | null;
   getNodePath: (id: string | null) => string[] | null;
@@ -38,6 +39,7 @@ const sandboxContext = createContext<SandboxContextType>({
     name: "",
     children: [],
   },
+  updateTreeData: console.log,
   updateSearchTerm: console.log,
   searchTerm: "",
   deleteTreeNode: console.log,
@@ -53,7 +55,7 @@ const sandboxContext = createContext<SandboxContextType>({
 
 function SandboxContextProvider({ children }: { children: React.ReactNode }) {
   const [visibleSidebar, setVisibleSidebar] = useState<Boolean>(window.innerWidth > 800);
-  const [treeData, setTreeData] = useState<TreeDataType>(data);
+  const [treeData, setTreeData] = useState<TreeDataType>(tempData);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedFileId, setSelectedFileId] = useState<string>("");
 
@@ -107,6 +109,7 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
       setSearchTerm(e.target.value);
     },
     treeData: treeData,
+    updateTreeData: (data: TreeDataType) => setTreeData(data),
     searchTerm,
     deleteTreeNode,
     updateTreeNode,

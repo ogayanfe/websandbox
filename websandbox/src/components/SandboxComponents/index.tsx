@@ -1,30 +1,41 @@
-import { useRouteLoaderData, LoaderFunctionArgs } from "react-router-dom";
+import { useRouteLoaderData, LoaderFunctionArgs, useLoaderData } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Header from "../UtilityComponents/Header";
 import getAuthContext from "../../contexts/authContext";
-import { UserType } from "../../utils/authutils";
+import { UserType, getApiClient } from "../../utils/authutils";
 import Sidebar from "./Sidebar";
 import useSandboxContext from "../../contexts/sandboxContext";
 import { FileContentComponent } from "./FileContent";
 import SplitPane from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
+import { TreeDataType, TreeNodeType } from "../../utils/sandboxUtils";
 
 export async function sandboxHomeLoader({ params }: LoaderFunctionArgs) {
-  const pattern = /^[\w.+-]+$/; // This pattern validates the username in the url
-  if (!params.username?.match(pattern) && !params.project?.match(pattern)) {
+  const url = `sandbox/${params.username}/${params.project}`;
+  const apiClient = getApiClient();
+  try {
+    const response = await apiClient.get(url);
+    return response.data;
+  } catch (error) {
     throw new Response("Not Found", { status: 404 });
   }
-  return null;
 }
 
 export default function SandboxHome() {
-  const data = useRouteLoaderData("base-route") as UserType;
+  const userData = useRouteLoaderData("base-route") as UserType;
   const [sizes, setSizes] = useState([250, "auto"]);
   const authContext = getAuthContext();
   const sandboxContext = useSandboxContext();
+  const data = useLoaderData() as { files: TreeNodeType[] };
+  const treeData: TreeDataType = {
+    id: null,
+    name: "Root",
+    children: data.files,
+  };
 
   useEffect(() => {
-    authContext?.updateUserInfo(data);
+    authContext?.updateUserInfo(userData);
+    sandboxContext.updateTreeData(treeData);
   }, []);
 
   useEffect(() => {

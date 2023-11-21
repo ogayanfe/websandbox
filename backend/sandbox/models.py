@@ -21,12 +21,15 @@ class Sandbox(models.Model):
     )
     created = models.DateTimeField(auto_now_add=True)
     update = models.DateTimeField(auto_now=True)
-    files = models.JSONField(null=True)
+    files = models.JSONField(default=list)
 
     class Meta: 
         unique_together = ["owner", "title"]
 
-    def clean_fields(self, exclude: Collection[str] | None = ...) -> None:
+    def clean_fields(self, exclude: Collection[str] | None ) -> None:
         if Sandbox.objects.filter(title__iexact=self.owner): 
             raise ValidationError("Sandbox Title Must Be Unique")
         return super().clean_fields(exclude)
+    
+    def __str__(self): 
+        return f'{self.owner.username} / {self.title}'

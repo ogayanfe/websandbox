@@ -146,29 +146,10 @@ function getFileMode(name: string): string {
   return "text";
 }
 
-const data: TreeDataType = {
+const tempData: TreeDataType = {
   id: null,
   name: "Root",
-  children: [
-    {
-      id: "1",
-      name: "public",
-      children: [{ id: "c1-1", name: "index.html", content: "" }],
-    },
-    {
-      id: "2",
-      name: "src",
-      children: [
-        { id: "c2-1", name: "App.js", content: "" },
-        { id: "c2-2", name: "index.js", content: "" },
-        { id: "c2-3", name: "styles.css", content: "" },
-      ],
-    },
-    { id: "3", name: "package.json", content: "" },
-    { id: "4", name: "README.md", content: "" },
-    { id: "5", name: "random.txt", content: "" },
-    { id: "6", name: "svg.svg", content: "" },
-  ],
+  children: [],
 };
 
 export type { TreeNodeType, TreeDataType, FileNodeType, FolderNodeType, NodeType };
@@ -183,4 +164,4 @@ export {
   getNodePath,
   updateFileContent,
 };
-export default data;
+export default tempData;

@@ -1,7 +1,9 @@
-from django.shortcuts import render
-from rest_framework.generics import ListCreateAPIView, DestroyAPIView
+from rest_framework.generics import ListCreateAPIView, DestroyAPIView, RetrieveUpdateAPIView
 from sandbox.models import Sandbox
-from sandbox.serializers import SandboxSerializer
+from sandbox.permission import IsOwnerOrReadOnly
+from sandbox.serializers import SandboxRetrieveUpdateSerializer, SandboxSerializer
+from django.shortcuts import get_object_or_404
+
 
 # Create your views here.
 class SandboxListCreateAPIView(ListCreateAPIView):
@@ -19,3 +21,15 @@ class SandboxDestroyAPIView(DestroyAPIView):
 
     def get_queryset(self):
         return Sandbox.objects.filter(owner=self.request.user)
+    
+
+class SandboxRetrieveUpdateAPIView(RetrieveUpdateAPIView): 
+    permission_classes= [IsOwnerOrReadOnly]
+    serializer_class = SandboxRetrieveUpdateSerializer
+
+    def get_object(self):
+        username = self.kwargs.get("username")
+        project = self.kwargs.get("project")
+        sandbox = get_object_or_404(Sandbox, owner__username=username, title=project)
+        return sandbox
+    

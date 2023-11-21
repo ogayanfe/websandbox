@@ -68,8 +68,8 @@ function FileContentHeaderComponent() {
           </IconButton>
         </Tooltip>
         {/* @ts-ignore */}
-        <Tooltip title={authContext?.authenticated() ? "Save Project" : "Login to save project"}>
-          <div className="md:hidden">
+        <div className="md:hidden">
+          <Tooltip title={authContext?.authenticated() ? "Save Project" : "Login to save project"}>
             <IconButton
               aria-label="Save project"
               disabled={!authContext?.authenticated()}
@@ -77,8 +77,10 @@ function FileContentHeaderComponent() {
             >
               <Icon icon="ion:save-outline" />
             </IconButton>
-          </div>
-          <div className="max-md:hidden">
+          </Tooltip>
+        </div>
+        <div className="max-md:hidden">
+          <Tooltip title={authContext?.authenticated() ? "Save Project" : "Login to save project"}>
             <Button
               disabled={!authContext?.authenticated()}
               startIcon={<Icon icon="ion:save-sharp" />}
@@ -89,8 +91,8 @@ function FileContentHeaderComponent() {
             >
               Save
             </Button>
-          </div>
-        </Tooltip>
+          </Tooltip>
+        </div>
       </div>
     </header>
   );

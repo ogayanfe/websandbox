@@ -27,3 +27,10 @@ class SandboxSerializer(ModelSerializer):
         if request and Sandbox.objects.filter(owner=request.user, title__iexact=value).exists(): 
             raise ValidationError("You have created a sandbox with similar name already")
         return value.lower()
+    
+
+class SandboxRetrieveUpdateSerializer(ModelSerializer):
+    class Meta: 
+        model = Sandbox
+        fields = ["files"]
+
