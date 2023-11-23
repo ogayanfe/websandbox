@@ -15,6 +15,8 @@ interface SandboxContextType {
   hideSidebar: () => void;
   toggleSidebar: () => void;
   treeData: TreeDataType;
+  showBrowser: boolean;
+  toggleBrowser: () => void;
   searchTerm: string;
   updateSearchTerm: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   deleteTreeNode: (id: string[]) => void;
@@ -39,6 +41,8 @@ const sandboxContext = createContext<SandboxContextType>({
     name: "",
     children: [],
   },
+  showBrowser: true,
+  toggleBrowser: console.log,
   updateTreeData: console.log,
   updateSearchTerm: console.log,
   searchTerm: "",
@@ -58,6 +62,7 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
   const [treeData, setTreeData] = useState<TreeDataType>(tempData);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedFileId, setSelectedFileId] = useState<string>("");
+  const [showBrowser, setShowBrowser] = useState(true);
 
   function deleteTreeNode(ids: string[]) {
     const treeCopy = { ...treeData };
@@ -99,12 +104,11 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
 
   const context = {
     visibleSidebar,
+    showBrowser,
+    toggleBrowser: () => setShowBrowser((p) => !p),
     showSidebar: () => setVisibleSidebar(true),
     hideSidebar: () => setVisibleSidebar(false),
-    toggleSidebar: () => {
-      console.log("Hello World");
-      setVisibleSidebar((p) => !p);
-    },
+    toggleSidebar: () => setVisibleSidebar((p) => !p),
     updateSearchTerm: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setSearchTerm(e.target.value);
     },

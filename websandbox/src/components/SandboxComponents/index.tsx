@@ -9,6 +9,7 @@ import { FileContentComponent } from "./FileContent";
 import SplitPane from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 import { TreeDataType, TreeNodeType } from "../../utils/sandboxUtils";
+import Browser from "./Browser";
 
 export async function sandboxHomeLoader({ params }: LoaderFunctionArgs) {
   const url = `sandbox/${params.username}/${params.project}`;
@@ -65,7 +66,8 @@ export default function SandboxHome() {
           <FileContentComponent />
         </SplitPane>
       </div>
-      <footer className="bg-[rgb(52,52,52)]">Footer</footer>
+      <Browser />
+      <footer className="border-t-[1px] dark:border-[#343434]">Footer</footer>
     </div>
   );
 }

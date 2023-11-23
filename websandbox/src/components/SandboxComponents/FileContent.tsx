@@ -62,35 +62,39 @@ function FileContentHeaderComponent() {
             />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Toggle browser visiblity">
-          <IconButton aria-label="Toggle Browser Visibility">
+        <Tooltip title={sandboxContext.showBrowser ? "Hide Browser" : "Show Browser"}>
+          <IconButton aria-label="Toggle Browser Visibility" onClick={sandboxContext.toggleBrowser}>
             <Icon icon="gg:browser" />
           </IconButton>
         </Tooltip>
         {/* @ts-ignore */}
         <div className="md:hidden">
           <Tooltip title={authContext?.authenticated() ? "Save Project" : "Login to save project"}>
-            <IconButton
-              aria-label="Save project"
-              disabled={!authContext?.authenticated()}
-              color="success"
-            >
-              <Icon icon="ion:save-outline" />
-            </IconButton>
+            <span>
+              <IconButton
+                aria-label="Save project"
+                disabled={!authContext?.authenticated()}
+                color="success"
+              >
+                <Icon icon="ion:save-outline" />
+              </IconButton>
+            </span>
           </Tooltip>
         </div>
         <div className="max-md:hidden">
           <Tooltip title={authContext?.authenticated() ? "Save Project" : "Login to save project"}>
-            <Button
-              disabled={!authContext?.authenticated()}
-              startIcon={<Icon icon="ion:save-sharp" />}
-              size="small"
-              sx={{ paddingX: "1rem" }}
-              color="success"
-              variant="outlined"
-            >
-              Save
-            </Button>
+            <span>
+              <Button
+                disabled={!authContext?.authenticated()}
+                startIcon={<Icon icon="ion:save-sharp" />}
+                size="small"
+                sx={{ paddingX: "1rem" }}
+                color="success"
+                variant="outlined"
+              >
+                Save
+              </Button>
+            </span>
           </Tooltip>
         </div>
       </div>

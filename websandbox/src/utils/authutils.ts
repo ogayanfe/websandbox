@@ -22,7 +22,6 @@ const STORAGE_KEY = "tokens";
 
 interface UserType {
   id: number;
-  email: string;
   username: string;
 }
 
