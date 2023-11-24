@@ -8,7 +8,7 @@ import useSandboxContext from "../../contexts/sandboxContext";
 import { FileContentComponent } from "./FileContent";
 import SplitPane from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
-import { TreeDataType, TreeNodeType } from "../../utils/sandboxUtils";
+import { TreeDataType, TreeNodeType, hashString } from "../../utils/sandboxUtils";
 import Browser from "./Browser";
 import Footer from "./Footer";
 
@@ -38,6 +38,9 @@ export default function SandboxHome() {
   useEffect(() => {
     authContext?.updateUserInfo(userData);
     sandboxContext.updateTreeData(treeData);
+    hashString(JSON.stringify(data.files)).then((p: string) => {
+      sandboxContext.updateFileTreeHash("lastSaved", p);
+    });
   }, []);
 
   useEffect(() => {

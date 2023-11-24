@@ -2,11 +2,12 @@ import { Icon } from "@iconify/react";
 import BreadCrumbs from "@mui/material/Breadcrumbs";
 import { Button, IconButton, Tooltip, Link as MuiLink } from "@mui/material";
 import useSandboxContext from "../../contexts/sandboxContext";
-import { getFileIcon } from "../../utils/sandboxUtils";
+import { TreeNodeType, getFileIcon, hashString } from "../../utils/sandboxUtils";
 import CodeEditor from "./CodeEditor";
 import useAuthContext from "../../contexts/authContext";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
+import { getApiClient } from "../../utils/authutils";
 
 export default function NoFileOpenComponent() {
   return (
@@ -25,6 +26,26 @@ function FileContentHeaderComponent() {
   const selectedPath = sandboxContext.getSelectedPath();
   const authContext = useAuthContext();
   const param = useParams();
+
+  async function saveChanges() {
+    if (sandboxContext.fileTreeHash.current === sandboxContext.fileTreeHash.lastSaved) return;
+    const apiClient = getApiClient();
+    const data = {
+      files: sandboxContext.treeData.children,
+    };
+    try {
+      const res = (await apiClient.patch(`/sandbox/${param.username}/${param.project}/`, data)) as {
+        data: { files: TreeNodeType[] };
+      };
+      hashString(JSON.stringify(res.data.files)).then((r: string) => {
+        sandboxContext.updateFileTreeHash("lastSaved", r);
+      });
+      alert("Successfully updated project");
+    } catch (error) {
+      console.log(error);
+      alert("Couldn't update sandbox");
+    }
+  }
 
   return (
     <header className="flex w-full px-4 p-1 items-center justify-between">
@@ -45,14 +66,7 @@ function FileContentHeaderComponent() {
           )}
         </BreadCrumbs>
       ) : (
-        <div>
-          <BreadCrumbs>
-            <p>{param.username}</p>
-            <MuiLink to="./" component={Link} color="inherit" underline="hover">
-              {param.project}
-            </MuiLink>
-          </BreadCrumbs>
-        </div>
+        <div></div>
       )}
       <div className="flex items-center justify-center md:gap-2">
         <Tooltip title={sandboxContext?.visibleSidebar ? "Close Sidebar" : "Open Sidebar"}>
@@ -75,6 +89,7 @@ function FileContentHeaderComponent() {
                 aria-label="Save project"
                 disabled={!authContext?.authenticated()}
                 color="success"
+                onClick={saveChanges}
               >
                 <Icon icon="ion:save-outline" />
               </IconButton>
@@ -89,8 +104,9 @@ function FileContentHeaderComponent() {
                 startIcon={<Icon icon="ion:save-sharp" />}
                 size="small"
                 sx={{ paddingX: "1rem" }}
-                color="success"
+                color="info"
                 variant="outlined"
+                onClick={saveChanges}
               >
                 Save
               </Button>

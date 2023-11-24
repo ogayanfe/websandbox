@@ -9,6 +9,7 @@ import tempData, {
   updateFileContent,
   getFileMode,
   FileModeType,
+  hashString,
 } from "../utils/sandboxUtils";
 
 interface SandboxContextType {
@@ -20,6 +21,8 @@ interface SandboxContextType {
   showBrowser: boolean;
   toggleBrowser: () => void;
   fileMode: FileModeType;
+  fileTreeHash: { lastSaved: string; current: string };
+  updateFileTreeHash: (type: "lastSaved" | "current", hash: string) => void;
   updateFileMode: (mode: FileModeType) => void;
   searchTerm: string;
   updateSearchTerm: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
@@ -41,6 +44,8 @@ const sandboxContext = createContext<SandboxContextType>({
   hideSidebar: console.log,
   toggleSidebar: console.log,
   fileMode: "text",
+  fileTreeHash: { lastSaved: "", current: "" },
+  updateFileTreeHash: console.log,
   updateFileMode: console.log,
   treeData: {
     id: null,
@@ -70,6 +75,7 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
   const [selectedFileId, setSelectedFileId] = useState<string>("");
   const [showBrowser, setShowBrowser] = useState(true);
   const [fileMode, setFileMode] = useState<FileModeType>("text");
+  const [fileTreeHash, setFileTreeHash] = useState({ lastSaved: "", current: "" });
 
   function deleteTreeNode(ids: string[]) {
     const treeCopy = { ...treeData };
@@ -114,10 +120,20 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
     if (path && path.length > 0) setFileMode(getFileMode(path[path?.length - 1]));
   }, [selectedFileId]);
 
+  useEffect(() => {
+    hashString(JSON.stringify(treeData.children)).then((hash: string) => {
+      setFileTreeHash((prev) => ({ ...prev, current: hash }));
+    });
+  }, [treeData]);
+
   const context = {
     visibleSidebar,
     showBrowser,
     fileMode,
+    fileTreeHash,
+    updateFileTreeHash: (type: "lastSaved" | "current", hash: string) => {
+      setFileTreeHash((p) => ({ ...p, [type]: hash }));
+    },
     updateFileMode: (m: FileModeType) => setFileMode(m),
     toggleBrowser: () => setShowBrowser((p) => !p),
     showSidebar: () => setVisibleSidebar(true),

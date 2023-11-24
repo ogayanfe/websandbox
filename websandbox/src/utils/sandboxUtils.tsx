@@ -45,6 +45,19 @@ function deleteNode(id: string, rootNode: TreeNodeType | TreeDataType) {
   }
 }
 
+async function hashString(inputString: string) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(inputString);
+
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+
+  // Convert the hash buffer to a hexadecimal string
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map((byte) => byte.toString(16).padStart(2, "0")).join("");
+
+  return hashHex;
+}
+
 function moveNode(nodeId: string, parentId: string | null, tree: NodeType) {
   const node = getNode(nodeId, tree) as TreeNodeType | null;
   if (!node) throw new Error(`Node with id:{${nodeId}} not found`);
@@ -165,5 +178,6 @@ export {
   getFileIcon,
   getNodePath,
   updateFileContent,
+  hashString,
 };
 export default tempData;
