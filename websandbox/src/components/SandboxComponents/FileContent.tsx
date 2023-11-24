@@ -1,13 +1,13 @@
 import { Icon } from "@iconify/react";
 import BreadCrumbs from "@mui/material/Breadcrumbs";
-import { Button, IconButton, Tooltip, Link as MuiLink } from "@mui/material";
+import { Button, IconButton, Tooltip } from "@mui/material";
 import useSandboxContext from "../../contexts/sandboxContext";
 import { TreeNodeType, getFileIcon, hashString } from "../../utils/sandboxUtils";
 import CodeEditor from "./CodeEditor";
 import useAuthContext from "../../contexts/authContext";
 import { useParams } from "react-router";
-import { Link } from "react-router-dom";
 import { getApiClient } from "../../utils/authutils";
+import { useEffect } from "react";
 
 export default function NoFileOpenComponent() {
   return (
@@ -29,6 +29,7 @@ function FileContentHeaderComponent() {
 
   async function saveChanges() {
     if (sandboxContext.fileTreeHash.current === sandboxContext.fileTreeHash.lastSaved) return;
+    console.log("Called");
     const apiClient = getApiClient();
     const data = {
       files: sandboxContext.treeData.children,
@@ -46,6 +47,18 @@ function FileContentHeaderComponent() {
       alert("Couldn't update sandbox");
     }
   }
+
+  useEffect(() => {
+    async function onCtrlPlusS(e: KeyboardEvent) {
+      if (e.ctrlKey && e.key === "s") {
+        console.log(e);
+        document.getElementById("save-button")?.click();
+        e.preventDefault();
+      }
+    }
+    document.addEventListener("keydown", onCtrlPlusS);
+    return () => document.removeEventListener("keydown", onCtrlPlusS);
+  }, []);
 
   return (
     <header className="flex w-full px-4 p-1 items-center justify-between">
@@ -100,6 +113,7 @@ function FileContentHeaderComponent() {
           <Tooltip title={authContext?.authenticated() ? "Save Project" : "Login to save project"}>
             <span>
               <Button
+                id="save-button"
                 disabled={!authContext?.authenticated()}
                 startIcon={<Icon icon="ion:save-sharp" />}
                 size="small"
