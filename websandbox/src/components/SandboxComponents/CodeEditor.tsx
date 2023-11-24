@@ -8,7 +8,7 @@ import "ace-builds/src-noconflict/theme-twilight";
 import "ace-builds/src-noconflict/theme-github";
 import useThemeContext from "../../contexts/themeContext";
 import useSandboxContext from "../../contexts/sandboxContext";
-import { FileNodeType, getFileMode, getNode } from "../../utils/sandboxUtils";
+import { FileNodeType, getNode } from "../../utils/sandboxUtils";
 
 export default function CodeEditor() {
   const themeContext = useThemeContext();
@@ -23,7 +23,7 @@ export default function CodeEditor() {
   return (
     //@ts-ignore
     <AceEditor
-      mode={getFileMode(name)}
+      mode={sandboxContext.fileMode}
       value={node.content}
       onChange={(v: string) => sandboxContext.updateFileContent(id, v)}
       theme={themeContext?.darkTheme ? "twilight" : "github"}

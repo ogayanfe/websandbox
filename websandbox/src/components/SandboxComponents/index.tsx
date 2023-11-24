@@ -10,6 +10,7 @@ import SplitPane from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 import { TreeDataType, TreeNodeType } from "../../utils/sandboxUtils";
 import Browser from "./Browser";
+import Footer from "./Footer";
 
 export async function sandboxHomeLoader({ params }: LoaderFunctionArgs) {
   const url = `sandbox/${params.username}/${params.project}`;
@@ -67,7 +68,7 @@ export default function SandboxHome() {
         </SplitPane>
       </div>
       <Browser />
-      <footer className="border-t-[1px] dark:border-[#343434]">Footer</footer>
+      <Footer />
     </div>
   );
 }

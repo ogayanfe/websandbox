@@ -26,7 +26,7 @@ export default function Browser() {
 
   return (
     <div className={sandboxContext.showBrowser ? "" : "hidden"}>
-      <Draggable>
+      <Draggable bounds="body" nodeRef={noderef}>
         <div
           className={`fixed bg-stone-50 dark:bg-black w-[350px] h-[400px] right-10 bottom-10 rounded-lg shadow-2xl flex flex-col cursor-move`}
           ref={noderef}

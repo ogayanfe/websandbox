@@ -24,6 +24,8 @@ interface TreeDataType {
 
 type NodeType = TreeDataType | TreeNodeType;
 
+type FileModeType = "javascript" | "text" | "html" | "css" | "json" | "markdown";
+
 function getNode(id: string, rootNode: TreeDataType | TreeNodeType): NodeType | null {
   if (rootNode.id === id) return rootNode;
   if (rootNode.children) {
@@ -137,8 +139,8 @@ function getNodePath(id: string | null, node: NodeType): string[] | null {
   return _(id, node, []);
 }
 
-function getFileMode(name: string): string {
-  if (name.endsWith(".js") || name.endsWith(".ts")) return "Javascript";
+function getFileMode(name: string): FileModeType {
+  if (name.endsWith(".js") || name.endsWith(".ts")) return "javascript";
   if (name.endsWith(".css")) return "css";
   if (name.endsWith(".html") || name.endsWith(".svg")) return "html";
   if (name.endsWith(".json")) return "json";
@@ -152,7 +154,7 @@ const tempData: TreeDataType = {
   children: [],
 };
 
-export type { TreeNodeType, TreeDataType, FileNodeType, FolderNodeType, NodeType };
+export type { TreeNodeType, TreeDataType, FileNodeType, FolderNodeType, NodeType, FileModeType };
 export {
   deleteNode,
   updateNode,

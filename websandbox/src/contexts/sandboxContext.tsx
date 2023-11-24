@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import tempData, {
   TreeDataType,
   createNode,
@@ -7,6 +7,8 @@ import tempData, {
   updateNode,
   getNodePath,
   updateFileContent,
+  getFileMode,
+  FileModeType,
 } from "../utils/sandboxUtils";
 
 interface SandboxContextType {
@@ -17,6 +19,8 @@ interface SandboxContextType {
   treeData: TreeDataType;
   showBrowser: boolean;
   toggleBrowser: () => void;
+  fileMode: FileModeType;
+  updateFileMode: (mode: FileModeType) => void;
   searchTerm: string;
   updateSearchTerm: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   deleteTreeNode: (id: string[]) => void;
@@ -36,6 +40,8 @@ const sandboxContext = createContext<SandboxContextType>({
   showSidebar: console.log,
   hideSidebar: console.log,
   toggleSidebar: console.log,
+  fileMode: "text",
+  updateFileMode: console.log,
   treeData: {
     id: null,
     name: "",
@@ -63,6 +69,7 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedFileId, setSelectedFileId] = useState<string>("");
   const [showBrowser, setShowBrowser] = useState(true);
+  const [fileMode, setFileMode] = useState<FileModeType>("text");
 
   function deleteTreeNode(ids: string[]) {
     const treeCopy = { ...treeData };
@@ -102,9 +109,16 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
     setTreeData(treeCopy);
   }
 
+  useEffect(() => {
+    const path = getNodePath(selectedFileId, treeData);
+    if (path && path.length > 0) setFileMode(getFileMode(path[path?.length - 1]));
+  }, [selectedFileId]);
+
   const context = {
     visibleSidebar,
     showBrowser,
+    fileMode,
+    updateFileMode: (m: FileModeType) => setFileMode(m),
     toggleBrowser: () => setShowBrowser((p) => !p),
     showSidebar: () => setVisibleSidebar(true),
     hideSidebar: () => setVisibleSidebar(false),
