@@ -29,7 +29,6 @@ function FileContentHeaderComponent() {
 
   async function saveChanges() {
     if (sandboxContext.fileTreeHash.current === sandboxContext.fileTreeHash.lastSaved) return;
-    console.log("Called");
     const apiClient = getApiClient();
     const data = {
       files: sandboxContext.treeData.children,
@@ -51,7 +50,6 @@ function FileContentHeaderComponent() {
   useEffect(() => {
     async function onCtrlPlusS(e: KeyboardEvent) {
       if (e.ctrlKey && e.key === "s") {
-        console.log(e);
         document.getElementById("save-button")?.click();
         e.preventDefault();
       }

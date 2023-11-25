@@ -11,7 +11,7 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
 }
 
 const BASE_URL = local
-  ? "http://localhost:8000"
+  ? "http://127.0.0.1:8000"
   : "https://friendly-space-lamp-jp5rxjxj4ggfvv4-8000.app.github.dev";
 
 const TOKEN_OBTAIN_URL = `${BASE_URL}/accounts/token/`;
@@ -29,8 +29,6 @@ interface CredentialsType {
   username: string;
   password: string;
 }
-
-let authTokens: AuthTokenType | null = null;
 
 type AuthTokenType = {
   access: string;
@@ -55,32 +53,27 @@ type RefreshTokenDecodedType = {
 
 function getAuthTokens(): AuthTokenType | null {
   // Get Authentication tokens if they exist
-  if (!authTokens) {
-    const tkString = localStorage.getItem(STORAGE_KEY);
-    if (tkString) {
-      authTokens = JSON.parse(tkString);
-    }
+  const tkString = localStorage.getItem(STORAGE_KEY);
+  if (tkString) {
+    return JSON.parse(tkString);
   }
-  return authTokens;
+  return null;
 }
 
 function updateAuthTokens(tokens: AuthTokenType) {
   // Update authentication tokens
   const value = JSON.stringify(tokens);
   localStorage.setItem(STORAGE_KEY, value);
-  authTokens = tokens;
 }
 
 function clearAuthTokens() {
   // Delete authentication tokens
   localStorage.removeItem(STORAGE_KEY);
-  authTokens = null;
 }
 
 function getApiClient(): AxiosInstance {
   // Returns an axios api client. Returns an existing api client is one as already been created
   // else creates a new one and returns it.
-
   if (!axiosClient) {
     axiosClient = axios.create({
       baseURL: BASE_URL,
