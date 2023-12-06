@@ -1,4 +1,5 @@
 import { Icon } from "@iconify/react";
+import { FileSystemTree } from "@webcontainer/api";
 
 interface FolderNodeType {
   id: string;
@@ -18,7 +19,7 @@ type TreeNodeType = FileNodeType | FolderNodeType;
 
 interface TreeDataType {
   id: null;
-  name: string;
+  name: "Root";
   children: TreeNodeType[];
 }
 
@@ -161,6 +162,29 @@ function getFileMode(name: string): FileModeType {
   return "text";
 }
 
+function toContainerFileSystemTree(treeData: TreeDataType): FileSystemTree {
+  function inner(node: NodeType, output: FileSystemTree) {
+    if (!node.children) {
+      output[node.name] = {
+        file: {
+          contents: node.content,
+        },
+      };
+      return;
+    }
+    const directories = {};
+    for (let sub of node.children) {
+      inner(sub, directories);
+    }
+    output[node.name] = {
+      directory: directories,
+    };
+  }
+  const output = {} as { Root: { directory: FileSystemTree } };
+  inner(treeData, output);
+  return { ...output.Root.directory };
+}
+
 const tempData: TreeDataType = {
   id: null,
   name: "Root",
@@ -178,6 +202,7 @@ export {
   getFileIcon,
   getNodePath,
   updateFileContent,
+  toContainerFileSystemTree,
   hashString,
 };
 export default tempData;

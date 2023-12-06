@@ -46,6 +46,7 @@ const router = createBrowserRouter(
             <SandboxHome />
           </SandboxContextProvider>
         }
+        id="sandbox-editor-route"
         loader={sandboxHomeLoader}
       ></Route>
     </Route>
