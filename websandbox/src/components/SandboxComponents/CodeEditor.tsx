@@ -27,7 +27,7 @@ export default function CodeEditor() {
       value={node.content}
       onChange={(v: string) => sandboxContext.updateFileContent(id, v)}
       theme={themeContext?.darkTheme ? "twilight" : "github"}
-      fontSize={15}
+      fontSize={13.5}
       width={"100%"}
       height="100%"
       showPrintMargin={true}

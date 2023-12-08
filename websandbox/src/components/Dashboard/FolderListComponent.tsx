@@ -49,7 +49,7 @@ function FolderListElementComponent({ info, onDelete }: FolderListElementCompone
     }
   });
   return (
-    <div className="relative rounded-md h-44 bg-gray-100 dark:bg-[RGB(29,_29,_29)] flex-col first-letter:shadow-xl flex">
+    <div className="relative rounded-md h-44 bg-gray-100 dark:bg-[rgb(29,_29,_29)] flex-col first-letter:shadow-xl flex">
       <div className="flex-grow text-grow flex items-center justify-center">
         <FolderIcon sx={{ fontSize: "90px" }} />
       </div>

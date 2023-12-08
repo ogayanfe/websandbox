@@ -49,9 +49,12 @@ function FileContentHeaderComponent() {
 
   useEffect(() => {
     async function onCtrlPlusS(e: KeyboardEvent) {
-      if (e.ctrlKey && e.key === "s") {
+      if (e.ctrlKey && e.key.toLowerCase() === "s") {
         document.getElementById("save-button")?.click();
         e.preventDefault();
+      }
+      if (e.ctrlKey && e.key.toLowerCase() === "b") {
+        sandboxContext.toggleSidebar();
       }
     }
     document.addEventListener("keydown", onCtrlPlusS);

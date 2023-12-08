@@ -1,10 +1,12 @@
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
 import SearchOutlined from "@mui/icons-material/SearchOutlined";
 import { useParams } from "react-router-dom";
 import useSandboxContext from "../../contexts/sandboxContext";
 import DirectoryTree from "./DirectoryTree";
 import { Icon } from "@iconify/react";
+import { HeaderContext } from "./SidebarContextMenu";
 
 function SidebarHeader() {
   const params = useParams();
@@ -32,6 +34,17 @@ function SidebarHeader() {
           ),
         }}
       />
+      <div className="absolute right-0 scale-[.65] top-3">
+        <IconButton
+          onClick={(e) => {
+            e.stopPropagation();
+            sandboxContext.setCurrentNodeContextId(null);
+          }}
+        >
+          <Icon icon="simple-line-icons:options-vertical" />
+        </IconButton>
+      </div>
+      {sandboxContext.currentNodeContextId === null && <HeaderContext />}
     </div>
   );
 }
@@ -40,7 +53,7 @@ export default function Sidebar() {
   return (
     <div className="flex flex-col w-full overflow-hidden px-3">
       <SidebarHeader />
-      <div className="flex-grow w-full h-full mt-3">
+      <div className="flex-grow w-full h-full mt-4">
         <DirectoryTree />
       </div>
     </div>

@@ -15,6 +15,7 @@ export default function DirectoryTree() {
     window.addEventListener("resize", updateHeight);
     return () => window.removeEventListener("resize", updateHeight);
   }, []);
+
   return (
     <Tree
       className="h-full overflow-y-scroll tree-container"

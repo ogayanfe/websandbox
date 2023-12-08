@@ -13,14 +13,17 @@ import tempData, {
 } from "../utils/sandboxUtils";
 
 interface SandboxContextType {
+  currentNodeContextId: string | null;
   visibleSidebar: Boolean;
   showSidebar: () => void;
   hideSidebar: () => void;
+  hideContext: () => void;
   toggleSidebar: () => void;
   treeData: TreeDataType;
   showBrowser: boolean;
   toggleBrowser: () => void;
   fileMode: FileModeType;
+  setCurrentNodeContextId: (id: string | null) => void;
   fileTreeHash: { lastSaved: string; current: string };
   updateFileTreeHash: (type: "lastSaved" | "current", hash: string) => void;
   updateFileMode: (mode: FileModeType) => void;
@@ -40,6 +43,9 @@ interface SandboxContextType {
 
 const sandboxContext = createContext<SandboxContextType>({
   visibleSidebar: true,
+  currentNodeContextId: "",
+  hideContext: console.log,
+  setCurrentNodeContextId: console.log,
   showSidebar: console.log,
   hideSidebar: console.log,
   toggleSidebar: console.log,
@@ -49,7 +55,7 @@ const sandboxContext = createContext<SandboxContextType>({
   updateFileMode: console.log,
   treeData: {
     id: null,
-    name: "",
+    name: "Root",
     children: [],
   },
   showBrowser: true,
@@ -76,6 +82,7 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
   const [showBrowser, setShowBrowser] = useState(true);
   const [fileMode, setFileMode] = useState<FileModeType>("text");
   const [fileTreeHash, setFileTreeHash] = useState({ lastSaved: "", current: "" });
+  const [currentNodeContextId, setCurrentNodeContextId] = useState<string | null>("");
 
   function deleteTreeNode(ids: string[]) {
     const treeCopy = { ...treeData };
@@ -101,9 +108,11 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
 
   function createTreeNode(parentId: string | null, type: "leaf" | "internal") {
     const treeCopy = { ...treeData };
-    const name = window.prompt(`Enter ${type === "leaf" ? "file" : "folder"} Name:`) as string;
-    createNode(parentId, name, Math.random().toString(), type, treeCopy);
-    setTreeData(treeCopy);
+    const name = window.prompt(`Enter ${type === "leaf" ? "file" : "folder"} Name:`);
+    if (name) {
+      createNode(parentId, name, Math.random().toString(), type, treeCopy);
+      setTreeData(treeCopy);
+    }
     return null;
   }
 
@@ -126,11 +135,22 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
     });
   }, [treeData]);
 
-  const context = {
+  useEffect(() => {
+    const hideContext = () => {
+      setCurrentNodeContextId("");
+    };
+    window.addEventListener("click", hideContext);
+    return () => window.removeEventListener("click", hideContext);
+  }, []);
+
+  const context: SandboxContextType = {
+    currentNodeContextId,
     visibleSidebar,
     showBrowser,
+    hideContext: () => setCurrentNodeContextId(""),
     fileMode,
     fileTreeHash,
+    setCurrentNodeContextId: (id: string | null) => setCurrentNodeContextId(id),
     updateFileTreeHash: (type: "lastSaved" | "current", hash: string) => {
       setFileTreeHash((p) => ({ ...p, [type]: hash }));
     },

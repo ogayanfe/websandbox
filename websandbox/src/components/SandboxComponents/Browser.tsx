@@ -34,9 +34,10 @@ export default function Browser() {
     children: data.files,
   };
   const fileSystemTree = toContainerFileSystemTree(files);
-  getWebContainerInstance();
+  // getWebContainerInstance();
 
   useEffect(() => {
+    return;
     start(fileSystemTree);
     (async () => {
       const webcontainerInstance = await getWebContainerInstance();
@@ -53,7 +54,7 @@ export default function Browser() {
     <div className={sandboxContext.showBrowser ? "" : "hidden"}>
       <Draggable bounds="body" nodeRef={noderef}>
         <div
-          className={`fixed bg-stone-50 dark:bg-black w-[350px] h-[420px] right-10 bottom-10 rounded-lg shadow-2xl flex flex-col cursor-move`}
+          className={`fixed bg-stone-50 dark:bg-black w-[290px] h-[350px] right-10 bottom-10 rounded-lg shadow-2xl flex flex-col cursor-move`}
           ref={noderef}
         >
           <BrowserHeader />

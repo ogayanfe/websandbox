@@ -17,6 +17,7 @@ export async function sandboxHomeLoader({ params }: LoaderFunctionArgs) {
   const apiClient = getApiClient();
   try {
     const response = await apiClient.get(url);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     throw new Response("Not Found", { status: 404 });
