@@ -45,10 +45,10 @@ export default function SandboxHome() {
 
   useEffect(() => {
     if (sandboxContext.visibleSidebar) {
-      setSizes([250, "auto", "auto"]);
+      setSizes([250, "auto"]);
       return;
     }
-    setSizes([0, "auto", "auto"]);
+    setSizes([0, "auto"]);
   }, [sandboxContext.visibleSidebar]);
 
   return (

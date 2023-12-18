@@ -8,28 +8,33 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { IconButton, TextField } from "@mui/material";
 import { Icon } from "@iconify/react";
 
-function BrowserHeader() {
+interface TypeBrowserHeaderProp {
+  currentRoute: string;
+  updateCurrentRoute: (e: string) => void;
+}
+
+function BrowserHeader({ currentRoute, updateCurrentRoute }: TypeBrowserHeaderProp) {
   return (
-    <div className="text-center bg-gray-50 dark:bg-inherit p-1 px-2 flex text-xm">
+    <div className="border-b-[1px] dark:border-[#343434] dark:bg-inherit p-1 px-2 flex text-xm">
       <IconButton>
         <Icon icon="ri:refresh-line" />
       </IconButton>
-      <form className="flex-grow">
-        <TextField
-          sx={{ width: "100%", fontStyle: "normal" }}
-          size="small"
-          placeholder="Go to file"
-          InputProps={{
-            "aria-label": "Search",
-            sx: { transform: "scaleY(.85)", fontStyle: "normal" },
-            endAdornment: (
-              <InputAdornment position="start">
-                <Icon icon="teenyicons:send-right-outline" />
-              </InputAdornment>
-            ),
-          }}
-        />
-      </form>
+      <TextField
+        value={currentRoute}
+        onChange={(e) => updateCurrentRoute(e.target.value)}
+        sx={{ width: "100%", fontStyle: "normal" }}
+        size="small"
+        placeholder="Go to file"
+        InputProps={{
+          "aria-label": "Search",
+          sx: { transform: "scaleY(.85)", fontStyle: "normal" },
+          endAdornment: (
+            <InputAdornment position="start">
+              <Icon icon="teenyicons:send-right-outline" />
+            </InputAdornment>
+          ),
+        }}
+      />
     </div>
   );
 }
@@ -46,6 +51,7 @@ function BroserPlaceholderContent() {
 export default function Browser() {
   const sandboxContext = useSandboxContext();
   const [browserUrl, setBrowserUrl] = useState<undefined | string>(undefined);
+  const [currentRoute, setCurrentRoute] = useState("index.html");
   const data = useRouteLoaderData("sandbox-editor-route") as { files: TreeNodeType[] };
   const files: TreeDataType = {
     id: null,
@@ -70,10 +76,13 @@ export default function Browser() {
     <div
       className={`border-l-[1px] dark:border-[#343434] flex flex-col w-full h-full ${visibleClass}`}
     >
-      <BrowserHeader />
+      <BrowserHeader
+        currentRoute={currentRoute}
+        updateCurrentRoute={(r: string) => setCurrentRoute(r)}
+      />
       <div className="flex-grow h-full">
         {browserUrl ? (
-          <iframe className="w-full h-full rounded-b-lg" src={browserUrl} />
+          <iframe className="w-full h-full rounded-b-lg" src={browserUrl + "/" + currentRoute} />
         ) : (
           <BroserPlaceholderContent />
         )}
