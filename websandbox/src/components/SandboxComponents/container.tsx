@@ -8,6 +8,7 @@ const mutex = new Mutex();
 export default async function getWebContainerInstance() {
   await mutex.acquire();
   if (!containerInstance) {
+    console.log("Booting container");
     containerInstance = await WebContainer.boot();
     console.log("Container Booted");
   }
@@ -21,31 +22,44 @@ export async function clearContainerInstance() {
   containerInstance = null;
 }
 
-export async function installDependencies(retryTimes: number) {
+let installedDependencies = false;
+const installMutex = new Mutex();
+export async function installDependencies() {
+  await installMutex.acquire();
   const webcontainerInstance = await getWebContainerInstance();
-  console.log("Installing dependencies");
 
-  for (let i = retryTimes; i > 0; i--) {
-    const installProcess = await webcontainerInstance.spawn("npm", ["install", "live-server"]);
+  if (installedDependencies) return;
+  console.log("Installing dependencies");
+  while (true) {
+    const installProcess = await webcontainerInstance.spawn("npm", ["install", "vite"]);
+
     const installExitCode = await installProcess.exit;
 
-    if (installExitCode === 0) return;
-
+    if (installExitCode === 0) {
+      installedDependencies = true;
+      installMutex.release();
+      return;
+    }
     console.log("Retrying install");
   }
-
-  throw new Error("Unable to run npm install");
 }
 
 export async function startDevServer() {
+  console.log("Starting server");
   const webcontainerInstance = await getWebContainerInstance();
-  await webcontainerInstance.spawn("live-server", ["."]);
+  const serverStart = await webcontainerInstance.spawn("npx", ["vite", "."]);
+  serverStart.output.pipeTo(
+    new WritableStream({
+      write: (c) => console.log(c),
+    })
+  );
+  console.log("Server started");
 }
 
 export async function start(files: FileSystemTree) {
   const container = await getWebContainerInstance();
   container.mount(files);
-  await installDependencies(5);
+  await installDependencies();
   console.log("Dependecies Installed");
   await startDevServer();
 }

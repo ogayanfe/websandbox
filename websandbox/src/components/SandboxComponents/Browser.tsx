@@ -2,7 +2,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import useSandboxContext from "../../contexts/sandboxContext";
 import Draggable from "react-draggable";
 import { useRef, useState, useEffect } from "react";
-import getWebContainerInstance, { clearContainerInstance, start } from "./container";
+import getWebContainerInstance, { start } from "./container";
 import { useRouteLoaderData } from "react-router-dom";
 import { TreeDataType, TreeNodeType, toContainerFileSystemTree } from "../../utils/sandboxUtils";
 
@@ -34,20 +34,16 @@ export default function Browser() {
     children: data.files,
   };
   const fileSystemTree = toContainerFileSystemTree(files);
-  // getWebContainerInstance();
+
+  start(fileSystemTree);
 
   useEffect(() => {
-    return;
-    start(fileSystemTree);
-    (async () => {
-      const webcontainerInstance = await getWebContainerInstance();
-      webcontainerInstance.on("server-ready", (_, url: string) => {
+    getWebContainerInstance().then((instance) => {
+      instance.on("server-ready", (_, url: string) => {
+        console.log(url, "asdfoasndfaosdfoasndfasuidgfhnasdof");
         setBrowserUrl(url);
       });
-    })();
-    return () => {
-      clearContainerInstance();
-    };
+    });
   }, []);
 
   return (
