@@ -9,7 +9,6 @@ import { FileContentComponent } from "./FileContent";
 import SplitPane from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 import { TreeDataType, TreeNodeType, hashString } from "../../utils/sandboxUtils";
-import Browser from "./Browser";
 import Footer from "./Footer";
 
 export async function sandboxHomeLoader({ params }: LoaderFunctionArgs) {
@@ -46,10 +45,10 @@ export default function SandboxHome() {
 
   useEffect(() => {
     if (sandboxContext.visibleSidebar) {
-      setSizes([250, "auto"]);
+      setSizes([250, "auto", "auto"]);
       return;
     }
-    setSizes([0, "auto"]);
+    setSizes([0, "auto", "auto"]);
   }, [sandboxContext.visibleSidebar]);
 
   return (
@@ -71,7 +70,6 @@ export default function SandboxHome() {
           <FileContentComponent />
         </SplitPane>
       </div>
-      <Browser />
       <Footer />
     </div>
   );

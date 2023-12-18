@@ -7,7 +7,9 @@ import CodeEditor from "./CodeEditor";
 import useAuthContext from "../../contexts/authContext";
 import { useParams } from "react-router";
 import { getApiClient } from "../../utils/authutils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import SplitPane from "split-pane-react/esm/SplitPane";
+import Browser from "./Browser";
 
 export default function NoFileOpenComponent() {
   return (
@@ -62,7 +64,7 @@ function FileContentHeaderComponent() {
   }, []);
 
   return (
-    <header className="flex w-full px-4 p-1 items-center justify-between">
+    <header className="border-b-[1px] dark:border-[#343434] flex w-full px-4 p-1 items-center justify-between">
       {selectedPath && selectedPath.length >= 2 ? (
         <BreadCrumbs separator={"\u203A"}>
           {selectedPath?.slice(1, -1).map((p) => (
@@ -135,13 +137,31 @@ function FileContentHeaderComponent() {
 
 export function FileContentComponent() {
   const sandboxContext = useSandboxContext();
+  const [splitSizes, setSplitSizes] = useState<(string | number)[]>(["auto", "30%"]);
+
+  useEffect(() => {
+    if (sandboxContext.showBrowser) {
+      setSplitSizes(["auto", "30%"]);
+      return;
+    }
+    setSplitSizes(["auto", 0]);
+  }, [sandboxContext.showBrowser]);
 
   return (
-    <div className="flex flex-col w-full h-full ml-2">
+    <div className="flex flex-col w-full h-full">
       <FileContentHeaderComponent />
       <div className="flex-grow w-full h-full">
         <div className="w-full h-full">
-          {sandboxContext.selectedFileId ? <CodeEditor /> : <NoFileOpenComponent />}
+          {/* @ts-ignore */}
+          <SplitPane
+            split="vertical"
+            sizes={splitSizes}
+            onChange={(sizes) => setSplitSizes(sizes)}
+            allowResize={sandboxContext.showBrowser}
+          >
+            {sandboxContext.selectedFileId ? <CodeEditor /> : <NoFileOpenComponent />}
+            <Browser />
+          </SplitPane>
         </div>
       </div>
     </div>
