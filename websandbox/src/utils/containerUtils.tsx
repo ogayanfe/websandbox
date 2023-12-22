@@ -68,7 +68,7 @@ export async function updateContainerFile(id: string, path: string, content: str
   const value = setTimeout(async () => {
     const container = await getWebContainerInstance();
     container.fs.writeFile(path, content);
-  }, 500);
+  }, 200);
   writeTimeOutStore.set(id, value);
 }
 

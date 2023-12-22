@@ -108,12 +108,16 @@ function FileContentHeaderComponent() {
           }
         >
           <IconButton aria-label="Toggle Browser Visibility" onClick={sandboxContext.toggleBrowser}>
-            <Icon icon="gg:browser" />
+            <Icon icon={sandboxContext.showBrowser ? "ion:browsers" : "gg:browser"} />
           </IconButton>
         </Tooltip>
         {/* @ts-ignore */}
         <div className="md:hidden">
-          <Tooltip title={authContext?.authenticated() ? "Save Project" : "Login to save project"}>
+          <Tooltip
+            title={
+              authContext?.authenticated() ? "Save Project (ctrl + s)" : "Login to save project"
+            }
+          >
             <span>
               <IconButton
                 aria-label="Save project"

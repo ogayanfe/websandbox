@@ -1,11 +1,10 @@
-import CircularProgress from "@mui/material/CircularProgress";
 import useSandboxContext from "../../contexts/sandboxContext";
 import { useState, useEffect } from "react";
-import getWebContainerInstance, { start } from "../../utils/containerUtils";
+import getWebContainerInstance, { mountFiles, start } from "../../utils/containerUtils";
 import { useRouteLoaderData } from "react-router-dom";
 import { TreeDataType, TreeNodeType, toContainerFileSystemTree } from "../../utils/sandboxUtils";
 import InputAdornment from "@mui/material/InputAdornment";
-import { IconButton, TextField } from "@mui/material";
+import { IconButton, Stepper, TextField, Step, StepLabel, LinearProgress } from "@mui/material";
 import { Icon } from "@iconify/react";
 import Tooltip from "@mui/material/Tooltip";
 
@@ -50,9 +49,26 @@ function BrowserHeader({
 
 function BroserPlaceholderContent() {
   return (
-    <div className="flex items-center justify-center w-full h-full font-semibold text-md dark:text-blue-50 flex-col gap-4">
-      <CircularProgress />
-      <p>Loading Project ...</p>
+    <div className="flex items-center justify-center w-full h-full text-md dark:text-blue-50 flex-col gap-8 p-2">
+      <Stepper orientation="vertical">
+        <Step>
+          <StepLabel>Booting Webcontainer</StepLabel>
+        </Step>
+        <Step>
+          <StepLabel>Installing dependencies</StepLabel>
+        </Step>
+        <Step>
+          <StepLabel>Starting Vite Server</StepLabel>
+        </Step>
+      </Stepper>
+      <div className="flex w-full items-center justify-center gap-4 flex-col">
+        <p className="font-semibold italic text-gray-00 dark:text-gray-200">
+          Booting Webcontainer...
+        </p>
+        <span className="w-4/5 max-w-[350px]">
+          <LinearProgress sx={{ width: "100%" }} />
+        </span>
+      </div>
     </div>
   );
 }
@@ -71,6 +87,7 @@ export default function Browser() {
 
   function refreshBrowser() {
     setBrowserUrl((p) => p);
+    mountFiles(toContainerFileSystemTree(sandboxContext.treeData));
   }
 
   useEffect(() => {
