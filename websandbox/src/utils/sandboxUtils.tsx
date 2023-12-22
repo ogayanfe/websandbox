@@ -46,7 +46,7 @@ function deleteNode(id: string, rootNode: TreeNodeType | TreeDataType) {
   }
 }
 
-async function hashString(inputString: string) {
+async function hashArray(inputString: string): Promise<number[]> {
   const encoder = new TextEncoder();
   const data = encoder.encode(inputString);
 
@@ -54,8 +54,12 @@ async function hashString(inputString: string) {
 
   // Convert the hash buffer to a hexadecimal string
   const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray.map((byte) => byte.toString(16).padStart(2, "0")).join("");
+  return hashArray;
+}
 
+async function hashString(inputString: string): Promise<string> {
+  const hashList = await hashArray(inputString);
+  const hashHex = hashList.map((byte) => byte.toString(16).padStart(2, "0")).join("");
   return hashHex;
 }
 
@@ -93,12 +97,12 @@ function createNode(
   nodeId: string,
   type: "leaf" | "internal",
   rootNode: NodeType
-) {
+): boolean {
   const nodeData = addNodeAttributes(name, nodeId, type);
   return _createNode(parentId, nodeData, rootNode);
 }
 
-function _createNode(parentId: string | null, nodeData: TreeNodeType, rootNode: NodeType) {
+function _createNode(parentId: string | null, nodeData: TreeNodeType, rootNode: NodeType): boolean {
   let node = rootNode;
   if (parentId) {
     const res = getNode(parentId, rootNode);
@@ -110,18 +114,21 @@ function _createNode(parentId: string | null, nodeData: TreeNodeType, rootNode: 
   if (!node.children) {
     throw new Error(`Node with id ${parentId} is not a directory`);
   }
-  if (node.children.find((n) => n.name === nodeData.name)) return;
+  if (node.children.find((n) => n.name === nodeData.name)) return false;
   node.children.push(nodeData);
+  return true;
 }
 
-function updateNode(id: string, newName: string, rootNode: NodeType) {
-  if (!rootNode.children) return;
+function updateNode(id: string, newName: string, rootNode: NodeType): boolean {
+  if (!rootNode.children) return false;
+  if (rootNode.children.find((n) => n.name === newName)) return false;
   rootNode.children = rootNode.children.map((node) =>
     node.id === id ? { ...node, name: newName } : { ...node }
   );
   for (let node of rootNode.children) {
     updateNode(id, newName, node);
   }
+  return true;
 }
 
 function updateFileContent(id: string, newContent: string, rootNode: NodeType) {
@@ -204,5 +211,6 @@ export {
   updateFileContent,
   toContainerFileSystemTree,
   hashString,
+  hashArray,
 };
 export default tempData;

@@ -10,7 +10,9 @@ import tempData, {
   getFileMode,
   FileModeType,
   hashString,
+  toContainerFileSystemTree,
 } from "../utils/sandboxUtils";
+import { mountFiles, updateContainerFile } from "../utils/containerUtils";
 
 interface SandboxContextType {
   currentNodeContextId: string | null;
@@ -91,28 +93,36 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
       if (selectedFileId === id) setSelectedFileId("");
     }
     setTreeData(treeCopy);
+    mountFiles(toContainerFileSystemTree(treeCopy));
   }
 
   function updateTreeNode(id: string, name: string) {
     const treeCopy = { ...treeData };
-    updateNode(id, name, treeCopy);
+    const updated = updateNode(id, name, treeCopy);
+    if (!updated) return;
     setTreeData(treeCopy);
     setSelectedFileId(id);
+    mountFiles(toContainerFileSystemTree(treeCopy));
   }
 
   function updateFileFieldContent(id: string, content: string) {
     const treeCopy = { ...treeData };
     updateFileContent(id, content, treeCopy);
+    const path = getNodePath(id, treeCopy);
     setTreeData(treeCopy);
+    if (path) {
+      updateContainerFile(id, "/" + path.slice(1).join("/"), content);
+    }
   }
 
   function createTreeNode(parentId: string | null, type: "leaf" | "internal") {
     const treeCopy = { ...treeData };
     const name = window.prompt(`Enter ${type === "leaf" ? "file" : "folder"} Name:`);
-    if (name) {
-      createNode(parentId, name, Math.random().toString(), type, treeCopy);
-      setTreeData(treeCopy);
-    }
+    if (!name) return null;
+    let created = createNode(parentId, name, Math.random().toString(), type, treeCopy);
+    if (!created) return null;
+    setTreeData(treeCopy);
+    mountFiles(toContainerFileSystemTree(treeCopy));
     return null;
   }
 
@@ -122,6 +132,7 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
       moveNode(id, parentId, treeCopy);
     }
     setTreeData(treeCopy);
+    mountFiles(toContainerFileSystemTree(treeCopy));
   }
 
   useEffect(() => {

@@ -55,7 +55,11 @@ function FileContentHeaderComponent() {
         document.getElementById("save-button")?.click();
         e.preventDefault();
       }
-      if (e.ctrlKey && e.key.toLowerCase() === "b") {
+      if (e.ctrlKey && e.shiftKey && (e.key.toLowerCase() === "b" || e.keyCode === 66)) {
+        sandboxContext.toggleBrowser();
+        e.preventDefault();
+      }
+      if (e.ctrlKey && !e.shiftKey && (e.key.toLowerCase() === "b" || e.keyCode === 66)) {
         sandboxContext.toggleSidebar();
       }
     }
@@ -85,14 +89,24 @@ function FileContentHeaderComponent() {
         <div></div>
       )}
       <div className="flex items-center justify-center md:gap-2">
-        <Tooltip title={sandboxContext?.visibleSidebar ? "Close Sidebar" : "Open Sidebar"}>
+        <Tooltip
+          title={
+            sandboxContext?.visibleSidebar ? "Close Sidebar (ctrl + b)" : "Open Sidebar (ctrl + b)"
+          }
+        >
           <IconButton aria-label="Toggle Sidebar" onClick={sandboxContext.toggleSidebar}>
             <Icon
               icon={sandboxContext.visibleSidebar ? "lucide:sidebar-close" : "lucide:sidebar-open"}
             />
           </IconButton>
         </Tooltip>
-        <Tooltip title={sandboxContext.showBrowser ? "Hide Browser" : "Show Browser"}>
+        <Tooltip
+          title={
+            sandboxContext.showBrowser
+              ? "Hide Browser (ctrl + shift + b)"
+              : "Show Browser (ctrl + shift + b)"
+          }
+        >
           <IconButton aria-label="Toggle Browser Visibility" onClick={sandboxContext.toggleBrowser}>
             <Icon icon="gg:browser" />
           </IconButton>
@@ -113,7 +127,11 @@ function FileContentHeaderComponent() {
           </Tooltip>
         </div>
         <div className="max-md:hidden">
-          <Tooltip title={authContext?.authenticated() ? "Save Project" : "Login to save project"}>
+          <Tooltip
+            title={
+              authContext?.authenticated() ? "Save Project (ctrl + s)" : "Login to save project"
+            }
+          >
             <span>
               <Button
                 id="save-button"
