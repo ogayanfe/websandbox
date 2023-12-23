@@ -56,25 +56,53 @@ function BroserPlaceholderContent() {
   containerEventHandler.addEvent("boot-finished", () => setCurrentStep(1));
   containerEventHandler.addEvent("install-finished", () => setCurrentStep(2));
   containerEventHandler.addEvent("server-started", () => setCurrentStep(3));
+  const [width, setWidth] = useState(0);
   const feedBack = [
     "Booting Container",
     "Installing Dependencies",
     "Starting Vite Server",
     "Please Wait",
   ];
+
+  useEffect(() => {
+    const placeHolderElement = document.querySelector("#browser-placeholder");
+    if (!placeHolderElement) return;
+    setWidth(placeHolderElement.getBoundingClientRect().width);
+    const divObserver = new ResizeObserver((entries) => {
+      let timeout: number | undefined;
+      entries.forEach((entry) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => setWidth(entry.contentRect.width), 300);
+      });
+    });
+    divObserver.observe(placeHolderElement);
+    return () => divObserver.disconnect();
+  }, []);
+
+  const maxWidth = 700;
+
   return (
-    <div className="flex items-center justify-center w-full h-full text-md dark:text-blue-50 flex-col gap-8 p-2">
-      <Stepper orientation="vertical" activeStep={currentStep}>
-        <Step>
-          <StepLabel>Booting Webcontainer</StepLabel>
-        </Step>
-        <Step>
-          <StepLabel>Installing Dependencies</StepLabel>
-        </Step>
-        <Step>
-          <StepLabel>Starting Vite Server</StepLabel>
-        </Step>
-      </Stepper>
+    <div
+      className="flex items-center justify-center w-full h-full text-md dark:text-blue-50 flex-col gap-8 p-2"
+      id="browser-placeholder"
+    >
+      <div className="w-4/5 flex items-center justify-center max-w-3xl">
+        <Stepper
+          orientation={width > maxWidth ? "horizontal" : "vertical"}
+          sx={{ width: width > maxWidth ? "100%" : undefined }}
+          activeStep={currentStep}
+        >
+          <Step>
+            <StepLabel>Booting Webcontainer</StepLabel>
+          </Step>
+          <Step>
+            <StepLabel>Installing Dependencies</StepLabel>
+          </Step>
+          <Step>
+            <StepLabel>Starting Vite Server</StepLabel>
+          </Step>
+        </Stepper>
+      </div>
       <div className="flex w-full items-center justify-center gap-4 flex-col">
         <p className="font-semibold italic text-gray-00 dark:text-gray-200">
           {feedBack[currentStep] || "Please Wait"}...
