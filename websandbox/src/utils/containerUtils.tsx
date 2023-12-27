@@ -98,9 +98,7 @@ export async function startDevServer() {
   console.log("Server started");
 }
 
-export async function start(files: FileSystemTree) {
-  const container = await getWebContainerInstance();
-  container.mount(files);
+export async function start() {
   await installDependencies();
   await startDevServer();
 }

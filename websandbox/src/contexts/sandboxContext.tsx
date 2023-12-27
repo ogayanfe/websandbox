@@ -12,7 +12,12 @@ import tempData, {
   hashString,
   toContainerFileSystemTree,
 } from "../utils/sandboxUtils";
-import { mountFiles, updateContainerFile } from "../utils/containerUtils";
+import {
+  deleteContainerNode,
+  mountFiles,
+  renameContainerNode,
+  updateContainerFile,
+} from "../utils/containerUtils";
 
 interface SandboxContextType {
   currentNodeContextId: string | null;
@@ -89,20 +94,25 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
   function deleteTreeNode(ids: string[]) {
     const treeCopy = { ...treeData };
     for (let id of ids) {
+      const path = getNodePath(id, treeCopy);
+      if (path) {
+        deleteContainerNode("/" + path.slice(1).join("/"));
+      }
       deleteNode(id, treeCopy);
       if (selectedFileId === id) setSelectedFileId("");
     }
     setTreeData(treeCopy);
-    mountFiles(toContainerFileSystemTree(treeCopy));
   }
 
   function updateTreeNode(id: string, name: string) {
     const treeCopy = { ...treeData };
+    const path = getNodePath(id, treeCopy);
     const updated = updateNode(id, name, treeCopy);
     if (!updated) return;
+    if (!path) return;
+    renameContainerNode(path.slice(1), name);
     setTreeData(treeCopy);
     setSelectedFileId(id);
-    mountFiles(toContainerFileSystemTree(treeCopy));
   }
 
   function updateFileFieldContent(id: string, content: string) {

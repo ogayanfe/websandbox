@@ -5,8 +5,7 @@ import getWebContainerInstance, {
   mountFiles,
   start,
 } from "../../utils/containerUtils";
-import { useRouteLoaderData } from "react-router-dom";
-import { TreeDataType, TreeNodeType, toContainerFileSystemTree } from "../../utils/sandboxUtils";
+import { toContainerFileSystemTree } from "../../utils/sandboxUtils";
 import InputAdornment from "@mui/material/InputAdornment";
 import { IconButton, Stepper, TextField, Step, StepLabel, LinearProgress } from "@mui/material";
 import { Icon } from "@iconify/react";
@@ -53,9 +52,7 @@ function BrowserHeader({
 
 function BroserPlaceholderContent() {
   const [currentStep, setCurrentStep] = useState<0 | 1 | 2 | 3>(0);
-  containerEventHandler.addEvent("boot-finished", () => setCurrentStep(1));
-  containerEventHandler.addEvent("install-finished", () => setCurrentStep(2));
-  containerEventHandler.addEvent("server-started", () => setCurrentStep(3));
+  const sandboxContext = useSandboxContext();
   const [width, setWidth] = useState(0);
   const feedBack = [
     "Booting Container",
@@ -63,6 +60,14 @@ function BroserPlaceholderContent() {
     "Starting Vite Server",
     "Please Wait",
   ];
+  const getTreeData = () => sandboxContext.treeData;
+  containerEventHandler.addEvent("boot-finished", () => setCurrentStep(1));
+  containerEventHandler.addEvent("install-finished", () => setCurrentStep(2));
+  containerEventHandler.addEvent("server-started", () => {
+    const fileSystemTree = toContainerFileSystemTree(getTreeData());
+    mountFiles(fileSystemTree);
+    setCurrentStep(3);
+  });
 
   useEffect(() => {
     const placeHolderElement = document.querySelector("#browser-placeholder");
@@ -119,13 +124,6 @@ export default function Browser() {
   const sandboxContext = useSandboxContext();
   const [browserUrl, setBrowserUrl] = useState<undefined | string>(undefined);
   const [currentRoute, setCurrentRoute] = useState("index.html");
-  const data = useRouteLoaderData("sandbox-editor-route") as { files: TreeNodeType[] };
-  const files: TreeDataType = {
-    id: null,
-    name: "Root",
-    children: data.files,
-  };
-  const fileSystemTree = toContainerFileSystemTree(files);
 
   function refreshBrowser() {
     setBrowserUrl((p) => p);
@@ -133,7 +131,7 @@ export default function Browser() {
   }
 
   useEffect(() => {
-    start(fileSystemTree);
+    start();
     getWebContainerInstance().then((instance) => {
       instance.on("server-ready", (_, url: string) => {
         console.log(url);
