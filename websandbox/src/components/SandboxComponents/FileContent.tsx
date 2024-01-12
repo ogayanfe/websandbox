@@ -6,10 +6,12 @@ import { TreeNodeType, getFileIcon, hashString } from "../../utils/sandboxUtils"
 import CodeEditor from "./CodeEditor";
 import useAuthContext from "../../contexts/authContext";
 import { useParams } from "react-router";
-import { getApiClient } from "../../utils/authutils";
+import { UserType, getApiClient } from "../../utils/authutils";
 import { useEffect, useState } from "react";
 import SplitPane from "split-pane-react/esm/SplitPane";
 import Browser from "./Browser";
+import { useLoaderData } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function NoFileOpenComponent() {
   return (
@@ -28,6 +30,7 @@ function FileContentHeaderComponent() {
   const selectedPath = sandboxContext.getSelectedPath();
   const authContext = useAuthContext();
   const param = useParams();
+  const data = useLoaderData() as { files: TreeNodeType[]; owner: UserType; is_owner: boolean };
 
   async function saveChanges() {
     if (sandboxContext.fileTreeHash.current === sandboxContext.fileTreeHash.lastSaved) return;
@@ -111,18 +114,23 @@ function FileContentHeaderComponent() {
             <Icon icon={sandboxContext.showBrowser ? "ion:browsers" : "gg:browser"} />
           </IconButton>
         </Tooltip>
-        {/* @ts-ignore */}
         <div className="md:hidden">
           <Tooltip
             title={
-              authContext?.authenticated() ? "Save Project (ctrl + s)" : "Login to save project"
+              authContext?.authenticated()
+                ? data.is_owner
+                  ? "Save Project (ctrl + s)"
+                  : "Fork Project (ctrl + s)"
+                : "Login to save project"
             }
           >
             <span>
               <IconButton
-                aria-label="Save project"
+                aria-label="Save/Fork project"
                 disabled={!authContext?.authenticated()}
-                color="success"
+                color="info"
+                component={data.is_owner ? IconButton : Link}
+                to={`/${data.owner.username}/${param.project}/fork`}
                 onClick={saveChanges}
               >
                 <Icon icon="ion:save-outline" />
@@ -133,11 +141,16 @@ function FileContentHeaderComponent() {
         <div className="max-md:hidden">
           <Tooltip
             title={
-              authContext?.authenticated() ? "Save Project (ctrl + s)" : "Login to save project"
+              authContext?.authenticated()
+                ? data.is_owner
+                  ? "Save Project (ctrl + s)"
+                  : "Fork Project (ctrl + s)"
+                : "Login to save project"
             }
           >
             <span>
               <Button
+                component={data.is_owner ? Button : Link}
                 id="save-button"
                 disabled={!authContext?.authenticated()}
                 startIcon={<Icon icon="ion:save-sharp" />}
@@ -146,8 +159,9 @@ function FileContentHeaderComponent() {
                 color="info"
                 variant="outlined"
                 onClick={saveChanges}
+                to={`/${data.owner.username}/${param.project}/fork`}
               >
-                Save
+                {data.is_owner ? "Save" : "Fork"}
               </Button>
             </span>
           </Tooltip>

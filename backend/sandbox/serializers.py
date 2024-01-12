@@ -1,6 +1,5 @@
-from rest_framework.serializers import ModelSerializer, ValidationError
-
-from sandbox.models import Sandbox
+from rest_framework.serializers import ModelSerializer, ValidationError, SerializerMethodField
+from sandbox.models import Sandbox, get_default_files
 
 class SandboxSerializer(ModelSerializer): 
     class Meta: 
@@ -17,8 +16,9 @@ class SandboxSerializer(ModelSerializer):
 
     def create(self, validated_data):
         # Am overiding this method so i can set the owner field
-        request = self.context.get('request')
+        request = self.context.get('request') 
         validated_data["owner"] = validated_data.get("owner", request.user)
+        validated_data["files"] = validated_data.get("files", get_default_files())
         obj = super().create(validated_data)
         return obj
 
@@ -30,7 +30,19 @@ class SandboxSerializer(ModelSerializer):
     
 
 class SandboxRetrieveUpdateSerializer(ModelSerializer):
+    is_owner = SerializerMethodField()
+    owner = SerializerMethodField()
+
     class Meta: 
         model = Sandbox
-        fields = ["files"]
+        fields = ["files", "is_owner", 'owner']
 
+    def get_is_owner(self, sandbox):
+        user = self.context.get("user", None)
+        return sandbox.owner == user
+
+    def get_owner(self, sandbox): 
+        return {
+            "username": sandbox.owner.username,
+            "id": sandbox.owner.id, 
+        }

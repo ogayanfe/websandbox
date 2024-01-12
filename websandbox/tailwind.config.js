@@ -15,7 +15,7 @@ export default {
         xm: ".8125rem",
       },
       colors: {
-        main: "RGB(134, 134, 134)",
+        main: "rgb(134, 134, 134)",
       },
     },
   },

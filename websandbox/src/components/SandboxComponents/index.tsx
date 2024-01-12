@@ -27,7 +27,7 @@ export default function SandboxHome() {
   const [sizes, setSizes] = useState([250, "auto"]);
   const authContext = getAuthContext();
   const sandboxContext = useSandboxContext();
-  const data = useLoaderData() as { files: TreeNodeType[] };
+  const data = useLoaderData() as { files: TreeNodeType[]; owner: UserType; is_owner: boolean };
   const treeData: TreeDataType = {
     id: null,
     name: "Root",

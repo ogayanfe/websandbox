@@ -15,6 +15,10 @@ import createSandboxAction, { CreateSandboxComponent } from "./components/Dashbo
 import Error from "./components/UtilityComponents/Error";
 import SandboxHome, { sandboxHomeLoader } from "./components/SandboxComponents";
 import { SandboxContextProvider } from "./contexts/sandboxContext";
+import forkSandboxAction, {
+  ForkSandboxComponent,
+  forkSandboxLoader,
+} from "./components/SandboxComponents/ForkSandboxComponent";
 
 const router = createBrowserRouter(
   createRoutesFromChildren(
@@ -26,8 +30,13 @@ const router = createBrowserRouter(
           <Route path="login" element={<Login />} action={loginAction}></Route>
           <Route path="signup" element={<Signup />} action={signupAction}></Route>R
         </Route>
-        <Route />
         <Route loader={loginProtectedRouteLoader} element={<LoginProtectedRouteRoot />}>
+          <Route
+            path=":username/:project/fork"
+            element={<ForkSandboxComponent />}
+            action={forkSandboxAction}
+            loader={forkSandboxLoader}
+          />
           <Route path="dashboard">
             <Route path="" element={<DashboardHome />} loader={dashboardHomeLoader} />
             <Route

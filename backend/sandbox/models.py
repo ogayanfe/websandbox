@@ -1,4 +1,6 @@
 from collections.abc import Collection
+import random
+import time
 from django.db import models
 from django.core.validators import RegexValidator
 from rest_framework.validators import ValidationError
@@ -15,9 +17,9 @@ REGEXP = r"^[\w.@+-]+\Z"
 
 def get_default_files(): 
     return [ 
-        { "id": "0.15114535166733045", "name": "index.html", "content": "<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title>Document</title>\r\n    <link rel=\"stylesheet\" href=\"./styles.css\" />\r\n</head>\r\n<body>\r\n    <h1>Hello World</h1>\r\n    <script type=\"module\" src=\"./index.js\"></script>\r\n</body>\r\n</html>\r\n" },
-        { "id": "0.8894971288589244", "name": "styles.css", "content": "" }, 
-        { "id": "0.2236614209957537", "name": "index.js", "content": "console.log(\"Hello World\")" } 
+        { "id": f"{random.random()}{time.time()}", "name": "index.html", "content": "<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title>Document</title>\r\n    <link rel=\"stylesheet\" href=\"./styles.css\" />\r\n</head>\r\n<body>\r\n    <h1>Hello World</h1>\r\n    <script type=\"module\" src=\"./index.js\"></script>\r\n</body>\r\n</html>\r\n" },
+        { "id": f"{random.random()}{time.time()}", "name": "styles.css", "content": "" }, 
+        { "id": f"{random.random()}{time.time()}", "name": "index.js", "content": "console.log(\"Hello World\")" } 
     ]
 
 # Create your models here.
