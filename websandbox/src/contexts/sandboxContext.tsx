@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import tempData, {
-  TreeDataType,
   createNode,
   deleteNode,
   moveNode,
@@ -8,47 +7,19 @@ import tempData, {
   getNodePath,
   updateFileContent,
   getFileMode,
-  FileModeType,
   hashString,
   toContainerFileSystemTree,
 } from "../utils/sandboxUtils";
+import { TreeDataType, FileModeType } from "../types/utils/sandboxUtils";
 import {
   deleteContainerNode,
   mountFiles,
   renameContainerNode,
   updateContainerFile,
 } from "../utils/containerUtils";
+import { SandboxContextDataType } from "../types/contexts";
 
-interface SandboxContextType {
-  currentNodeContextId: string | null;
-  visibleSidebar: Boolean;
-  showSidebar: () => void;
-  hideSidebar: () => void;
-  hideContext: () => void;
-  toggleSidebar: () => void;
-  treeData: TreeDataType;
-  showBrowser: boolean;
-  toggleBrowser: () => void;
-  fileMode: FileModeType;
-  setCurrentNodeContextId: (id: string | null) => void;
-  fileTreeHash: { lastSaved: string; current: string };
-  updateFileTreeHash: (type: "lastSaved" | "current", hash: string) => void;
-  updateFileMode: (mode: FileModeType) => void;
-  searchTerm: string;
-  updateSearchTerm: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  deleteTreeNode: (id: string[]) => void;
-  updateTreeNode: (id: string, name: string) => void;
-  createTreeNode: (parentId: string | null, type: "leaf" | "internal") => null;
-  moveTreeNode: (ids: string[], parentId: string | null) => void;
-  selectedFileId: string;
-  updateTreeData: (d: TreeDataType) => void;
-  selectFileId: (nodeId: string) => void;
-  getSelectedPath: () => string[] | null;
-  getNodePath: (id: string | null) => string[] | null;
-  updateFileContent: (id: string, content: string) => void;
-}
-
-const sandboxContext = createContext<SandboxContextType>({
+const sandboxContext = createContext<SandboxContextDataType>({
   visibleSidebar: true,
   currentNodeContextId: "",
   hideContext: console.log,
@@ -164,7 +135,7 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("click", hideContext);
   }, []);
 
-  const context: SandboxContextType = {
+  const context: SandboxContextDataType = {
     currentNodeContextId,
     visibleSidebar,
     showBrowser,

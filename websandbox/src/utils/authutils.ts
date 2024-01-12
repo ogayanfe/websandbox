@@ -2,58 +2,22 @@ import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import dayjs from "dayjs";
 import { jwtDecode } from "jwt-decode";
 import { redirect } from "react-router-dom";
+import { CredentialsType, AuthTokenType, AccessTokenDecodedType } from "../types/utils/authUtils";
+
+const SERVER_BASE_URL =
+  location.hostname === "localhost" || location.hostname === "127.0.0.1"
+    ? "http://127.0.0.1:8000"
+    : "https://friendly-space-lamp-jp5rxjxj4ggfvv4-8000.app.github.dev";
+
+const TOKEN_OBTAIN_URL = `${SERVER_BASE_URL}/accounts/token/`;
+const TOKEN_REFRESH_URL = `${SERVER_BASE_URL}/accounts/token/refresh/`;
+const TOKEN_LOCAL_STORAGE_KEY = "tokens";
 
 let axiosClient: AxiosInstance | null = null;
 
-let local = false;
-if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-  local = true;
-}
-
-const BASE_URL = local
-  ? "http://127.0.0.1:8000"
-  : "https://friendly-space-lamp-jp5rxjxj4ggfvv4-8000.app.github.dev";
-
-const TOKEN_OBTAIN_URL = `${BASE_URL}/accounts/token/`;
-
-const TOKEN_REFRESH_URL = `${BASE_URL}/accounts/token/refresh/`;
-
-const STORAGE_KEY = "tokens";
-
-interface UserType {
-  id: number;
-  username: string;
-}
-
-interface CredentialsType {
-  username: string;
-  password: string;
-}
-
-type AuthTokenType = {
-  access: string;
-  refresh: string;
-};
-
-type AccessTokenDecodedType = {
-  token_type: "access";
-  exp: string;
-  iat: string;
-  jti: string;
-  user_id: number;
-};
-
-type RefreshTokenDecodedType = {
-  token_type: "refresh";
-  exp: string;
-  iat: string;
-  jti: string;
-  user_id: number;
-};
-
 function getAuthTokens(): AuthTokenType | null {
   // Get Authentication tokens if they exist
-  const tkString = localStorage.getItem(STORAGE_KEY);
+  const tkString = localStorage.getItem(TOKEN_LOCAL_STORAGE_KEY);
   if (tkString) {
     return JSON.parse(tkString);
   }
@@ -63,12 +27,12 @@ function getAuthTokens(): AuthTokenType | null {
 function updateAuthTokens(tokens: AuthTokenType) {
   // Update authentication tokens
   const value = JSON.stringify(tokens);
-  localStorage.setItem(STORAGE_KEY, value);
+  localStorage.setItem(TOKEN_LOCAL_STORAGE_KEY, value);
 }
 
 function clearAuthTokens() {
   // Delete authentication tokens
-  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(TOKEN_LOCAL_STORAGE_KEY);
 }
 
 function getApiClient(): AxiosInstance {
@@ -76,7 +40,7 @@ function getApiClient(): AxiosInstance {
   // else creates a new one and returns it.
   if (!axiosClient) {
     axiosClient = axios.create({
-      baseURL: BASE_URL,
+      baseURL: SERVER_BASE_URL,
       headers: {
         "Content-Type": "application/json",
       },
@@ -189,20 +153,13 @@ function redirectAuthenticatedUserRouteLoader() {
   return null;
 }
 
-export type {
-  AuthTokenType,
-  AccessTokenDecodedType,
-  RefreshTokenDecodedType,
-  UserType,
-  CredentialsType,
-};
 export {
   getApiClient,
   getAuthTokens,
   login,
   signup,
   logout,
-  BASE_URL,
+  SERVER_BASE_URL,
   updateAuthTokens,
   clearAuthTokens,
   TOKEN_OBTAIN_URL,

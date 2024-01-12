@@ -1,31 +1,6 @@
 import { Icon } from "@iconify/react";
 import { FileSystemTree } from "@webcontainer/api";
-
-interface FolderNodeType {
-  id: string;
-  name: string;
-  content?: undefined;
-  children: (FileNodeType | FolderNodeType)[];
-}
-
-interface FileNodeType {
-  id: string;
-  name: string;
-  content: string;
-  children?: undefined;
-}
-
-type TreeNodeType = FileNodeType | FolderNodeType;
-
-interface TreeDataType {
-  id: null;
-  name: "Root";
-  children: TreeNodeType[];
-}
-
-type NodeType = TreeDataType | TreeNodeType;
-
-type FileModeType = "javascript" | "text" | "html" | "css" | "json" | "markdown";
+import { TreeNodeType, TreeDataType, NodeType, FileModeType } from "../types/utils/sandboxUtils";
 
 function getNode(id: string, rootNode: TreeDataType | TreeNodeType): NodeType | null {
   if (rootNode.id === id) return rootNode;
@@ -198,7 +173,6 @@ const tempData: TreeDataType = {
   children: [],
 };
 
-export type { TreeNodeType, TreeDataType, FileNodeType, FolderNodeType, NodeType, FileModeType };
 export {
   deleteNode,
   updateNode,

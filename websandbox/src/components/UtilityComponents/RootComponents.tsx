@@ -1,6 +1,7 @@
 import { Outlet, useRouteLoaderData } from "react-router-dom";
 import DashboardHeader from "./Header";
-import { clearAuthTokens, getApiClient, UserType } from "../../utils/authutils";
+import { clearAuthTokens, getApiClient } from "../../utils/authutils";
+import { UserType } from "../../types/utils/authUtils";
 import React, { useEffect } from "react";
 import getAuthContext from "../../contexts/authContext";
 

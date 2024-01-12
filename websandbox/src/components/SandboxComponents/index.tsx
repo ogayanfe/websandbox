@@ -2,13 +2,15 @@ import { useRouteLoaderData, LoaderFunctionArgs, useLoaderData } from "react-rou
 import { useEffect, useState } from "react";
 import Header from "../UtilityComponents/Header";
 import getAuthContext from "../../contexts/authContext";
-import { UserType, getApiClient } from "../../utils/authutils";
+import { getApiClient } from "../../utils/authutils";
+import { UserType } from "../../types/utils/authUtils";
 import Sidebar from "./Sidebar";
 import useSandboxContext from "../../contexts/sandboxContext";
 import { FileContentComponent } from "./FileContent";
 import SplitPane from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
-import { TreeDataType, TreeNodeType, hashString } from "../../utils/sandboxUtils";
+import { hashString } from "../../utils/sandboxUtils";
+import { TreeDataType, TreeNodeType } from "../../types/utils/sandboxUtils";
 import Footer from "./Footer";
 
 export async function sandboxHomeLoader({ params }: LoaderFunctionArgs) {

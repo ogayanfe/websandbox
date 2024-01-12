@@ -18,7 +18,7 @@ import { SandboxContextProvider } from "./contexts/sandboxContext";
 import forkSandboxAction, {
   ForkSandboxComponent,
   forkSandboxLoader,
-} from "./components/SandboxComponents/ForkSandboxComponent";
+} from "./components/ForkSandboxComponent";
 
 const router = createBrowserRouter(
   createRoutesFromChildren(

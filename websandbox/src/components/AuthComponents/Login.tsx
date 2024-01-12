@@ -5,13 +5,13 @@ import Alert from "@mui/material/Alert";
 export async function loginAction({ request }: ActionFunctionArgs) {
   let formData = await request.formData();
   let credentials = {
-    username: formData.get("username"),
-    password: formData.get("password"),
+    username: formData.get("username")?.toString() || "",
+    password: formData.get("password")?.toString() || "",
   };
   try {
     await login(credentials);
-    const response = new Response()
-    return redirect("/dashboard",response);
+    const response = new Response();
+    return redirect("/dashboard", response);
   } catch (e) {
     console.log(e);
     return { error: true };

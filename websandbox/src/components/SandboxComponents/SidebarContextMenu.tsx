@@ -1,6 +1,6 @@
 import { NodeApi } from "react-arborist";
 import { Icon } from "@iconify/react";
-import { TreeNodeType } from "../../utils/sandboxUtils";
+import { TreeNodeType } from "../../types/utils/sandboxUtils";
 import useSandboxContext from "../../contexts/sandboxContext";
 
 interface NodeContextPropType {

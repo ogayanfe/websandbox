@@ -1,23 +1,9 @@
 import { FileSystemTree, WebContainer } from "@webcontainer/api";
 import { Mutex } from "async-mutex";
-
-type eventName =
-  | "boot-start"
-  | "boot-finished"
-  | "install-start"
-  | "install-finished"
-  | "server-starting"
-  | "server-started";
+import { containerEventName, containerEventStore } from "../types/utils/containderUtils";
 
 class ContainerEventsHandler {
-  eventStore: {
-    "boot-start": (() => any)[];
-    "boot-finished": (() => any)[];
-    "install-start": (() => any)[];
-    "install-finished": (() => any)[];
-    "server-starting": (() => any)[];
-    "server-started": (() => any)[];
-  };
+  eventStore: containerEventStore;
   constructor() {
     this.eventStore = {
       "boot-start": [],
@@ -28,10 +14,10 @@ class ContainerEventsHandler {
       "server-started": [],
     };
   }
-  addEvent(type: eventName, event: () => any) {
+  addEvent(type: containerEventName, event: () => any) {
     this.eventStore[type].push(event);
   }
-  fireEvent(type: eventName) {
+  fireEvent(type: containerEventName) {
     for (let e of this.eventStore[type]) e();
   }
 }

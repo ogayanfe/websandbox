@@ -8,7 +8,8 @@ import "ace-builds/src-noconflict/theme-twilight";
 import "ace-builds/src-noconflict/theme-github";
 import useThemeContext from "../../contexts/themeContext";
 import useSandboxContext from "../../contexts/sandboxContext";
-import { FileNodeType, getNode } from "../../utils/sandboxUtils";
+import { FileNodeType } from "../../types/utils/sandboxUtils";
+import { getNode } from "../../utils/sandboxUtils";
 
 export default function CodeEditor() {
   const themeContext = useThemeContext();

@@ -1,7 +1,8 @@
 import { NodeRendererProps } from "react-arborist";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { TreeNodeType, getFileIcon } from "../../utils/sandboxUtils";
+import { getFileIcon } from "../../utils/sandboxUtils";
+import { TreeNodeType } from "../../types/utils/sandboxUtils";
 import { Icon } from "@iconify/react";
 import useSandboxContext from "../../contexts/sandboxContext";
 import { IconButton } from "@mui/material";
