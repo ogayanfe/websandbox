@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import Alert from "@mui/material/Alert";
 import CloseIcon from "@mui/icons-material/Close";
 import useAuthContext from "../../contexts/authContext";
+import DriveFileRenameOutlineSharp from "@mui/icons-material/DriveFileRenameOutlineSharp";
 
 interface WebSandboxType {
   id: number;
@@ -60,6 +61,11 @@ function FolderListElementComponent({ info, onDelete }: FolderListElementCompone
         <Tooltip title="Open sandbox">
           <IconButton to={`/${authContext?.user?.username}/${info.title}/`} component={Link}>
             <LaunchIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Edit sandbox">
+          <IconButton to={`/${authContext?.user?.username}/${info.title}/edit`} component={Link}>
+            <DriveFileRenameOutlineSharp />
           </IconButton>
         </Tooltip>
         <Tooltip title="Delete">

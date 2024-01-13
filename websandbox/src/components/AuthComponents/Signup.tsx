@@ -116,7 +116,7 @@ export default function Signup() {
             </Link>
           </p>
           <div>
-            <button className="bg-gray-600 text-gray-100 rounded-full px-2 w-20 py-1 float-right mt-2">
+            <button className="bg-blue-600 text-gray-100 rounded-full px-2 w-20 py-1 float-right mt-2">
               Signup
             </button>
           </div>

@@ -10,7 +10,7 @@ import { redirectAuthenticatedUserRouteLoader } from "./utils/authutils";
 import LoginProtectedRouteRoot, {
   loginProtectedRouteLoader,
 } from "./components/UtilityComponents/LoginProtectedRouteRoot";
-import DashboardHome, { dashboardHomeLoader } from "./components/Dashboard/Home";
+import DashboardHome, { dashboardHomeLoader } from "./components/Dashboard";
 import createSandboxAction, { CreateSandboxComponent } from "./components/Dashboard/CreateSandbox";
 import Error from "./components/UtilityComponents/Error";
 import SandboxHome, { sandboxHomeLoader } from "./components/SandboxComponents";
@@ -19,33 +19,40 @@ import forkSandboxAction, {
   ForkSandboxComponent,
   forkSandboxLoader,
 } from "./components/ForkSandboxComponent";
+import updateSandboxAction, {
+  UpdateSandboxComponent,
+  UpdateSandboxLoader,
+} from "./components/Dashboard/UpdateSandbox";
 
 const router = createBrowserRouter(
   createRoutesFromChildren(
     <Route loader={baseRouteLoader} id="base-route" errorElement={<Error />}>
       <Route element={<RootComponent />}>
-        <Route path="" index element={<HomeRoute />}></Route>
-        <Route path="logout" element={<LogoutRoute />} />
         <Route loader={redirectAuthenticatedUserRouteLoader}>
+          <Route path="" index element={<HomeRoute />}></Route>
           <Route path="login" element={<Login />} action={loginAction}></Route>
           <Route path="signup" element={<Signup />} action={signupAction}></Route>R
         </Route>
         <Route loader={loginProtectedRouteLoader} element={<LoginProtectedRouteRoot />}>
+          <Route path="dashboard" element={<DashboardHome />} loader={dashboardHomeLoader} />
+          <Route
+            path="dashboard/create"
+            element={<CreateSandboxComponent />}
+            action={createSandboxAction}
+          />
           <Route
             path=":username/:project/fork"
             element={<ForkSandboxComponent />}
             action={forkSandboxAction}
             loader={forkSandboxLoader}
           />
-          <Route path="dashboard">
-            <Route path="" element={<DashboardHome />} loader={dashboardHomeLoader} />
-            <Route
-              path="create"
-              element={<CreateSandboxComponent />}
-              action={createSandboxAction}
-            />
-            <Route />
-          </Route>
+          <Route
+            path=":username/:project/edit"
+            element={<UpdateSandboxComponent />}
+            action={updateSandboxAction}
+            loader={UpdateSandboxLoader}
+          />
+          <Route path="logout" element={<LogoutRoute />} />
         </Route>
       </Route>
       <Route

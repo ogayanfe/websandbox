@@ -16,19 +16,19 @@ interface ForkSandboxActionType {
   data: Response | string;
 }
 
-export default async function forkSandboxAction({ request }: ActionFunctionArgs) {
+export default async function updateSandboxAction({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const apiClient = getApiClient();
   const owner = formData.get("owner_username");
   const project = formData.get("project");
   const title = formData.get("title");
+  console.log(title);
   try {
-    await apiClient.post(`/sandbox/${owner}/${project}/fork`, {
+    await apiClient.patch(`/sandbox/${owner}/${project}/`, {
       title: title,
     });
     return redirect("/dashboard");
   } catch (error) {
-    console.log(error);
     if (error instanceof AxiosError) {
       return {
         error: true,
@@ -39,27 +39,30 @@ export default async function forkSandboxAction({ request }: ActionFunctionArgs)
   }
 }
 
-export async function forkSandboxLoader({ params }: LoaderFunctionArgs) {
+export async function UpdateSandboxLoader({ params }: LoaderFunctionArgs) {
   const url = `sandbox/${params.username}/${params.project}`;
   const apiClient = getApiClient();
   try {
     const response = await apiClient.get(url);
+    if (!response.data.is_owner) {
+      throw new Response("Not Found", { status: 404 });
+    }
     return response.data;
   } catch (error) {
     throw new Response("Not Found", { status: 404 });
   }
 }
 
-export function ForkSandboxComponent() {
+export function UpdateSandboxComponent() {
   const params = useParams();
   const data = useActionData() as ForkSandboxActionType;
-  const [title, setTitle] = useState(`${params.username}__${params.project}__fork`);
+  const [title, setTitle] = useState(params.project);
 
   return (
     <main className="w-full h-full flex items-center justify-center">
       <div className="w-[90vw] dark:bg-[rgb(0,0,0)] shadow-2xl bg-gray-100 max-w-lg p-6 h-max-content rounded-lgz border-l-4">
-        <h2 className="text-2xl text-gray-800 font-semibold dark:text-gray-300 flex justify-center gap-1 items-center m-2">
-          Fork Sandbox
+        <h2 className="text-2xl text-gray-900 font-semibold dark:text-gray-300 flex justify-center gap-1 items-center m-2">
+          Update Sandbox Info
         </h2>
         {data?.error && <Alert severity="error">{data?.data.toString()}</Alert>}
         <Form className="w-full flex flex-col gap-3" method="POST">
@@ -80,7 +83,9 @@ export function ForkSandboxComponent() {
           <input type="hidden" name="owner_username" value={params.username} />
           <input type="hidden" name="project" value={params.project} />
           <div className="flex justify-end pr-10 p-2">
-            <button className="bg-blue-600 text-gray-100 rounded-full px-2 w-20 py-1">Fork</button>
+            <button className="bg-blue-600 text-gray-100 rounded-full px-2 w-20 py-1">
+              Update
+            </button>
           </div>
         </Form>
       </div>

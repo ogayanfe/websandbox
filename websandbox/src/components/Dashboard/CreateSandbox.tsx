@@ -51,7 +51,7 @@ export function CreateSandboxComponent() {
             id="sandbox-name"
           />
           <div className="flex justify-end pr-10 p-2">
-            <button className="bg-gray-600 text-gray-100 rounded-full px-2 w-20 py-1">
+            <button className="bg-blue-600 text-gray-100 rounded-full px-2 w-20 py-1">
               Create
             </button>
           </div>

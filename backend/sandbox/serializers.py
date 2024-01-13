@@ -35,7 +35,7 @@ class SandboxRetrieveUpdateSerializer(ModelSerializer):
 
     class Meta: 
         model = Sandbox
-        fields = ["files", "is_owner", 'owner']
+        fields = ["files", "is_owner", 'owner', "title"]
 
     def get_is_owner(self, sandbox):
         user = self.context.get("user", None)
