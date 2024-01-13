@@ -14,6 +14,7 @@ import SplitPane from "split-pane-react/esm/SplitPane";
 import Browser from "./Browser";
 import { useLoaderData } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { ForkLeftOutlined } from "@mui/icons-material";
 
 export default function NoFileOpenComponent() {
   return (
@@ -135,7 +136,7 @@ function FileContentHeaderComponent() {
                 to={`/${data.owner.username}/${param.project}/fork`}
                 onClick={saveChanges}
               >
-                <Icon icon="ion:save-outline" />
+                {data.is_owner ? <Icon icon="ion:save-outline" /> : <ForkLeftOutlined />}
               </IconButton>
             </span>
           </Tooltip>
@@ -155,13 +156,13 @@ function FileContentHeaderComponent() {
                 component={data.is_owner ? Button : Link}
                 id="save-button"
                 disabled={!authContext?.authenticated()}
-                startIcon={<Icon icon="ion:save-sharp" />}
+                startIcon={data.is_owner ? <Icon icon="ion:save-sharp" /> : <ForkLeftOutlined />}
                 size="small"
                 sx={{ paddingX: "1rem" }}
                 color="info"
                 variant="outlined"
                 onClick={saveChanges}
-                to={`/${data.owner.username}/${param.project}/fork`}
+                to={`/${param.username}/${param.project}/fork`}
               >
                 {data.is_owner ? "Save" : "Fork"}
               </Button>
