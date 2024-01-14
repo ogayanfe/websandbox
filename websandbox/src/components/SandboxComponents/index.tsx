@@ -12,6 +12,7 @@ import "split-pane-react/esm/themes/default.css";
 import { hashString } from "../../utils/sandboxUtils";
 import { TreeDataType, TreeNodeType } from "../../types/utils/sandboxUtils";
 import Footer from "./Footer";
+import { ForkSandboxComponent } from "./ForkSandboxComponent";
 
 export async function sandboxHomeLoader({ params }: LoaderFunctionArgs) {
   const url = `sandbox/${params.username}/${params.project}`;
@@ -71,6 +72,7 @@ export default function SandboxHome() {
           <FileContentComponent />
         </SplitPane>
       </div>
+      {sandboxContext.showForkComponent && <ForkSandboxComponent />}
       <Footer />
     </div>
   );

@@ -15,10 +15,6 @@ import createSandboxAction, { CreateSandboxComponent } from "./components/Dashbo
 import Error from "./components/UtilityComponents/Error";
 import SandboxHome, { sandboxHomeLoader } from "./components/SandboxComponents";
 import { SandboxContextProvider } from "./contexts/sandboxContext";
-import forkSandboxAction, {
-  ForkSandboxComponent,
-  forkSandboxLoader,
-} from "./components/ForkSandboxComponent";
 import updateSandboxAction, {
   UpdateSandboxComponent,
   UpdateSandboxLoader,
@@ -39,12 +35,6 @@ const router = createBrowserRouter(
             path="dashboard/create"
             element={<CreateSandboxComponent />}
             action={createSandboxAction}
-          />
-          <Route
-            path=":username/:project/fork"
-            element={<ForkSandboxComponent />}
-            action={forkSandboxAction}
-            loader={forkSandboxLoader}
           />
           <Route
             path=":username/:project/edit"

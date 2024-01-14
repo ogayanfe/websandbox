@@ -21,6 +21,8 @@ interface SandboxContextDataType {
   hideSidebar: () => void;
   hideContext: () => void;
   toggleSidebar: () => void;
+  showForkComponent: boolean;
+  setShowForkComponent: (b: boolean) => unknown;
   treeData: TreeDataType;
   showBrowser: boolean;
   toggleBrowser: () => void;

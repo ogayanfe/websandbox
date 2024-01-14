@@ -50,6 +50,8 @@ const sandboxContext = createContext<SandboxContextDataType>({
   getSelectedPath: () => null,
   getNodePath: () => null,
   updateFileContent: console.log,
+  showForkComponent: false,
+  setShowForkComponent: console.log,
 });
 
 function SandboxContextProvider({ children }: { children: React.ReactNode }) {
@@ -61,6 +63,7 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
   const [fileMode, setFileMode] = useState<FileModeType>("text");
   const [fileTreeHash, setFileTreeHash] = useState({ lastSaved: "", current: "" });
   const [currentNodeContextId, setCurrentNodeContextId] = useState<string | null>("");
+  const [showForkComponent, setShowForkComponent] = useState(false);
 
   function deleteTreeNode(ids: string[]) {
     const treeCopy = { ...treeData };
@@ -139,6 +142,8 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
     currentNodeContextId,
     visibleSidebar,
     showBrowser,
+    showForkComponent,
+    setShowForkComponent: (b: boolean) => setShowForkComponent(b),
     hideContext: () => setCurrentNodeContextId(""),
     fileMode,
     fileTreeHash,

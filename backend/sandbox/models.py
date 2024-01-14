@@ -15,7 +15,9 @@ message = _(
 )  
 REGEXP = r"^[\w.@+-]+\Z"
 
-def get_default_files(): 
+def get_default_files():
+    """The function returns the default sandbox files""" 
+    
     return [ 
         { "id": f"{random.random()}{time.time()}", "name": "index.html", "content": "<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title>Document</title>\r\n    <link rel=\"stylesheet\" href=\"./styles.css\" />\r\n</head>\r\n<body>\r\n    <h1>Hello World</h1>\r\n    <script type=\"module\" src=\"./index.js\"></script>\r\n</body>\r\n</html>\r\n" },
         { "id": f"{random.random()}{time.time()}", "name": "styles.css", "content": "" }, 

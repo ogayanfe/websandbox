@@ -1,29 +1,26 @@
 import { ForkLeftOutlined } from "@mui/icons-material";
 import { Tooltip, Button } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
 import useSandboxContext from "../../contexts/sandboxContext";
 import { getFileIcon, getNodePath } from "../../utils/sandboxUtils";
 import Typography from "@mui/material/Typography";
+import useAuthContext from "../../contexts/authContext";
 
 export default function Footer() {
   const sandboxContext = useSandboxContext();
   const path = getNodePath(sandboxContext.selectedFileId, sandboxContext.treeData);
-  const param = useParams();
+  const authContext = useAuthContext();
 
   return (
-    <footer className="flex justify-between px-4 dark:text-gray-100 text-sm border-t-[1px] dark:border-[#343434] dark:bg-black">
-      <Tooltip title="Login to save project">
-        <span>
-          <Button
-            component={Link}
-            startIcon={<ForkLeftOutlined />}
-            size="small"
-            color="info"
-            to={`/${param.username}/${param.project}/fork`}
-          >
-            Fork Sandbox
-          </Button>
-        </span>
+    <footer className="flex justify-between px-8 dark:text-gray-100 text-sm border-t-[1px] dark:border-[#343434] dark:bg-blcack">
+      <Tooltip title="Fork Project">
+        <Button
+          startIcon={<ForkLeftOutlined />}
+          size="small"
+          disabled={!authContext?.authenticated()}
+          onClick={() => sandboxContext.setShowForkComponent(true)}
+        >
+          Fork Sandbox
+        </Button>
       </Tooltip>
       <div className="flex">
         <div className="border-l-[1px] p-1 border-gray-500 dark:border-[#343434] px-4 capitalize flex gap-2 items-center justify-center">

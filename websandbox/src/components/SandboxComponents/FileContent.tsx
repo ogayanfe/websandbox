@@ -8,12 +8,9 @@ import CodeEditor from "./CodeEditor";
 import useAuthContext from "../../contexts/authContext";
 import { useParams } from "react-router";
 import { getApiClient } from "../../utils/authutils";
-import { UserType } from "../../types/utils/authUtils";
 import { useEffect, useState } from "react";
 import SplitPane from "split-pane-react/esm/SplitPane";
 import Browser from "./Browser";
-import { useLoaderData } from "react-router-dom";
-import { Link } from "react-router-dom";
 import { ForkLeftOutlined } from "@mui/icons-material";
 
 export default function NoFileOpenComponent() {
@@ -33,7 +30,6 @@ function FileContentHeaderComponent() {
   const selectedPath = sandboxContext.getSelectedPath();
   const authContext = useAuthContext();
   const param = useParams();
-  const data = useLoaderData() as { files: TreeNodeType[]; owner: UserType; is_owner: boolean };
 
   async function saveChanges() {
     if (sandboxContext.fileTreeHash.current === sandboxContext.fileTreeHash.lastSaved) return;
@@ -53,6 +49,10 @@ function FileContentHeaderComponent() {
       console.log(error);
       alert("Couldn't update sandbox");
     }
+  }
+
+  function forkProject() {
+    sandboxContext.setShowForkComponent(true);
   }
 
   useEffect(() => {
@@ -94,7 +94,7 @@ function FileContentHeaderComponent() {
       ) : (
         <div></div>
       )}
-      <div className="flex items-center justify-center md:gap-2">
+      <div className="flex items-center justify-center">
         <Tooltip
           title={
             sandboxContext?.visibleSidebar ? "Close Sidebar (ctrl + b)" : "Open Sidebar (ctrl + b)"
@@ -117,54 +117,48 @@ function FileContentHeaderComponent() {
             <Icon icon={sandboxContext.showBrowser ? "ion:browsers" : "gg:browser"} />
           </IconButton>
         </Tooltip>
+        <Tooltip title="Fork project" color="secondary">
+          <IconButton aria-label="Fork Project" onClick={forkProject}>
+            <ForkLeftOutlined></ForkLeftOutlined>
+          </IconButton>
+        </Tooltip>
         <div className="md:hidden">
           <Tooltip
             title={
-              authContext?.authenticated()
-                ? data.is_owner
-                  ? "Save Project (ctrl + s)"
-                  : "Fork Project (ctrl + s)"
-                : "Login to save project"
+              authContext?.authenticated() ? "Save Project (ctrl + s)" : "Login to save project"
             }
           >
             <span>
               <IconButton
-                aria-label="Save/Fork project"
+                aria-label="Save project"
                 disabled={!authContext?.authenticated()}
                 color="info"
-                component={data.is_owner ? IconButton : Link}
-                to={`/${data.owner.username}/${param.project}/fork`}
                 onClick={saveChanges}
               >
-                {data.is_owner ? <Icon icon="ion:save-outline" /> : <ForkLeftOutlined />}
+                <Icon icon="ion:save-outline" />
               </IconButton>
             </span>
           </Tooltip>
+          T
         </div>
         <div className="max-md:hidden">
           <Tooltip
             title={
-              authContext?.authenticated()
-                ? data.is_owner
-                  ? "Save Project (ctrl + s)"
-                  : "Fork Project (ctrl + s)"
-                : "Login to save project"
+              authContext?.authenticated() ? "Save Project (ctrl + s)" : "Login to save project"
             }
           >
             <span>
               <Button
-                component={data.is_owner ? Button : Link}
                 id="save-button"
                 disabled={!authContext?.authenticated()}
-                startIcon={data.is_owner ? <Icon icon="ion:save-sharp" /> : <ForkLeftOutlined />}
+                startIcon={<Icon icon="ion:save-sharp" />}
                 size="small"
                 sx={{ paddingX: "1rem" }}
                 color="info"
                 variant="outlined"
                 onClick={saveChanges}
-                to={`/${param.username}/${param.project}/fork`}
               >
-                {data.is_owner ? "Save" : "Fork"}
+                Save
               </Button>
             </span>
           </Tooltip>

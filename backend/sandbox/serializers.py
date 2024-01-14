@@ -9,9 +9,6 @@ class SandboxSerializer(ModelSerializer):
             "owner": {
                 "read_only": True, 
             }, 
-            "files": {
-                "read_only": True
-            }           
         }
 
     def create(self, validated_data):
