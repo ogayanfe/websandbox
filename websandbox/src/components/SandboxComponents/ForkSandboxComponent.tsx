@@ -61,7 +61,7 @@ export function ForkSandboxComponent() {
 
   return (
     <div
-      className="w-screen h-screen flex items-center justify-center fixed bg-[rgba(255,255,255,.5)] dark:bg-[rgba(0,0,0,.4)]"
+      className="w-screen h-screen flex items-center justify-center fixed bg-[rgba(255,255,255,.5)] dark:bg-[rgba(0,0,0,.6)]"
       onClick={() => {
         sandboxContext.setShowForkComponent(false);
       }}

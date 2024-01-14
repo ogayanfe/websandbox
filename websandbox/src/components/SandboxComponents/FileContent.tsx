@@ -117,8 +117,8 @@ function FileContentHeaderComponent() {
             <Icon icon={sandboxContext.showBrowser ? "ion:browsers" : "gg:browser"} />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Fork project" color="secondary">
-          <IconButton aria-label="Fork Project" onClick={forkProject}>
+        <Tooltip title="Fork project">
+          <IconButton aria-label="Fork Project" onClick={forkProject} color="primary">
             <ForkLeftOutlined></ForkLeftOutlined>
           </IconButton>
         </Tooltip>
