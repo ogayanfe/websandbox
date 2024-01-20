@@ -10,7 +10,7 @@ import { redirectAuthenticatedUserRouteLoader } from "./utils/authutils";
 import LoginProtectedRouteRoot, {
   loginProtectedRouteLoader,
 } from "./components/UtilityComponents/LoginProtectedRouteRoot";
-import DashboardHome, { dashboardHomeLoader } from "./components/Dashboard";
+import DashboardBase, { dashboardHomeLoader } from "./components/Dashboard";
 import createSandboxAction, { CreateSandboxComponent } from "./components/Dashboard/CreateSandbox";
 import Error from "./components/UtilityComponents/Error";
 import SandboxHome, { sandboxHomeLoader } from "./components/SandboxComponents";
@@ -19,6 +19,7 @@ import updateSandboxAction, {
   UpdateSandboxComponent,
   UpdateSandboxLoader,
 } from "./components/Dashboard/UpdateSandbox";
+import DashboardHome from "./components/Dashboard/DashboardHome";
 
 const router = createBrowserRouter(
   createRoutesFromChildren(
@@ -30,7 +31,16 @@ const router = createBrowserRouter(
           <Route path="signup" element={<Signup />} action={signupAction}></Route>R
         </Route>
         <Route loader={loginProtectedRouteLoader} element={<LoginProtectedRouteRoot />}>
-          <Route path="dashboard" element={<DashboardHome />} loader={dashboardHomeLoader} />
+          <Route
+            path="dashboard"
+            element={<DashboardBase />}
+            id="dashboard-base"
+            loader={dashboardHomeLoader}
+          >
+            <Route path="" element={<DashboardHome />}></Route>
+            <Route path="starred" element={<DashboardHome />}></Route>
+            <Route path="update" element={<DashboardHome />}></Route>
+          </Route>
           <Route
             path="dashboard/create"
             element={<CreateSandboxComponent />}

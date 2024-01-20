@@ -1,8 +1,10 @@
-import { useRevalidator } from "react-router-dom";
+import { Outlet, useRevalidator } from "react-router-dom";
 import useAuthContext from "../../contexts/authContext";
 import { getApiClient } from "../../utils/authutils";
-import FolderListComponent from "./FolderListComponent";
 import { useEffect } from "react";
+import { Tab, Tabs } from "@mui/material";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export async function dashboardHomeLoader() {
   const apiClient = getApiClient();
@@ -13,6 +15,7 @@ export async function dashboardHomeLoader() {
 export default function DashboardHome() {
   const authContext = useAuthContext();
   const revalidator = useRevalidator();
+  const [tabValue, setTabValue] = useState("work");
 
   useEffect(() => {
     if (revalidator.state === "idle" && authContext?.authenticated && authContext.user === null) {
@@ -20,11 +23,22 @@ export default function DashboardHome() {
     }
   }, []);
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col items-center">
       <h2 className="text-xl xl:text-2xl font-semibold text-center text-gray-800 dark:text-blue-100 p-8">
-        Your project folders
+        Welcome back <span className="italic">@{authContext?.user?.username}</span>
       </h2>
-      <FolderListComponent />
+      <Tabs
+        variant="scrollable"
+        component="nav"
+        aria-label="select tab to view"
+        value={tabValue}
+        onChange={(_, v) => setTabValue(v)}
+      >
+        <Tab label="Your Work" component={Link} value="work" to="./" />
+        <Tab label="Starred projects" component={Link} value="starred" to="./starred" />
+        <Tab label="Update Profile" component={Link} value="profile " to="./update" />
+      </Tabs>
+      <Outlet />
     </div>
   );
 }
