@@ -12,7 +12,7 @@ export async function dashboardHomeLoader() {
   return response.data;
 }
 
-export default function DashboardHome() {
+export default function DashboardBase() {
   const authContext = useAuthContext();
   const revalidator = useRevalidator();
   const [tabValue, setTabValue] = useState("work");

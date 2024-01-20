@@ -2,6 +2,7 @@ import { ActionFunctionArgs, Form, redirect, useActionData } from "react-router-
 import { getApiClient } from "../../utils/authutils";
 import { AxiosError } from "axios";
 import Alert from "@mui/material/Alert";
+import useAuthContext from "../../contexts/authContext";
 
 interface CreateSandboxActionType {
   error: boolean;
@@ -12,12 +13,12 @@ export default async function createSandboxAction({ request }: ActionFunctionArg
   const formData = await request.formData();
   const apiClient = getApiClient();
   const name = formData.get("name");
+  const username = formData.get("username");
   try {
     await apiClient.post("/sandbox/", {
       title: name,
-      files: null,
     });
-    return redirect("/dashboard");
+    return redirect("/" + username + "/" + name);
   } catch (error) {
     console.log(error);
     if (error instanceof AxiosError) {
@@ -29,6 +30,8 @@ export default async function createSandboxAction({ request }: ActionFunctionArg
 
 export function CreateSandboxComponent() {
   const data = useActionData() as CreateSandboxActionType | undefined;
+  const authContext = useAuthContext();
+
   return (
     <main className="w-full h-full flex items-center justify-center">
       <div className="w-[90vw] dark:bg-[rgb(0,0,0)] shadow-2xl bg-gray-100 max-w-lg p-6 h-max-content rounded-lgz border-l-4">
@@ -50,6 +53,7 @@ export function CreateSandboxComponent() {
             placeholder="sandbox name (e.g Project X)"
             id="sandbox-name"
           />
+          <input type="hidden" name="username" value={authContext?.user?.username} />
           <div className="flex justify-end pr-10 p-2">
             <button className="bg-blue-600 text-gray-100 rounded-full px-2 w-20 py-1">
               Create
