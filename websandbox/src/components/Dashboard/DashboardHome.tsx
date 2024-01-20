@@ -1,5 +1,5 @@
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import { Link, useNavigate, useRevalidator, useRouteLoaderData } from "react-router-dom";
+import { Link, useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import LaunchIcon from "@mui/icons-material/Launch";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -100,7 +100,7 @@ function CreateSandboxElementComponent() {
 }
 
 function FolderListComponent() {
-  const data = useRouteLoaderData("dashboard-base") as WebSandboxType[];
+  const data = useLoaderData() as WebSandboxType[];
   const validator = useRevalidator();
   const [alert, setAlert] = useState({
     deleteSuccess: false,

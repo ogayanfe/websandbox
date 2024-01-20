@@ -31,15 +31,10 @@ const router = createBrowserRouter(
           <Route path="signup" element={<Signup />} action={signupAction}></Route>R
         </Route>
         <Route loader={loginProtectedRouteLoader} element={<LoginProtectedRouteRoot />}>
-          <Route
-            path="dashboard"
-            element={<DashboardBase />}
-            id="dashboard-base"
-            loader={dashboardHomeLoader}
-          >
-            <Route path="" element={<DashboardHome />}></Route>
-            <Route path="starred" element={<DashboardHome />}></Route>
-            <Route path="update" element={<DashboardHome />}></Route>
+          <Route path="dashboard" element={<DashboardBase />} id="dashboard-base">
+            <Route path="" element={<DashboardHome />} loader={dashboardHomeLoader}></Route>
+            <Route path="starred" element={<>Starred</>}></Route>
+            <Route path="update" element={<>Update</>}></Route>
           </Route>
           <Route
             path="dashboard/create"

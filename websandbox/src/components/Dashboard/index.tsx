@@ -25,7 +25,7 @@ export default function DashboardBase() {
   return (
     <div className="flex flex-col items-center">
       <h2 className="text-xl xl:text-2xl font-semibold text-center text-gray-800 dark:text-blue-100 p-8">
-        Welcome back <span className="italic">@{authContext?.user?.username}</span>
+        Welcome back, <span className="italic capitalize">{authContext?.user?.username}</span>
       </h2>
       <Tabs
         variant="scrollable"
