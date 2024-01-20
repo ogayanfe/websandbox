@@ -1,4 +1,3 @@
-import FolderIcon from "@mui/icons-material/Folder";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { Link, useNavigate, useRevalidator, useRouteLoaderData } from "react-router-dom";
 import { IconButton } from "@mui/material";
@@ -11,6 +10,7 @@ import Alert from "@mui/material/Alert";
 import CloseIcon from "@mui/icons-material/Close";
 import useAuthContext from "../../contexts/authContext";
 import DriveFileRenameOutlineSharp from "@mui/icons-material/DriveFileRenameOutlineSharp";
+import { CodeTwoTone } from "@mui/icons-material";
 
 interface WebSandboxType {
   id: number;
@@ -52,7 +52,7 @@ function FolderListElementComponent({ info, onDelete }: FolderListElementCompone
   return (
     <div className="relative rounded-md h-44 bg-gray-100 dark:bg-[rgb(29,_29,_29)] flex-col first-letter:shadow-xl flex">
       <div className="flex-grow text-grow flex items-center justify-center">
-        <FolderIcon sx={{ fontSize: "90px" }} />
+        <CodeTwoTone style={{ fontSize: "90px" }} />
       </div>
       <h3 className="text-gray-900 dark:text-white text-center p-3 rounded-b-md  bg-gray-300 dark:bg-[rgb(21,21,21)]">
         {info.title}
