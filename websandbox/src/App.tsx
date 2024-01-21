@@ -21,7 +21,7 @@ import updateSandboxAction, {
 } from "./components/Dashboard/UpdateSandbox";
 import YourWorkComponent from "./components/Dashboard/YourWorkComponent";
 import StarredComponent from "./components/Dashboard/StarredComponent";
-import UpdateProfile from "./components/Dashboard/UpdateProfile";
+import UpdateProfile, { updateProfileAction } from "./components/Dashboard/UpdateProfile";
 
 const router = createBrowserRouter(
   createRoutesFromChildren(
@@ -36,7 +36,7 @@ const router = createBrowserRouter(
           <Route path="dashboard" element={<DashboardBase />} id="dashboard-base">
             <Route path="" element={<YourWorkComponent />} loader={dashboardHomeLoader}></Route>
             <Route path="starred" element={<StarredComponent />}></Route>
-            <Route path="update" element={<UpdateProfile />}></Route>
+            <Route path="update" element={<UpdateProfile />} action={updateProfileAction}></Route>
           </Route>
           <Route
             path="dashboard/create"

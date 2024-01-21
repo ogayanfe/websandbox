@@ -1,4 +1,4 @@
-import { Outlet, useRevalidator } from "react-router-dom";
+import { Outlet, useLocation, useRevalidator } from "react-router-dom";
 import useAuthContext from "../../contexts/authContext";
 import { getApiClient } from "../../utils/authutils";
 import { useEffect } from "react";
@@ -13,9 +13,17 @@ export async function dashboardHomeLoader() {
 }
 
 export default function DashboardBase() {
+  const location = useLocation();
   const authContext = useAuthContext();
   const revalidator = useRevalidator();
-  const [tabValue, setTabValue] = useState("work");
+
+  const [tabValue, setTabValue] = useState(() => {
+    const p = location.pathname.split("/");
+    console.log(p[p.length - 1]);
+    const lnode = p[p.length - 1];
+    console.log(lnode);
+    return ["starred", "update"].includes(lnode) ? lnode : "work";
+  });
 
   useEffect(() => {
     if (revalidator.state === "idle" && authContext?.authenticated && authContext.user === null) {
@@ -36,7 +44,7 @@ export default function DashboardBase() {
       >
         <Tab label="Your Work" component={Link} value="work" to="./" />
         <Tab label="Starred projects" component={Link} value="starred" to="./starred" />
-        <Tab label="Update Profile" component={Link} value="profile " to="./update" />
+        <Tab label="Update Profile" component={Link} value="update" to="./update" />
       </Tabs>
       <Outlet />
     </div>
