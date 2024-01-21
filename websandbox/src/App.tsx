@@ -19,7 +19,9 @@ import updateSandboxAction, {
   UpdateSandboxComponent,
   UpdateSandboxLoader,
 } from "./components/Dashboard/UpdateSandbox";
-import DashboardHome from "./components/Dashboard/DashboardHome";
+import YourWorkComponent from "./components/Dashboard/YourWorkComponent";
+import StarredComponent from "./components/Dashboard/StarredComponent";
+import UpdateProfile from "./components/Dashboard/UpdateProfile";
 
 const router = createBrowserRouter(
   createRoutesFromChildren(
@@ -32,9 +34,9 @@ const router = createBrowserRouter(
         </Route>
         <Route loader={loginProtectedRouteLoader} element={<LoginProtectedRouteRoot />}>
           <Route path="dashboard" element={<DashboardBase />} id="dashboard-base">
-            <Route path="" element={<DashboardHome />} loader={dashboardHomeLoader}></Route>
-            <Route path="starred" element={<>Starred</>}></Route>
-            <Route path="update" element={<>Update</>}></Route>
+            <Route path="" element={<YourWorkComponent />} loader={dashboardHomeLoader}></Route>
+            <Route path="starred" element={<StarredComponent />}></Route>
+            <Route path="update" element={<UpdateProfile />}></Route>
           </Route>
           <Route
             path="dashboard/create"

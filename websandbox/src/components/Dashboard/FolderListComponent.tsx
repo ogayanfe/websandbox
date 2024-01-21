@@ -1,10 +1,9 @@
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import { Link, useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
+import { Link, useNavigate, useRevalidator } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import LaunchIcon from "@mui/icons-material/Launch";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
-import { getApiClient } from "../../utils/authutils";
 import { useState, useEffect } from "react";
 import Alert from "@mui/material/Alert";
 import CloseIcon from "@mui/icons-material/Close";
@@ -21,26 +20,17 @@ interface WebSandboxType {
   owner: number;
 }
 
-async function deleteSandbox(id: number, title: string, onSuccess: () => void) {
-  if (!confirm(`Are you sure you want to delete "${title}" from your projects?`)) return;
-  try {
-    const apiClient = getApiClient();
-    const res = await apiClient.delete(`/sandbox/${id}/destroy/`);
-    if (res.status < 400 && res.status >= 200) {
-      onSuccess();
-    }
-  } catch (error) {
-    console.log(error);
-    alert("Operation failed, check internet connection and try again");
-  }
-}
-
 interface FolderListElementComponentType {
   info: WebSandboxType;
   onDelete: () => void;
+  deleteSandbox?: (id: number, title: string, onSuccess: () => void) => Promise<void>;
 }
 
-function FolderListElementComponent({ info, onDelete }: FolderListElementComponentType) {
+function FolderListElementComponent({
+  info,
+  onDelete,
+  deleteSandbox,
+}: FolderListElementComponentType) {
   const authContext = useAuthContext();
   const navigate = useNavigate();
 
@@ -68,15 +58,17 @@ function FolderListElementComponent({ info, onDelete }: FolderListElementCompone
             <DriveFileRenameOutlineSharp />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Delete">
-          <IconButton
-            onClick={() => {
-              deleteSandbox(info.id, info.title, onDelete);
-            }}
-          >
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
+        {deleteSandbox && (
+          <Tooltip title="Delete">
+            <IconButton
+              onClick={() => {
+                deleteSandbox && deleteSandbox(info.id, info.title, onDelete);
+              }}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        )}
       </nav>
     </div>
   );
@@ -99,8 +91,15 @@ function CreateSandboxElementComponent() {
   );
 }
 
-function FolderListComponent() {
-  const data = useLoaderData() as WebSandboxType[];
+interface FolderListComponentPropType {
+  sandboxes: WebSandboxType[];
+  deleteSandbox?: (id: number, title: string, onSuccess: () => void) => Promise<void>;
+}
+
+export default function FolderListComponent({
+  sandboxes,
+  deleteSandbox,
+}: FolderListComponentPropType) {
   const validator = useRevalidator();
   const [alert, setAlert] = useState({
     deleteSuccess: false,
@@ -124,9 +123,10 @@ function FolderListComponent() {
       )}
       <div className="grid grid-cols-1 xm:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 p-5 gap-6 sm:px-20">
         <CreateSandboxElementComponent />
-        {data.map((p) => (
+        {sandboxes.map((p) => (
           <FolderListElementComponent
             info={p}
+            deleteSandbox={deleteSandbox}
             key={p.title + Math.random()} // Just for safety, to make sure key remain unique
             onDelete={() => {
               validator.revalidate();
@@ -139,12 +139,4 @@ function FolderListComponent() {
   );
 }
 
-function DashboardHome() {
-  return (
-    <div className="w-full py-2">
-      <FolderListComponent />
-    </div>
-  );
-}
-
-export default DashboardHome;
+export type { WebSandboxType };
