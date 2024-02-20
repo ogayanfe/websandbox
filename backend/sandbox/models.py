@@ -1,6 +1,6 @@
-from collections.abc import Collection
 import random
 import time
+from collections.abc import Collection
 from django.db import models
 from django.core.validators import RegexValidator
 from rest_framework.validators import ValidationError
@@ -33,6 +33,7 @@ class Sandbox(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     update = models.DateTimeField(auto_now=True)
     files = models.JSONField(default=get_default_files)
+    starred_users = models.ManyToManyField(User, related_name="starred")
 
     class Meta: 
         unique_together = ["owner", "title"]
@@ -41,6 +42,6 @@ class Sandbox(models.Model):
         if Sandbox.objects.filter(title__iexact=self.owner): 
             raise ValidationError("Sandbox Title Must Be Unique")
         return super().clean_fields(exclude)
-    
+
     def __str__(self): 
         return f'{self.owner.username} / {self.title}'

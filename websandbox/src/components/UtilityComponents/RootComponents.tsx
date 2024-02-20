@@ -24,8 +24,8 @@ async function getUserProfileData() {
 
 function BaseRootComponent({ children }: { children: React.ReactNode }) {
   return (
-    <div className="dark:bg-[rgb(14,_14,_14)] w-screen h-screen text-main flex flex-col">
-      <DashboardHeader />
+    <div className="dark:bg-[rgb(14,_14,_14)] w-screen flex h-screen text-main flex-col">
+      <DashboardHeader className="md:pt-6 md:px-12" />
       <div className="flex-grow overflow-y-auto w-full">{children}</div>
     </div>
   );

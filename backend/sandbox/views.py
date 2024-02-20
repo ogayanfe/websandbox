@@ -9,13 +9,20 @@ from django.shortcuts import get_object_or_404
 class SandboxListCreateAPIView(ListCreateAPIView):
     serializer_class = SandboxSerializer
 
-    def get_serializer_context(self):
-        ctx = super().get_serializer_context()
-        ctx["request"] = self.request
-        return ctx 
-
     def get_queryset(self):
+        filter = None
+        try: 
+            filter = self.request.GET["filter"]
+        except:
+            pass
+        if filter == "starred": 
+            return self.request.user.starred.all() 
         return Sandbox.objects.filter(owner=self.request.user)
+
+    def get_serializer_context(self):
+        context =  super().get_serializer_context()
+        context['user'] = self.request.user
+        return context
 
 
 class SandboxDestroyAPIView(DestroyAPIView): 

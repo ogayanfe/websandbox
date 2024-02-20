@@ -1,38 +1,36 @@
 import { Outlet, useLocation, useRevalidator } from "react-router-dom";
 import useAuthContext from "../../contexts/authContext";
-import { getApiClient } from "../../utils/authutils";
 import { useEffect } from "react";
 import { Tab, Tabs } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-
-export async function dashboardHomeLoader() {
-  const apiClient = getApiClient();
-  const response = await apiClient.get("/sandbox/");
-  return response.data;
-}
 
 export default function DashboardBase() {
   const location = useLocation();
   const authContext = useAuthContext();
   const revalidator = useRevalidator();
 
-  const [tabValue, setTabValue] = useState(() => {
+  function getTabName() {
     const p = location.pathname.split("/");
-    console.log(p[p.length - 1]);
     const lnode = p[p.length - 1];
-    console.log(lnode);
     return ["starred", "update"].includes(lnode) ? lnode : "work";
-  });
+  }
+
+  const [tabValue, setTabValue] = useState(getTabName());
 
   useEffect(() => {
     if (revalidator.state === "idle" && authContext?.authenticated && authContext.user === null) {
       revalidator.revalidate();
     }
   }, []);
+
+  useEffect(() => {
+    setTabValue(getTabName());
+  });
+
   return (
     <div className="flex flex-col items-center">
-      <h2 className="text-xl xl:text-2xl font-semibold text-center text-gray-800 dark:text-blue-100 p-8">
+      <h2 className="text-xl xl:text-2xl font-semibold text-center text-gray-800 dark:text-blue-100 p-4 pb-8">
         Welcome back, <span className="italic capitalize">{authContext?.user?.username}</span>
       </h2>
       <Tabs

@@ -1,7 +1,11 @@
 from rest_framework.serializers import ModelSerializer, ValidationError, SerializerMethodField
 from sandbox.models import Sandbox, get_default_files
+from accounts.serializers import UserInfoSerializer
 
-class SandboxSerializer(ModelSerializer): 
+class SandboxSerializer(ModelSerializer):
+    starred = SerializerMethodField()
+    owner = UserInfoSerializer()
+
     class Meta: 
         model = Sandbox
         fields = '__all__'
@@ -25,6 +29,12 @@ class SandboxSerializer(ModelSerializer):
             raise ValidationError("You have created a sandbox with similar name already")
         return value.lower()
     
+    def get_starred(self, sandbox): 
+        user = self.context.get("user", None)
+        if user is None: 
+            raise ValidationError("Couldn't get user information")
+        return sandbox.starred_users.filter(id=user.id).exists()
+
 
 class SandboxRetrieveUpdateSerializer(ModelSerializer):
     is_owner = SerializerMethodField()

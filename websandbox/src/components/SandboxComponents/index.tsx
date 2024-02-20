@@ -55,7 +55,7 @@ export default function SandboxHome() {
 
   return (
     <div className="flex flex-col w-screen h-screen dark:bg-[rgb(14,_14,_14)]">
-      <Header className="border-b-[1px] dark:border-[#343434]" />
+      <Header className="border-b-[1px] dark:border-[#343434] px-6" />
       <div className="h-full w-full flex-grow">
         <SplitPane
           split="vertical"

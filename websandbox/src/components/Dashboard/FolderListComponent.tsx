@@ -10,6 +10,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import useAuthContext from "../../contexts/authContext";
 import DriveFileRenameOutlineSharp from "@mui/icons-material/DriveFileRenameOutlineSharp";
 import { CodeTwoTone } from "@mui/icons-material";
+import { UserType } from "../../types/utils/authUtils";
 
 interface WebSandboxType {
   id: number;
@@ -17,7 +18,8 @@ interface WebSandboxType {
   files: JSON | null;
   created: string;
   last_updated: string;
-  owner: number;
+  owner: UserType;
+  starred: boolean;
 }
 
 interface FolderListElementComponentType {
@@ -40,16 +42,16 @@ function FolderListElementComponent({
     }
   });
   return (
-    <div className="relative rounded-md h-44 bg-gray-100 dark:bg-[rgb(29,_29,_29)] flex-col first-letter:shadow-xl flex">
+    <div className="relative rounded-md h-48 bg-gray-100 dark:bg-[rgb(29,_29,_29)] flex-col first-letter:shadow-xl flex">
       <div className="flex-grow text-grow flex items-center justify-center">
         <CodeTwoTone style={{ fontSize: "90px" }} />
       </div>
       <h3 className="text-gray-900 dark:text-white text-center p-3 rounded-b-md  bg-gray-300 dark:bg-[rgb(21,21,21)]">
-        {info.title}
+        {info.owner.username} / {info.title}
       </h3>
       <nav className="absolute flex gap-1 right-0">
         <Tooltip title="Open sandbox">
-          <IconButton to={`/${authContext?.user?.username}/${info.title}/`} component={Link}>
+          <IconButton to={`/${info.owner.username}/${info.title}/`} component={Link}>
             <LaunchIcon />
           </IconButton>
         </Tooltip>
@@ -78,7 +80,7 @@ function CreateSandboxElementComponent() {
   return (
     <Link
       to="./create"
-      className="rounded-md border-gray-500 dark:border-gray-300 h-44 border-2 flex-col first-letter:shadow-xl flex border-dashed"
+      className="rounded-md border-gray-500 dark:border-gray-300 h-48 border-2 flex-col first-letter:shadow-xl flex border-dashed"
     >
       <div className="flex-grow text-grow flex items-center justify-center">
         <AddRoundedIcon sx={{ fontSize: "90px" }} />
@@ -94,11 +96,13 @@ function CreateSandboxElementComponent() {
 interface FolderListComponentPropType {
   sandboxes: WebSandboxType[];
   deleteSandbox?: (id: number, title: string, onSuccess: () => void) => Promise<void>;
+  showCreateButton?: boolean;
 }
 
 export default function FolderListComponent({
   sandboxes,
   deleteSandbox,
+  showCreateButton,
 }: FolderListComponentPropType) {
   const validator = useRevalidator();
   const [alert, setAlert] = useState({
@@ -122,7 +126,7 @@ export default function FolderListComponent({
         </Alert>
       )}
       <div className="grid grid-cols-1 xm:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 p-5 gap-6 sm:px-20">
-        <CreateSandboxElementComponent />
+        {!!showCreateButton && <CreateSandboxElementComponent />}
         {sandboxes.map((p) => (
           <FolderListElementComponent
             info={p}

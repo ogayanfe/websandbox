@@ -21,7 +21,7 @@ export default function DashboardHeader({ className }: { className?: string }) {
     document.title = "WebSandbox | Dashboard";
   }, []);
   return (
-    <div className={_className + " W-full p-2 px-4 text-lg"}>
+    <div className={_className + " W-full p-3 text-lg"}>
       {(navigation.state === "submitting" || navigation.state === "loading") && (
         <LinearProgress sx={{ position: "fixed", width: "100%", left: 0, top: 0 }} />
       )}

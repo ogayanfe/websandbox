@@ -2,6 +2,12 @@ import { useLoaderData } from "react-router-dom";
 import FolderListComponent, { WebSandboxType } from "./FolderListComponent";
 import { getApiClient } from "../../utils/authutils";
 
+export async function dashboardHomeLoader() {
+  const apiClient = getApiClient();
+  const response = await apiClient.get("/sandbox/");
+  return response.data;
+}
+
 async function deleteSandbox(id: number, title: string, onSuccess: () => void) {
   if (!confirm(`Are you sure you want to delete "${title}" from your projects?`)) return;
   try {
@@ -20,7 +26,7 @@ function DashboardHome() {
   const data = useLoaderData() as WebSandboxType[];
   return (
     <div className="w-full py-2">
-      <FolderListComponent sandboxes={data} deleteSandbox={deleteSandbox} />
+      <FolderListComponent sandboxes={data} deleteSandbox={deleteSandbox} showCreateButton />
     </div>
   );
 }

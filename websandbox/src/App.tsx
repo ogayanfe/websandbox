@@ -10,7 +10,7 @@ import { redirectAuthenticatedUserRouteLoader } from "./utils/authutils";
 import LoginProtectedRouteRoot, {
   loginProtectedRouteLoader,
 } from "./components/UtilityComponents/LoginProtectedRouteRoot";
-import DashboardBase, { dashboardHomeLoader } from "./components/Dashboard";
+import DashboardBase from "./components/Dashboard";
 import createSandboxAction, { CreateSandboxComponent } from "./components/Dashboard/CreateSandbox";
 import Error from "./components/UtilityComponents/Error";
 import SandboxHome, { sandboxHomeLoader } from "./components/SandboxComponents";
@@ -19,8 +19,8 @@ import updateSandboxAction, {
   UpdateSandboxComponent,
   UpdateSandboxLoader,
 } from "./components/Dashboard/UpdateSandbox";
-import YourWorkComponent from "./components/Dashboard/YourWorkComponent";
-import StarredComponent from "./components/Dashboard/StarredComponent";
+import YourWorkComponent, { dashboardHomeLoader } from "./components/Dashboard/YourWorkComponent";
+import StarredComponent, { dashboardStarredLoader } from "./components/Dashboard/StarredComponent";
 import UpdateProfile, { updateProfileAction } from "./components/Dashboard/UpdateProfile";
 
 const router = createBrowserRouter(
@@ -35,7 +35,11 @@ const router = createBrowserRouter(
         <Route loader={loginProtectedRouteLoader} element={<LoginProtectedRouteRoot />}>
           <Route path="dashboard" element={<DashboardBase />} id="dashboard-base">
             <Route path="" element={<YourWorkComponent />} loader={dashboardHomeLoader}></Route>
-            <Route path="starred" element={<StarredComponent />}></Route>
+            <Route
+              path="starred"
+              element={<StarredComponent />}
+              loader={dashboardStarredLoader}
+            ></Route>
             <Route path="update" element={<UpdateProfile />} action={updateProfileAction}></Route>
           </Route>
           <Route
