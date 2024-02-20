@@ -60,7 +60,7 @@ function FolderListElementComponent({
             <DriveFileRenameOutlineSharp />
           </IconButton>
         </Tooltip>
-        {deleteSandbox && (
+        {!!(deleteSandbox && info.owner.id === authContext?.user?.id) && (
           <Tooltip title="Delete">
             <IconButton
               onClick={() => {
