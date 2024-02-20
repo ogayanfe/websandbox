@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { FileSystemTree } from "@webcontainer/api";
 import { TreeNodeType, TreeDataType, NodeType, FileModeType } from "../types/utils/sandboxUtils";
+import { getApiClient } from "./authutils";
 
 function getNode(id: string, rootNode: TreeDataType | TreeNodeType): NodeType | null {
   if (rootNode.id === id) return rootNode;
@@ -173,6 +174,20 @@ const tempData: TreeDataType = {
   children: [],
 };
 
+async function deleteSandbox(id: number, title: string, onSuccess: () => void) {
+  if (!confirm(`Are you sure you want to delete "${title}" from your projects?`)) return;
+  try {
+    const apiClient = getApiClient();
+    const res = await apiClient.delete(`/sandbox/${id}/destroy/`);
+    if (res.status < 400 && res.status >= 200) {
+      onSuccess();
+    }
+  } catch (error) {
+    console.log(error);
+    alert("Operation failed, check internet connection and try again");
+  }
+}
+
 export {
   deleteNode,
   updateNode,
@@ -185,6 +200,7 @@ export {
   updateFileContent,
   toContainerFileSystemTree,
   hashString,
+  deleteSandbox,
   hashArray,
 };
 export default tempData;

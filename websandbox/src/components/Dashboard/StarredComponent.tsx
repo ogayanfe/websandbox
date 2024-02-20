@@ -1,6 +1,7 @@
 import FolderListComponent, { WebSandboxType } from "./FolderListComponent";
 import { getApiClient } from "../../utils/authutils";
 import { useLoaderData } from "react-router-dom";
+import { deleteSandbox } from "../../utils/sandboxUtils";
 
 export async function dashboardStarredLoader() {
   const apiClient = getApiClient();
@@ -15,7 +16,7 @@ function StarredComponent() {
   return (
     <div className="w-full py-2">
       {data.length > 0 ? (
-        <FolderListComponent sandboxes={data} />
+        <FolderListComponent sandboxes={data} deleteSandbox={deleteSandbox} />
       ) : (
         <p className="text-2xl text-center w-full upperscase text-black dark:text-blue-100 capitaldize py-20">
           You have no starred items
