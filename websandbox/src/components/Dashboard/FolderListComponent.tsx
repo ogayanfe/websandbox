@@ -1,10 +1,10 @@
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import { Link, useNavigate, useRevalidator } from "react-router-dom";
+import { Link, useRevalidator } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import LaunchIcon from "@mui/icons-material/Launch";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Alert from "@mui/material/Alert";
 import CloseIcon from "@mui/icons-material/Close";
 import useAuthContext from "../../contexts/authContext";
@@ -34,13 +34,7 @@ function FolderListElementComponent({
   deleteSandbox,
 }: FolderListElementComponentType) {
   const authContext = useAuthContext();
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (authContext !== null && authContext.user === null) {
-      navigate("/login");
-    }
-  });
   return (
     <div className="relative rounded-md h-48 bg-gray-100 dark:bg-[rgb(29,_29,_29)] flex-col first-letter:shadow-xl flex">
       <div className="flex-grow text-grow flex items-center justify-center">

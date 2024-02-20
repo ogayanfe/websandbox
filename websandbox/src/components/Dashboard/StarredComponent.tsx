@@ -11,7 +11,6 @@ export async function dashboardStarredLoader() {
 
 function StarredComponent() {
   const data = useLoaderData() as WebSandboxType[];
-  console.log(data);
 
   return (
     <div className="w-full py-2">
