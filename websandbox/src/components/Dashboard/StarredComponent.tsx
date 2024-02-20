@@ -14,13 +14,12 @@ function StarredComponent() {
 
   return (
     <div className="w-full py-2">
-      {data.length > 0 ? (
-        <FolderListComponent sandboxes={data} deleteSandbox={deleteSandbox} />
-      ) : (
-        <p className="text-2xl text-center w-full upperscase text-black dark:text-blue-100 capitaldize py-20">
+      {!!(data.length === 0) && (
+        <p className="text-2xl text-center w-full upperscase text-black dark:text-blue-100 capitaldize py-4">
           You have no starred items
         </p>
       )}
+      <FolderListComponent sandboxes={data} deleteSandbox={deleteSandbox} showCreateButton />
     </div>
   );
 }

@@ -66,8 +66,8 @@ export default function UpdateProject() {
 
   useEffect(() => setError(extractErrorsFromResponse(data)), [data]);
   return (
-    <div className="w-full h-max flex items-center justify-center py-5">
-      <div className="w-[90vw] dark:bg-[rgb(17,17,17)] bg-gray-50 max-w-2xl p-6 h-max-content rounded-sm border-l-4">
+    <div className="w-full h-max flex items-center justify-center py-9">
+      <div className="w-[90vw] dark:bg-[rgb(17,17,17)] border dark:border-none max-w-2xl p-6 h-max-content rounded-xl">
         <h1 className="text-2xl text-gray-800 pb-4 font-semibold dark:text-gray-300 flex justify-center gap-1 items-center m-22">
           Update Your Details
         </h1>
@@ -83,7 +83,7 @@ export default function UpdateProject() {
             autoFocus
             name="username"
             required
-            className="p-2 text-sm text-gray-900 border-gray-400 dark:border-white dark:text-gray-200 bg-inherit border-2"
+            className="p-2 text-sm text-gray-900 border-gray-400 dark:border-gray-300 dark:text-gray-200 bg-inherit border rounded-lg"
             placeholder="username"
             id="signup-username"
           />
@@ -92,7 +92,7 @@ export default function UpdateProject() {
           </label>
           <input
             type="password"
-            className="p-2 text-sm text-gray-900 border-gray-400 dark:border-white dark:text-gray-200 bg-inherit border-2"
+            className="p-2 text-sm text-gray-900 border-gray-400 dark:border-gray-300 dark:text-gray-200 bg-inherit border rounded-lg"
             name="password"
             id="signup-password"
             required
@@ -103,7 +103,7 @@ export default function UpdateProject() {
           </label>
           <input
             type="password"
-            className="p-2 text-sm text-gray-900 border-gray-400 dark:border-white dark:text-gray-200 bg-inherit border-2"
+            className="p-2 text-sm text-gray-900 border-gray-400 dark:border-gray-300 dark:text-gray-200 bg-inherit border rounded-lg"
             name="password2"
             id="signup-password-2"
             required

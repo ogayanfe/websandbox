@@ -36,11 +36,11 @@ function FolderListElementComponent({
   const authContext = useAuthContext();
 
   return (
-    <div className="relative rounded-md h-48 bg-gray-100 dark:bg-[rgb(29,_29,_29)] flex-col first-letter:shadow-xl flex">
-      <div className="flex-grow text-grow flex items-center justify-center">
+    <div className="relative rounded-md h-48 dark:bg-[rgb(29,_29,_29)] bg-[rgb(252,252,252)] flex-col first-letter:shadow-xl flex">
+      <div className="flex-grow text-grow flex items-center justify-center border-gray-100 dark:border-none border">
         <CodeTwoTone style={{ fontSize: "90px" }} />
       </div>
-      <h3 className="text-gray-900 dark:text-white text-center p-3 rounded-b-md  bg-gray-300 dark:bg-[rgb(21,21,21)]">
+      <h3 className="text-gray-900 dark:text-white text-center p-3 rounded-b-md  bg-gray-200 dark:bg-[rgb(21,21,21)]">
         {info.owner.username} / {info.title}
       </h3>
       <nav className="absolute flex gap-1 right-0">
