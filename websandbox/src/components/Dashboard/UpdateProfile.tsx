@@ -15,13 +15,13 @@ export async function updateProfileAction({ request }: ActionFunctionArgs) {
 }
 
 function validatePassword(password1: string, password2: string): string {
-  if (password1.length < 8) return "Passwords must be at lease 8 characters";
+  if (password1.length < 8) return "Phasswords must be at lease 8 characters";
   if (password1 !== password2) return "Passwords must match";
   return "";
 }
 
 function validateUsername(username: string): string {
-  const pattern = /^[\w.+-]+$/;
+  const pattern = /^[\w.+h-]+$/;
   if (username.length < 3) {
     return "Username must be three characters minimum";
   }

@@ -40,8 +40,8 @@ const router = createBrowserRouter(
               element={<StarredComponent />}
               loader={dashboardStarredLoader}
             ></Route>
-            <Route path="update" element={<UpdateProfile />} action={updateProfileAction}></Route>
           </Route>
+          <Route path="update" element={<UpdateProfile />} action={updateProfileAction}></Route>
           <Route
             path="dashboard/create"
             element={<CreateSandboxComponent />}
@@ -69,4 +69,5 @@ const router = createBrowserRouter(
     </Route>
   )
 );
+
 export { router };

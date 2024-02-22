@@ -40,8 +40,8 @@ function FolderListElementComponent({
       <div className="flex-grow text-grow flex items-center justify-center border-gray-100 dark:border-none border">
         <CodeTwoTone style={{ fontSize: "90px" }} />
       </div>
-      <h3 className="text-gray-900 dark:text-white text-center p-3 rounded-b-md  bg-gray-200 dark:bg-[rgb(21,21,21)]">
-        {info.owner.username} / {info.title}
+      <h3 className="text-gray-700 dark:text-gray-200 text-center p-3 rounded-b-md  bg-gray-200 dark:bg-[rgb(21,21,21)] font-semibold">
+        @{info.owner.username} / <span className="dark:text-white font-bold">{info.title}</span>
       </h3>
       <nav className="absolute flex gap-1 right-0">
         <Tooltip title="Open sandbox">
@@ -119,9 +119,9 @@ export default function FolderListComponent({
           Successfully Deleted from sandbox
         </Alert>
       )}
-      <div className="grid grid-cols-1 xm:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 p-5 gap-6 sm:px-20">
+      <div className="grid grid-cols-1 xm:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 p-5 gap-6 sm:px-20">
         {!!showCreateButton && <CreateSandboxElementComponent />}
-        {sandboxes.map((p) => (
+        {sandboxes.concat(sandboxes).map((p) => (
           <FolderListElementComponent
             info={p}
             deleteSandbox={deleteSandbox}
