@@ -2,7 +2,7 @@ import { Icon } from "@iconify/react";
 import BreadCrumbs from "@mui/material/Breadcrumbs";
 import { Button, IconButton, Tooltip } from "@mui/material";
 import useSandboxContext from "../../contexts/sandboxContext";
-import { getFileIcon, hashString } from "../../utils/sandboxUtils";
+import { getFileIcon, hashString, starSandbox } from "../../utils/sandboxUtils";
 import { TreeNodeType } from "../../types/utils/sandboxUtils";
 import CodeEditor from "./CodeEditor";
 import useAuthContext from "../../contexts/authContext";
@@ -11,7 +11,7 @@ import { getApiClient } from "../../utils/authutils";
 import { useEffect, useState } from "react";
 import SplitPane from "split-pane-react/esm/SplitPane";
 import Browser from "./Browser";
-import { ForkLeftOutlined } from "@mui/icons-material";
+import { StarBorderOutlined, StarOutlined,  ForkLeftOutlined } from "@mui/icons-material";
 
 export default function NoFileOpenComponent() {
   return (
@@ -73,6 +73,14 @@ function FileContentHeaderComponent() {
     return () => document.removeEventListener("keydown", onCtrlPlusS);
   }, []);
 
+  async function handleStarSandbox(){
+    const onSuccess = (data: {starred: boolean}) =>{
+      const {setSandboxInfo, sandboxInfo} = sandboxContext; 
+      if (sandboxInfo && setSandboxInfo) setSandboxInfo({...sandboxInfo, is_starred: data.starred});
+    }
+    await starSandbox(sandboxContext.sandboxInfo?.owner.username || "", sandboxContext.sandboxInfo?.title || "", onSuccess)
+  }
+
   return (
     <header className="border-b-[1px] dark:border-[#343434] flex w-full px-4 p-1 items-center justify-between">
       {selectedPath && selectedPath.length >= 2 ? (
@@ -95,6 +103,16 @@ function FileContentHeaderComponent() {
         <div></div>
       )}
       <div className="flex items-center justify-center">
+      <Tooltip title="Add to starred project">
+          <IconButton aria-label="Fork Project" onClick={handleStarSandbox} disabled={!authContext?.authenticated()}>
+            {
+              sandboxContext.sandboxInfo && sandboxContext.sandboxInfo?.is_starred ? 
+              <StarOutlined/>
+                : 
+              <StarBorderOutlined/>
+            }
+          </IconButton>
+        </Tooltip>
         <Tooltip
           title={
             sandboxContext?.visibleSidebar ? "Close Sidebar (ctrl + b)" : "Open Sidebar (ctrl + b)"
@@ -118,7 +136,7 @@ function FileContentHeaderComponent() {
           </IconButton>
         </Tooltip>
         <Tooltip title="Fork project">
-          <IconButton aria-label="Fork Project" onClick={forkProject} color="primary">
+          <IconButton aria-label="Fork Project" onClick={forkProject} color="primary" disabled={!authContext?.authenticated()}>
             <ForkLeftOutlined></ForkLeftOutlined>
           </IconButton>
         </Tooltip>

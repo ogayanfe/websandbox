@@ -193,8 +193,21 @@ async function deleteSandbox(id: number, title: string, onSuccess: () => void) {
   }
 }
 
+type starSandboxData = {starred: boolean}
+async function starSandbox(username: string, project: string, onSuccess: (p: starSandboxData) => any){
+  try {
+    const apiClient = getApiClient()
+    const res = await apiClient.patch(`/sandbox/${username}/${project}/starred/`); 
+    const data = res.data as starSandboxData
+    onSuccess(data)
+  } catch (error) {
+    return error;
+  }
+}
+
 export {
   deleteNode,
+  starSandbox,
   updateNode,
   createNode,
   getFileMode,

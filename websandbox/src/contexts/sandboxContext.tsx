@@ -10,7 +10,7 @@ import tempData, {
   hashString,
   toContainerFileSystemTree,
 } from "../utils/sandboxUtils";
-import { TreeDataType, FileModeType, TreeNodeType } from "../types/utils/sandboxUtils";
+import { TreeDataType, FileModeType, TreeNodeType, SandboxInfoType } from "../types/utils/sandboxUtils";
 import {
   deleteContainerNode,
   mountFiles,
@@ -64,6 +64,7 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
   const [fileTreeHash, setFileTreeHash] = useState({ lastSaved: "", current: "" });
   const [currentNodeContextId, setCurrentNodeContextId] = useState<string | null>("");
   const [showForkComponent, setShowForkComponent] = useState(false);
+  const [sandboxInfo, setSandboxInfo] = useState<SandboxInfoType | undefined>(undefined)
 
   function deleteTreeNode(ids: string[]) {
     const treeCopy = { ...treeData };
@@ -143,6 +144,8 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
 
   const context: SandboxContextDataType = {
     currentNodeContextId,
+    sandboxInfo, 
+    setSandboxInfo: (d:SandboxInfoType) => setSandboxInfo(d), 
     visibleSidebar,
     showBrowser,
     showForkComponent,

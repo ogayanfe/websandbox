@@ -10,7 +10,7 @@ import { FileContentComponent } from "./FileContent";
 import SplitPane from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 import { hashString } from "../../utils/sandboxUtils";
-import { TreeDataType, TreeNodeType } from "../../types/utils/sandboxUtils";
+import { SandboxInfoType, TreeDataType, TreeNodeType } from "../../types/utils/sandboxUtils";
 import Footer from "./Footer";
 import { ForkSandboxComponent } from "./ForkSandboxComponent";
 
@@ -19,10 +19,19 @@ export async function sandboxHomeLoader({ params }: LoaderFunctionArgs) {
   const apiClient = getApiClient();
   try {
     const response = await apiClient.get(url);
+    console.log(response.data)
     return response.data;
   } catch (error) {
     throw new Response("Not Found", { status: 404 });
   }
+}
+
+interface SandboxLoaderDataType {
+  is_owner: boolean; 
+  title: string, 
+  is_starred: boolean
+  owner: {id: number; username: string}, 
+  files: TreeNodeType[],
 }
 
 export default function SandboxHome() {
@@ -30,7 +39,7 @@ export default function SandboxHome() {
   const [sizes, setSizes] = useState([250, "auto"]);
   const authContext = getAuthContext();
   const sandboxContext = useSandboxContext();
-  const data = useLoaderData() as { files: TreeNodeType[]; owner: UserType; is_owner: boolean };
+  const data = useLoaderData() as SandboxLoaderDataType;
   const treeData: TreeDataType = {
     id: null,
     name: "Root",
@@ -38,8 +47,15 @@ export default function SandboxHome() {
   };
 
   useEffect(() => {
+    const sandboxInfo: SandboxInfoType = {
+      is_owner: data.is_owner, 
+      title: data.title, 
+      is_starred: data.is_starred, 
+      owner: data.owner
+    }
     authContext?.updateUserInfo(userData);
     sandboxContext.updateTreeData(treeData);
+    sandboxContext.setSandboxInfo && sandboxContext.setSandboxInfo(sandboxInfo);
     hashString(JSON.stringify(data.files)).then((p: string) => {
       sandboxContext.updateFileTreeHash("lastSaved", p);
     });

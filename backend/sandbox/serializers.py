@@ -39,10 +39,11 @@ class SandboxSerializer(ModelSerializer):
 class SandboxRetrieveUpdateSerializer(ModelSerializer):
     is_owner = SerializerMethodField()
     owner = SerializerMethodField()
+    is_starred = SerializerMethodField()
 
     class Meta: 
         model = Sandbox
-        fields = ["files", "is_owner", 'owner', "title"]
+        fields = ["files", "is_owner", 'owner', "title", "is_starred"]
 
     def get_is_owner(self, sandbox):
         user = self.context.get("user", None)
@@ -53,3 +54,7 @@ class SandboxRetrieveUpdateSerializer(ModelSerializer):
             "username": sandbox.owner.username,
             "id": sandbox.owner.id, 
         }
+
+    def get_is_starred(self, sandbox): 
+        user = self.context.get("user", None)
+        return sandbox.starred_users.contains(user)

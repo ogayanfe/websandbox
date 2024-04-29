@@ -1,6 +1,6 @@
 import { NodeApi } from "react-arborist";
 import { AuthTokenType, CredentialsType, UserType } from "./utils/authUtils";
-import { FileModeType, TreeDataType, TreeNodeType } from "./utils/sandboxUtils";
+import { FileModeType, SandboxInfoType, TreeDataType, TreeNodeType } from "./utils/sandboxUtils";
 
 // AUTHCONTEXT TYPES DECLARATIONS
 
@@ -17,6 +17,8 @@ interface AuthContextDataType {
 
 interface SandboxContextDataType {
   currentNodeContextId: string | null;
+  sandboxInfo?: SandboxInfoType;
+  setSandboxInfo?: (r: SandboxInfoType) => void; 
   visibleSidebar: Boolean;
   showSidebar: () => void;
   hideSidebar: () => void;
