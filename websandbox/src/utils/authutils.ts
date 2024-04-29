@@ -7,7 +7,7 @@ import { CredentialsType, AuthTokenType, AccessTokenDecodedType } from "../types
 const SERVER_BASE_URL =
   location.hostname === "localhost" || location.hostname === "127.0.0.1"
     ? "http://127.0.0.1:8000"
-    : "https://friendly-space-lamp-jp5rxjxj4ggfvv4-8000.app.github.dev";
+    : "https://websandbox.pythonanywhere.com/";
 
 const TOKEN_OBTAIN_URL = `${SERVER_BASE_URL}/accounts/token/`;
 const TOKEN_REFRESH_URL = `${SERVER_BASE_URL}/accounts/token/refresh/`;
