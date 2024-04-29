@@ -53,7 +53,7 @@ INSTALLED_APPS = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://friendly-space-lamp-jp5rxjxj4ggfvv4-5174.app.github.dev"
+    "https://www.websandboxx.netlify.app"
 ]
 
 MIDDLEWARE = [

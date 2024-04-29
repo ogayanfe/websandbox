@@ -16,11 +16,7 @@ export default function CodeEditor() {
   const sandboxContext = useSandboxContext();
   const id = sandboxContext.selectedFileId;
   const node = getNode(sandboxContext.selectedFileId, sandboxContext.treeData) as FileNodeType;
-  const path = sandboxContext.getSelectedPath();
-  let name: string = "";
-  if (path && path[path.length - 1]) {
-    name = path[path.length - 1];
-  }
+  
   return (
     //@ts-ignore
     <AceEditor
