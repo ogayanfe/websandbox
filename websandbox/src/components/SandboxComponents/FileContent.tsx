@@ -92,7 +92,7 @@ function FileContentHeaderComponent() {
           ))}
           {selectedPath && (
             <div>
-              <div className="flex gap-2 items-center justify-center">
+              <div className="flex gap-2 items-center justify-center dark:text-white font-semibold text-gray-900">
                 <span>{getFileIcon(selectedPath[selectedPath.length - 1])}</span>
                 {selectedPath[selectedPath.length - 1]}
               </div>
