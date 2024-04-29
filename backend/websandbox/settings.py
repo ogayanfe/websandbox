@@ -53,7 +53,7 @@ INSTALLED_APPS = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://www.websandboxx.netlify.app"
+    "https://websandboxx.netlify.app"
 ]
 
 MIDDLEWARE = [
