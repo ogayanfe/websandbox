@@ -54,6 +54,7 @@ export async function installDependencies() {
   const webcontainerInstance = await getWebContainerInstance();
   if (installedDependencies) return;
   containerEventHandler.fireEvent("install-start");
+  
   console.log("Installing dependencies");
   while (true) {
     const installProcess = await webcontainerInstance.spawn("npm", ["install", "vite"]);
@@ -71,9 +72,20 @@ export async function installDependencies() {
   }
 }
 
+async function configureVite(){
+  console.log("Configuring Vite")
+  const webcontainerInstance = await getWebContainerInstance();
+  // Forces vite to show 404 page when application routes to non-existent route
+  const content = "import { defineConfig } from 'vite';export default defineConfig({appType: 'mpa'})"
+  await webcontainerInstance.fs.writeFile("/vite.config.js", content)
+}
+
 export async function startDevServer() {
   const webcontainerInstance = await getWebContainerInstance();
   containerEventHandler.fireEvent("server-starting");
+  
+  await configureVite()
+  
   const serverStart = await webcontainerInstance.spawn("npx", ["vite", "."]);
   serverStart.output.pipeTo(
     new WritableStream({
@@ -113,16 +125,6 @@ export async function createContainerFolder(path: string) {
   const container = await getWebContainerInstance();
   container.fs.mkdir(path, { recursive: true });
 }
-
-// export async function renameContainerNode(path: string[], name: string) {
-//   const newPath = [...path];
-//   newPath[path.length - 1] = name;
-//   console.log(path, newPath)
-//   const container = await getWebContainerInstance();
-//   await deleteContainerNode("/" +path.join("/"))
-//   await createContainerFile
-//   container.spawn("mv", ["/" + path.join("/"), "/" + newPath.join("/")]);
-// }
 
 export async function mountFiles(files: FileSystemTree) {
   const container = await getWebContainerInstance();

@@ -19,7 +19,11 @@ export default function DirectoryNode({
   }`;
 
   return (
-    <div className={nodeClassNames} style={style} ref={dragHandle}>
+    <div className={nodeClassNames} style={style} ref={dragHandle} onContextMenu={(e) => {
+      e.stopPropagation(); 
+      e.preventDefault()
+      sandboxContext.setCurrentNodeContextId(node.id)}
+    }>
       <div className="node-content flex items-center" onClick={() => node.toggle()}>
         {node.isLeaf ? (
           <>

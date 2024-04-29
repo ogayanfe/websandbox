@@ -15,3 +15,23 @@ class UserInfoSerializer(ModelSerializer):
         if User.objects.filter(username__iexact=value): 
             raise ValidationError("A user with that name already exists")
         return value.lower()
+
+    def create(self, validated_data):
+        password = validated_data.pop("password")
+        user = User.objects.create(**validated_data)
+        user.set_password(password)
+        user.save()
+        return user
+    
+    def update(self, instance, validated_data):
+        if not validated_data.get("password"): 
+            return super().update(instance, validated_data)
+        
+        password = validated_data.pop("password")
+        for key, value in validated_data.items(): 
+            setattr(instance, key, value)
+            
+        instance.set_password(password)
+        instance.save()
+        
+        return instance

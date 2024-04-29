@@ -146,6 +146,18 @@ async function signup(credentials: CredentialsType): Promise<AxiosResponse | nul
   }
 }
 
+async function updateProfile(credentials: {username?: string, password?: string}): Promise<AxiosResponse | null>{
+  const apiClient = getApiClient();
+  try{
+    await apiClient.patch<AuthTokenType>("/accounts/update/", credentials)
+    return null
+  }
+  catch(error){
+    if (error instanceof AxiosError) return error?.response || null;
+    return null
+  }
+}
+
 function redirectAuthenticatedUserRouteLoader() {
   if (getAuthTokens() !== null) {
     return redirect("/dashboard");
@@ -159,6 +171,7 @@ export {
   login,
   signup,
   logout,
+  updateProfile, 
   SERVER_BASE_URL,
   updateAuthTokens,
   clearAuthTokens,

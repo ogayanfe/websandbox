@@ -1,8 +1,9 @@
 import { Form, ActionFunctionArgs, useActionData } from "react-router-dom";
-import { signup } from "../../utils/authutils";
+import { updateProfile} from "../../utils/authutils";
 import { useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
 import Alert from "@mui/material/Alert";
+import useAuthContext from "../../contexts/authContext";
 
 export async function updateProfileAction({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
@@ -11,11 +12,13 @@ export async function updateProfileAction({ request }: ActionFunctionArgs) {
     username: username ? username.toString() : "",
     password: password ? password.toString() : "",
   };
-  return signup(credentials);
+  if (credentials.username && credentials.password) return updateProfile(credentials);
+  if (credentials.username) return updateProfile({username: credentials.username})
+  return updateProfile({password: credentials.password})
 }
 
 function validatePassword(password1: string, password2: string): string {
-  if (password1.length < 8) return "Phasswords must be at lease 8 characters";
+  if (password1.length < 8) return "Passwords must be at lease 8 characters";
   if (password1 !== password2) return "Passwords must match";
   return "";
 }
@@ -41,7 +44,7 @@ function extractErrorsFromResponse(res: AxiosResponse | null) {
 
 export default function UpdateProject() {
   const data = useActionData() as AxiosResponse | null;
-
+  const authContext = useAuthContext()
   const [error, setError] = useState(() => extractErrorsFromResponse(data));
 
   const handleSubmit = (e: React.SyntheticEvent) => {
@@ -51,20 +54,22 @@ export default function UpdateProject() {
       password2: { value: string };
     };
     const [username, password, password2] = [
-      target.username.value,
+      target.username.value || authContext?.user?.username,
       target.password.value,
       target.password2.value,
     ];
     const errors = {
-      username: validateUsername(username),
+      username: validateUsername(username || ""),
       password: validatePassword(password, password2),
     };
+    if ((password.length + password2.length) === 0) errors.password = "";
     if (errors.username.length + errors.password.length === 0) return;
     setError(errors);
     e.preventDefault();
   };
 
   useEffect(() => setError(extractErrorsFromResponse(data)), [data]);
+  
   return (
     <div className="w-full h-max flex items-center justify-center py-9">
       <div className="w-[90vw] dark:bg-[rgb(17,17,17)] border dark:border-none max-w-2xl p-6 h-max-content rounded-xl">
@@ -82,9 +87,8 @@ export default function UpdateProject() {
             type="text"
             autoFocus
             name="username"
-            required
             className="p-2 text-sm text-gray-900 border-gray-400 dark:border-gray-300 dark:text-gray-200 bg-inherit border rounded-lg"
-            placeholder="username"
+            placeholder={authContext?.user?.username || "Username"}
             id="signup-username"
           />
           <label htmlFor="signup-password" className=" text-gray-900 dark:text-gray-200">
@@ -95,7 +99,6 @@ export default function UpdateProject() {
             className="p-2 text-sm text-gray-900 border-gray-400 dark:border-gray-300 dark:text-gray-200 bg-inherit border rounded-lg"
             name="password"
             id="signup-password"
-            required
             placeholder="Password"
           />
           <label htmlFor="signup-password-2" className=" text-gray-900 dark:text-gray-200">
@@ -106,12 +109,11 @@ export default function UpdateProject() {
             className="p-2 text-sm text-gray-900 border-gray-400 dark:border-gray-300 dark:text-gray-200 bg-inherit border rounded-lg"
             name="password2"
             id="signup-password-2"
-            required
             placeholder="Password Again"
           />
           <div>
-            <button className="bg-blue-600 text-gray-100 rounded-full px-2 w-20 py-1 float-right mt-2">
-              Signup
+            <button className="bg-[#1976d2] shadow-lg text-gray-100 rounded-md mt-3 px-3 w-20 py-2 float-right" >
+              Update
             </button>
           </div>
         </Form>

@@ -1,4 +1,4 @@
-from rest_framework.generics import RetrieveAPIView, CreateAPIView
+from rest_framework.generics import RetrieveAPIView, CreateAPIView, UpdateAPIView
 from accounts.models import User
 from accounts.serializers import UserInfoSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -41,3 +41,11 @@ class SignUpAPIView(CreateAPIView):
         headers = self.get_success_headers(serializer.data)
         tokens = get_user_tokens(instance)
         return Response(tokens, status=status.HTTP_201_CREATED, headers=headers)
+
+class UpdateProfileAPIView(UpdateAPIView): 
+    model = User
+    serializer_class = UserInfoSerializer
+    queryset = User.objects
+
+    def get_object(self): 
+        return self.request.user

@@ -13,7 +13,7 @@ export default function DashboardBase() {
   function getTabName() {
     const p = location.pathname.split("/");
     const lnode = p[p.length - 1];
-    return lnode === "starred" ? lnode : "work";
+    return ["starred", "update"].includes(lnode) ? lnode : "work";
   }
 
   const [tabValue, setTabValue] = useState(getTabName());
@@ -37,6 +37,7 @@ export default function DashboardBase() {
         >
           <Tab label="Your Work" component={Link} value="work" to="./" />
           <Tab label="Starred projects" component={Link} value="starred" to="./starred" />
+          <Tab label="Update Profile" component={Link} value="update" to="./update" />
         </Tabs>
       </div>
       <div className="flex flex-col items-center h-full w-full max-w-[1800px]">
@@ -53,6 +54,7 @@ export default function DashboardBase() {
           >
             <Tab label="Your Work" component={Link} value="work" to="./" />
             <Tab label="Starred projects" component={Link} value="starred" to="./starred" />
+            <Tab label="Update Profile" component={Link} value="update" to="./update" />
           </Tabs>
         </div>
         <Outlet />
