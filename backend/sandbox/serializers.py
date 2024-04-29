@@ -4,15 +4,15 @@ from accounts.serializers import UserInfoSerializer
 
 class SandboxSerializer(ModelSerializer):
     starred = SerializerMethodField()
-    owner = UserInfoSerializer()
+    owner = UserInfoSerializer(read_only=True)
 
     class Meta: 
         model = Sandbox
         fields = '__all__'
         extra_kwargs = {
-            "owner": {
+            "starred_users": {
                 "read_only": True, 
-            }, 
+            }
         }
 
     def create(self, validated_data):

@@ -31,7 +31,7 @@ export default function DirectoryTree() {
       searchTerm={sandboxContext.searchTerm}
       searchMatch={(node, term) => node.data.name.toLowerCase().includes(term.toLowerCase())}
       onDelete={({ ids }) => sandboxContext.deleteTreeNode(ids)}
-      onRename={({ id, name }) => sandboxContext.updateTreeNode(id, name)}
+      onRename={({ id, name, node }) => sandboxContext.updateTreeNode(id, name, node)}
       onCreate={({ parentId, type }) => sandboxContext.createTreeNode(parentId, type)}
       onMove={({ parentId, dragIds }) => sandboxContext.moveTreeNode(dragIds, parentId)}
     >

@@ -10,14 +10,14 @@ import tempData, {
   hashString,
   toContainerFileSystemTree,
 } from "../utils/sandboxUtils";
-import { TreeDataType, FileModeType } from "../types/utils/sandboxUtils";
+import { TreeDataType, FileModeType, TreeNodeType } from "../types/utils/sandboxUtils";
 import {
   deleteContainerNode,
   mountFiles,
-  renameContainerNode,
   updateContainerFile,
 } from "../utils/containerUtils";
 import { SandboxContextDataType } from "../types/contexts";
+import { NodeApi } from "react-arborist";
 
 const sandboxContext = createContext<SandboxContextDataType>({
   visibleSidebar: true,
@@ -78,15 +78,18 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
     setTreeData(treeCopy);
   }
 
-  function updateTreeNode(id: string, name: string) {
+  function updateTreeNode(id: string, name: string, node: NodeApi<TreeNodeType>) {
     const treeCopy = { ...treeData };
     const path = getNodePath(id, treeCopy);
     const updated = updateNode(id, name, treeCopy);
     if (!updated) return;
     if (!path) return;
-    renameContainerNode(path.slice(1), name);
+    deleteTreeNode([id])
+    const type = node.isLeaf ? "leaf": "internal"
+    createNode(node.parent?.id || null, name, node.id, type, node.data.content || undefined, node.data.children || undefined, treeCopy)
     setTreeData(treeCopy);
     setSelectedFileId(id);
+    mountFiles(toContainerFileSystemTree(treeCopy))
   }
 
   function updateFileFieldContent(id: string, content: string) {
@@ -103,7 +106,7 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
     const treeCopy = { ...treeData };
     const name = window.prompt(`Enter ${type === "leaf" ? "file" : "folder"} Name:`);
     if (!name) return null;
-    let created = createNode(parentId, name, Math.random().toString(), type, treeCopy);
+    let created = createNode(parentId, name, Math.random().toString(), type, undefined, undefined, treeCopy);
     if (!created) return null;
     setTreeData(treeCopy);
     mountFiles(toContainerFileSystemTree(treeCopy));

@@ -2,6 +2,7 @@ import { ActionFunctionArgs, Form, redirect, useActionData } from "react-router-
 import { getApiClient } from "../../utils/authutils";
 import { AxiosError } from "axios";
 import Alert from "@mui/material/Alert";
+
 import useAuthContext from "../../contexts/authContext";
 
 interface CreateSandboxActionType {
@@ -20,7 +21,6 @@ export default async function createSandboxAction({ request }: ActionFunctionArg
     });
     return redirect("/" + username + "/" + name);
   } catch (error) {
-    console.log(error);
     if (error instanceof AxiosError) {
       return { error: true, data: await error?.response?.data.title[0] };
     }

@@ -47,11 +47,12 @@ function moveNode(nodeId: string, parentId: string | null, tree: NodeType) {
   _createNode(parentId, nodeCopy, tree);
 }
 
-function addNodeAttributes(name: string, id: string, type: "internal" | "leaf") {
-  if (type === "internal") {
-    return { id: id, name: name, children: [] };
-  }
-  return { id: id, name: name, content: "" };
+function addFileNodeAttributes(name: string, id: string, content: string){
+  return { id: id, name: name, content: content };
+}
+
+function addFolderNodeAttributes(name: string, id: string, children: TreeNodeType[]){
+  return { id: id, name: name, children: children };
 }
 
 function getFileIcon(name: string): React.ReactNode {
@@ -72,10 +73,14 @@ function createNode(
   name: string,
   nodeId: string,
   type: "leaf" | "internal",
+  content: string | undefined, 
+  children: TreeNodeType[]| undefined,
   rootNode: NodeType
 ): boolean {
-  const nodeData = addNodeAttributes(name, nodeId, type);
-  return _createNode(parentId, nodeData, rootNode);
+  if (type === "leaf"){
+    return _createNode(parentId, addFileNodeAttributes(name, nodeId, content || ""), rootNode);
+  }
+  return _createNode(parentId, addFolderNodeAttributes(name, nodeId, children || []), rootNode);
 }
 
 function _createNode(parentId: string | null, nodeData: TreeNodeType, rootNode: NodeType): boolean {

@@ -121,7 +121,7 @@ export default function FolderListComponent({
       )}
       <div className="grid grid-cols-1 xm:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 p-5 gap-6 sm:px-20">
         {!!showCreateButton && <CreateSandboxElementComponent />}
-        {sandboxes.concat(sandboxes).map((p) => (
+        {sandboxes.map((p) => (
           <FolderListElementComponent
             info={p}
             deleteSandbox={deleteSandbox}

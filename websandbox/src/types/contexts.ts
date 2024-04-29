@@ -1,5 +1,6 @@
+import { NodeApi } from "react-arborist";
 import { AuthTokenType, CredentialsType, UserType } from "./utils/authUtils";
-import { FileModeType, TreeDataType } from "./utils/sandboxUtils";
+import { FileModeType, TreeDataType, TreeNodeType } from "./utils/sandboxUtils";
 
 // AUTHCONTEXT TYPES DECLARATIONS
 
@@ -34,7 +35,7 @@ interface SandboxContextDataType {
   searchTerm: string;
   updateSearchTerm: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   deleteTreeNode: (id: string[]) => void;
-  updateTreeNode: (id: string, name: string) => void;
+  updateTreeNode: (id: string, name: string, node: NodeApi<TreeNodeType>) => void;
   createTreeNode: (parentId: string | null, type: "leaf" | "internal") => null;
   moveTreeNode: (ids: string[], parentId: string | null) => void;
   selectedFileId: string;

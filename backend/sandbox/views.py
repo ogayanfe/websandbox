@@ -9,6 +9,9 @@ from django.shortcuts import get_object_or_404
 class SandboxListCreateAPIView(ListCreateAPIView):
     serializer_class = SandboxSerializer
 
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+    
     def get_queryset(self):
         filter = None
         try: 

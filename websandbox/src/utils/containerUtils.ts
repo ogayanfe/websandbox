@@ -2,6 +2,7 @@ import { FileSystemTree, WebContainer } from "@webcontainer/api";
 import { Mutex } from "async-mutex";
 import { containerEventName, containerEventStore } from "../types/utils/containderUtils";
 
+
 class ContainerEventsHandler {
   eventStore: containerEventStore;
   constructor() {
@@ -51,7 +52,6 @@ const installMutex = new Mutex();
 export async function installDependencies() {
   await installMutex.acquire();
   const webcontainerInstance = await getWebContainerInstance();
-
   if (installedDependencies) return;
   containerEventHandler.fireEvent("install-start");
   console.log("Installing dependencies");
@@ -114,13 +114,15 @@ export async function createContainerFolder(path: string) {
   container.fs.mkdir(path, { recursive: true });
 }
 
-export async function renameContainerNode(path: string[], name: string) {
-  const newPath = [...path];
-  newPath[path.length - 1] = name;
-  const container = await getWebContainerInstance();
-
-  container.spawn("mv", ["/" + path.join("/"), "/" + newPath.join("/")]);
-}
+// export async function renameContainerNode(path: string[], name: string) {
+//   const newPath = [...path];
+//   newPath[path.length - 1] = name;
+//   console.log(path, newPath)
+//   const container = await getWebContainerInstance();
+//   await deleteContainerNode("/" +path.join("/"))
+//   await createContainerFile
+//   container.spawn("mv", ["/" + path.join("/"), "/" + newPath.join("/")]);
+// }
 
 export async function mountFiles(files: FileSystemTree) {
   const container = await getWebContainerInstance();
