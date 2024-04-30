@@ -57,4 +57,6 @@ class SandboxRetrieveUpdateSerializer(ModelSerializer):
 
     def get_is_starred(self, sandbox): 
         user = self.context.get("user", None)
+        if user.is_anonymous:
+            return False 
         return sandbox.starred_users.contains(user)
