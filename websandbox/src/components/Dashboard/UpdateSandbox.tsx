@@ -22,7 +22,6 @@ export default async function updateSandboxAction({ request }: ActionFunctionArg
   const owner = formData.get("owner_username");
   const project = formData.get("project");
   const title = formData.get("title");
-  console.log(title);
   try {
     await apiClient.patch(`/sandbox/${owner}/${project}/`, {
       title: title,
