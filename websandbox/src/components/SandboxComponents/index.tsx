@@ -9,7 +9,7 @@ import useSandboxContext from "../../contexts/sandboxContext";
 import { FileContentComponent } from "./FileContent";
 import SplitPane from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
-import { hashString } from "../../utils/sandboxUtils";
+import { capitalizeText, hashString } from "../../utils/sandboxUtils";
 import { SandboxInfoType, TreeDataType, TreeNodeType } from "../../types/utils/sandboxUtils";
 import Footer from "./Footer";
 import { ForkSandboxComponent } from "./ForkSandboxComponent";
@@ -67,6 +67,13 @@ export default function SandboxHome() {
     }
     setSizes([0, "auto"]);
   }, [sandboxContext.visibleSidebar]);
+
+  useEffect(() => {
+    const pre = ('@' + sandboxContext.sandboxInfo?.owner.username.toLowerCase()) || 'Sandbox';
+    const suf = capitalizeText(sandboxContext.sandboxInfo?.title || "View");
+    document.title = `websandbox - ${pre} / ${suf}`;
+
+  }, [sandboxContext]);
 
   return (
     <div className="flex flex-col w-screen h-screen dark:bg-[rgb(14,_14,_14)]">

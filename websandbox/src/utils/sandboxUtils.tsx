@@ -142,7 +142,9 @@ function getNodePath(id: string | null, node: NodeType): string[] | null {
 }
 
 function getFileMode(name: string): FileModeType {
-  if (name.endsWith(".js") || name.endsWith(".ts")) return "javascript";
+  if (name.endsWith(".js") || name.endsWith(".ts") || name.endsWith(".tsx") || name.endsWith(".jsx")){ 
+    return "javascript";
+  };
   if (name.endsWith(".css")) return "css";
   if (name.endsWith(".html") || name.endsWith(".svg")) return "html";
   if (name.endsWith(".json")) return "json";
@@ -205,8 +207,14 @@ async function starSandbox(username: string, project: string, onSuccess: (p: sta
   }
 }
 
+function capitalizeText(text: string) : string {
+  if (text.length == 0) return text; 
+  return text[0].toUpperCase() + text.slice(1).toLowerCase()
+}
+
 export {
   deleteNode,
+  capitalizeText,
   starSandbox,
   updateNode,
   createNode,

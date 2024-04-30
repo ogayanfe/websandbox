@@ -1,6 +1,7 @@
 import { Link, Form, redirect, useActionData, ActionFunctionArgs } from "react-router-dom";
 import { login } from "../../utils/authutils";
 import Alert from "@mui/material/Alert";
+import { useEffect } from "react";
 
 export async function loginAction({ request }: ActionFunctionArgs) {
   let formData = await request.formData();
@@ -21,6 +22,11 @@ export async function loginAction({ request }: ActionFunctionArgs) {
 export default function Login() {
   const data = useActionData();
   let error = data === undefined ? false : true;
+
+  useEffect(() => {
+    document.title = "Websandbox | Login";
+
+  }, []);
 
   return (
     <main className="w-full h-full flex items-center justify-center">
