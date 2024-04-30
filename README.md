@@ -6,7 +6,12 @@ An online websandbox. Build your web application completely on the web. It suppo
 <br/>
 
 ## Project Demo
-> ### Editor Light Theme
-![localhost_5173_admin_websandbox_ (2)](https://github.com/ogayanfe/websandbox/assets/95624629/388ddfd7-a31e-47f7-819f-e3fb89dc14ff)
-> ### Editor Dark theme
-![localhost_5173_admin_websandbox_ (1)](https://github.com/ogayanfe/websandbox/assets/95624629/51d6c05b-ec28-42f9-8bb1-0e820851242b)
+> Click this linke to go to <a href="https://websandboxx.netlify.app" targe="_blank">project live demo</a> <br/><br/>
+## Project Images
+> ### Dashboard 
+> ![websandboxx netlify app_dashboard_ (3)](https://github.com/ogayanfe/websandbox/assets/95624629/86b866b5-b5a5-472b-8dc6-4404dd630398) <br/><br/>
+> ![websandboxx netlify app_dashboard_ (1)](https://github.com/ogayanfe/websandbox/assets/95624629/9c67f93e-4286-4bb6-8fcb-3bbcc4a0c05e) <br/>
+> ### Sandbox
+> ![websandboxx netlify app_dashboard_ (2)](https://github.com/ogayanfe/websandbox/assets/95624629/1472ecb2-2957-4281-a34c-d77187bd9e4a) <br/><br/>
+> ![websandboxx netlify app_dashboard_](https://github.com/ogayanfe/websandbox/assets/95624629/08663cb9-32ae-4b0f-bb79-26c62c8499a8)
+
