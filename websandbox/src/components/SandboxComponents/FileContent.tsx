@@ -11,7 +11,11 @@ import { getApiClient } from "../../utils/authutils";
 import { useEffect, useState } from "react";
 import SplitPane from "split-pane-react/esm/SplitPane";
 import Browser from "./Browser";
-import { StarBorderOutlined, StarOutlined,  ForkLeftOutlined } from "@mui/icons-material";
+import {
+  StarBorderOutlined,
+  StarOutlined,
+  ForkLeftOutlined,
+} from "@mui/icons-material";
 
 export default function NoFileOpenComponent() {
   return (
@@ -20,7 +24,9 @@ export default function NoFileOpenComponent() {
         <Icon icon="teenyicons:box-outline"></Icon>
         <div>Websandbox</div>
       </div>
-      <p className="text-gray-700 dark:text-blue-100 text-md">Open file to view content</p>
+      <p className="text-gray-700 dark:text-blue-100 text-md">
+        Open file to view content
+      </p>
     </div>
   );
 }
@@ -32,13 +38,20 @@ function FileContentHeaderComponent() {
   const param = useParams();
 
   async function saveChanges() {
-    if (sandboxContext.fileTreeHash.current === sandboxContext.fileTreeHash.lastSaved) return;
+    if (
+      sandboxContext.fileTreeHash.current ===
+      sandboxContext.fileTreeHash.lastSaved
+    )
+      return;
     const apiClient = getApiClient();
     const data = {
       files: sandboxContext.treeData.children,
     };
     try {
-      const res = (await apiClient.patch(`/sandbox/${param.username}/${param.project}/`, data)) as {
+      const res = (await apiClient.patch(
+        `/sandbox/${param.username}/${param.project}/`,
+        data
+      )) as {
         data: { files: TreeNodeType[] };
       };
       hashString(JSON.stringify(res.data.files)).then((r: string) => {
@@ -61,11 +74,19 @@ function FileContentHeaderComponent() {
         document.getElementById("save-button")?.click();
         e.preventDefault();
       }
-      if (e.ctrlKey && e.shiftKey && (e.key.toLowerCase() === "b" || e.keyCode === 66)) {
+      if (
+        e.ctrlKey &&
+        e.shiftKey &&
+        (e.key.toLowerCase() === "b" || e.keyCode === 66)
+      ) {
         sandboxContext.toggleBrowser();
         e.preventDefault();
       }
-      if (e.ctrlKey && !e.shiftKey && (e.key.toLowerCase() === "b" || e.keyCode === 66)) {
+      if (
+        e.ctrlKey &&
+        !e.shiftKey &&
+        (e.key.toLowerCase() === "b" || e.keyCode === 66)
+      ) {
         sandboxContext.toggleSidebar();
       }
     }
@@ -73,12 +94,17 @@ function FileContentHeaderComponent() {
     return () => document.removeEventListener("keydown", onCtrlPlusS);
   }, []);
 
-  async function handleStarSandbox(){
-    const onSuccess = (data: {starred: boolean}) =>{
-      const {setSandboxInfo, sandboxInfo} = sandboxContext; 
-      if (sandboxInfo && setSandboxInfo) setSandboxInfo({...sandboxInfo, is_starred: data.starred});
-    }
-    await starSandbox(sandboxContext.sandboxInfo?.owner.username || "", sandboxContext.sandboxInfo?.title || "", onSuccess)
+  async function handleStarSandbox() {
+    const onSuccess = (data: { starred: boolean }) => {
+      const { setSandboxInfo, sandboxInfo } = sandboxContext;
+      if (sandboxInfo && setSandboxInfo)
+        setSandboxInfo({ ...sandboxInfo, is_starred: data.starred });
+    };
+    await starSandbox(
+      sandboxContext.sandboxInfo?.owner.username || "",
+      sandboxContext.sandboxInfo?.title || "",
+      onSuccess
+    );
   }
 
   return (
@@ -93,7 +119,9 @@ function FileContentHeaderComponent() {
           {selectedPath && (
             <div>
               <div className="flex gap-2 items-center justify-center dark:text-white font-semibold text-gray-900">
-                <span>{getFileIcon(selectedPath[selectedPath.length - 1])}</span>
+                <span>
+                  {getFileIcon(selectedPath[selectedPath.length - 1])}
+                </span>
                 {selectedPath[selectedPath.length - 1]}
               </div>
             </div>
@@ -103,26 +131,43 @@ function FileContentHeaderComponent() {
         <div></div>
       )}
       <div className="flex items-center justify-center">
-      <Tooltip title="Add to starred project">
-          <IconButton aria-label="Fork Project" onClick={handleStarSandbox} disabled={!authContext?.authenticated()}>
-            {
-              sandboxContext.sandboxInfo && sandboxContext.sandboxInfo?.is_starred ? 
-              <StarOutlined/>
-                : 
-              <StarBorderOutlined/>
-            }
-          </IconButton>
+        <Tooltip title="Add to starred project">
+          <span>
+            <IconButton
+              aria-label="Fork Project"
+              onClick={handleStarSandbox}
+              disabled={!authContext?.authenticated()}
+            >
+              {sandboxContext.sandboxInfo &&
+              sandboxContext.sandboxInfo?.is_starred ? (
+                <StarOutlined />
+              ) : (
+                <StarBorderOutlined />
+              )}
+            </IconButton>
+          </span>
         </Tooltip>
         <Tooltip
           title={
-            sandboxContext?.visibleSidebar ? "Close Sidebar (ctrl + b)" : "Open Sidebar (ctrl + b)"
+            sandboxContext?.visibleSidebar
+              ? "Close Sidebar (ctrl + b)"
+              : "Open Sidebar (ctrl + b)"
           }
         >
-          <IconButton aria-label="Toggle Sidebar" onClick={sandboxContext.toggleSidebar}>
-            <Icon
-              icon={sandboxContext.visibleSidebar ? "lucide:sidebar-close" : "lucide:sidebar-open"}
-            />
-          </IconButton>
+          <span>
+            <IconButton
+              aria-label="Toggle Sidebar"
+              onClick={sandboxContext.toggleSidebar}
+            >
+              <Icon
+                icon={
+                  sandboxContext.visibleSidebar
+                    ? "lucide:sidebar-close"
+                    : "lucide:sidebar-open"
+                }
+              />
+            </IconButton>
+          </span>
         </Tooltip>
         <Tooltip
           title={
@@ -131,19 +176,37 @@ function FileContentHeaderComponent() {
               : "Show Browser (ctrl + shift + b)"
           }
         >
-          <IconButton aria-label="Toggle Browser Visibility" onClick={sandboxContext.toggleBrowser}>
-            <Icon icon={sandboxContext.showBrowser ? "ion:browsers" : "gg:browser"} />
-          </IconButton>
+          <span>
+            <IconButton
+              aria-label="Toggle Browser Visibility"
+              onClick={sandboxContext.toggleBrowser}
+            >
+              <Icon
+                icon={
+                  sandboxContext.showBrowser ? "ion:browsers" : "gg:browser"
+                }
+              />
+            </IconButton>
+          </span>
         </Tooltip>
         <Tooltip title="Fork project">
-          <IconButton aria-label="Fork Project" onClick={forkProject} color="primary" disabled={!authContext?.authenticated()}>
-            <ForkLeftOutlined></ForkLeftOutlined>
-          </IconButton>
+          <span>
+            <IconButton
+              aria-label="Fork Project"
+              onClick={forkProject}
+              color="primary"
+              disabled={!authContext?.authenticated()}
+            >
+              <ForkLeftOutlined></ForkLeftOutlined>
+            </IconButton>
+          </span>
         </Tooltip>
         <div className="md:hidden">
           <Tooltip
             title={
-              authContext?.authenticated() ? "Save Project (ctrl + s)" : "Login to save project"
+              authContext?.authenticated()
+                ? "Save Project (ctrl + s)"
+                : "Login to save project"
             }
           >
             <span>
@@ -162,7 +225,9 @@ function FileContentHeaderComponent() {
         <div className="max-md:hidden">
           <Tooltip
             title={
-              authContext?.authenticated() ? "Save Project (ctrl + s)" : "Login to save project"
+              authContext?.authenticated()
+                ? "Save Project (ctrl + s)"
+                : "Login to save project"
             }
           >
             <span>
@@ -188,7 +253,10 @@ function FileContentHeaderComponent() {
 
 export function FileContentComponent() {
   const sandboxContext = useSandboxContext();
-  const [splitSizes, setSplitSizes] = useState<(string | number)[]>(["auto", "30%"]);
+  const [splitSizes, setSplitSizes] = useState<(string | number)[]>([
+    "auto",
+    "30%",
+  ]);
 
   useEffect(() => {
     if (sandboxContext.showBrowser) {
@@ -210,7 +278,11 @@ export function FileContentComponent() {
             onChange={(sizes) => setSplitSizes(sizes)}
             allowResize={sandboxContext.showBrowser}
           >
-            {sandboxContext.selectedFileId ? <CodeEditor /> : <NoFileOpenComponent />}
+            {sandboxContext.selectedFileId ? (
+              <CodeEditor />
+            ) : (
+              <NoFileOpenComponent />
+            )}
             <Browser />
           </SplitPane>
         </div>
