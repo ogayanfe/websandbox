@@ -80,11 +80,17 @@ export default function Demos() {
       <h2 className="text-lg xl:text-2xl font-semibold text-gray-800 text-center dark:text-blue-100 p-4">
         Project Demos
       </h2>
-      <div className="grid w-full grid-cols-1 px-8 mxm:px-8 lg:grid-cols-3 mxm:grid-cols-2 mx-auto gap-8 py-8 max-w-7xl">
-        {data.map((i) => (
-          <DemoItem info={i} key={i.id} />
-        ))}
-      </div>
+      {data && data.length > 0 ? (
+        <div className="grid w-full grid-cols-1 px-8 mxm:px-8 lg:grid-cols-3 mxm:grid-cols-2 mx-auto gap-8 py-8 max-w-7xl">
+          {data.map((i) => (
+            <DemoItem info={i} key={i.id} />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center flex items-center justify-center h-[60%] px-4 flex-grow text-2xl uppercase text-gray-900 font-semibold dark:text-white">
+          There are no demos available currently
+        </div>
+      )}
     </div>
   );
 }

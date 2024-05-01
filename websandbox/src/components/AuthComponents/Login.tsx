@@ -1,4 +1,10 @@
-import { Link, Form, redirect, useActionData, ActionFunctionArgs } from "react-router-dom";
+import {
+  Link,
+  Form,
+  redirect,
+  useActionData,
+  ActionFunctionArgs,
+} from "react-router-dom";
 import { login } from "../../utils/authutils";
 import Alert from "@mui/material/Alert";
 import { useEffect } from "react";
@@ -25,7 +31,6 @@ export default function Login() {
 
   useEffect(() => {
     document.title = "Websandbox | Login";
-
   }, []);
 
   return (
@@ -37,7 +42,10 @@ export default function Login() {
         </h2>
         {error && <Alert severity="error">Invalid username or password</Alert>}
         <Form className="w-full flex flex-col gap-3" method="POST">
-          <label htmlFor="signup-username" className=" text-gray-900 dark:text-gray-200">
+          <label
+            htmlFor="signup-username"
+            className=" text-gray-900 dark:text-gray-200"
+          >
             Username
           </label>
           <input
@@ -49,7 +57,10 @@ export default function Login() {
             placeholder="username"
             id="signup-username"
           />
-          <label htmlFor="signup-password" className=" text-gray-900 dark:text-gray-200">
+          <label
+            htmlFor="signup-password"
+            className=" text-gray-900 dark:text-gray-200"
+          >
             Password
           </label>
           <input
@@ -67,9 +78,8 @@ export default function Login() {
             </Link>
           </p>
           <div className="flex justify-end items-center gap-2">
-            <button className="bg-gray-600 text-gray-100 rounded-full px-2 w-20 py-1">Login</button>
-            <button className="bg-blue-500 text-gray-100 rounded-lg px-2 w-max-content py-1">
-              Login As Demo User
+            <button className="bg-gray-600 text-gray-100 rounded-full px-8 py-2 shadow-md">
+              Login
             </button>
           </div>
         </Form>
