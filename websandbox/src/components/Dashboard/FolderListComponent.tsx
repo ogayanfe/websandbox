@@ -10,23 +10,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import useAuthContext from "../../contexts/authContext";
 import DriveFileRenameOutlineSharp from "@mui/icons-material/DriveFileRenameOutlineSharp";
 import { CodeTwoTone } from "@mui/icons-material";
-import { UserType } from "../../types/utils/authUtils";
-
-interface WebSandboxType {
-  id: number;
-  title: string;
-  files: JSON | null;
-  created: string;
-  last_updated: string;
-  owner: UserType;
-  starred: boolean;
-}
-
-interface FolderListElementComponentType {
-  info: WebSandboxType;
-  onDelete: () => void;
-  deleteSandbox?: (id: number, title: string, onSuccess: () => void) => Promise<void>;
-}
+import {
+  FolderListElementComponentType,
+  WebSandboxType,
+} from "../../types/sandbox";
 
 function FolderListElementComponent({
   info,
@@ -41,16 +28,23 @@ function FolderListElementComponent({
         <CodeTwoTone style={{ fontSize: "90px" }} />
       </div>
       <h3 className="text-gray-700 dark:text-gray-200 text-center p-3 rounded-b-md  bg-gray-200 dark:bg-[rgb(21,21,21)] font-semibold">
-        @{info.owner.username} / <span className="dark:text-white font-bold">{info.title}</span>
+        @{info.owner.username} /{" "}
+        <span className="dark:text-white font-bold">{info.title}</span>
       </h3>
       <nav className="absolute flex gap-1 right-0">
         <Tooltip title="Open sandbox">
-          <IconButton to={`/${info.owner.username}/${info.title}/`} component={Link}>
+          <IconButton
+            to={`/${info.owner.username}/${info.title}/`}
+            component={Link}
+          >
             <LaunchIcon />
           </IconButton>
         </Tooltip>
         <Tooltip title="Edit sandbox">
-          <IconButton to={`/${authContext?.user?.username}/${info.title}/edit`} component={Link}>
+          <IconButton
+            to={`/${authContext?.user?.username}/${info.title}/edit`}
+            component={Link}
+          >
             <DriveFileRenameOutlineSharp />
           </IconButton>
         </Tooltip>
@@ -89,7 +83,11 @@ function CreateSandboxElementComponent() {
 
 interface FolderListComponentPropType {
   sandboxes: WebSandboxType[];
-  deleteSandbox?: (id: number, title: string, onSuccess: () => void) => Promise<void>;
+  deleteSandbox?: (
+    id: number,
+    title: string,
+    onSuccess: () => void
+  ) => Promise<void>;
   showCreateButton?: boolean;
 }
 
@@ -110,7 +108,11 @@ export default function FolderListComponent({
           severity="success"
           action={
             <Tooltip title="Close">
-              <IconButton onClick={() => setAlert((prev) => ({ ...prev, deleteSuccess: false }))}>
+              <IconButton
+                onClick={() =>
+                  setAlert((prev) => ({ ...prev, deleteSuccess: false }))
+                }
+              >
                 <CloseIcon />
               </IconButton>
             </Tooltip>
@@ -119,7 +121,7 @@ export default function FolderListComponent({
           Successfully Deleted from sandbox
         </Alert>
       )}
-      <div className="grid grid-cols-1 xm:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 p-5 gap-6 sm:px-20">
+      <div className="grid grid-cols-1 xm:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 p-5 gap-6 sm:px-20">
         {!!showCreateButton && <CreateSandboxElementComponent />}
         {sandboxes.map((p) => (
           <FolderListElementComponent

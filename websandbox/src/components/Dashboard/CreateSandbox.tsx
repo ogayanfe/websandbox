@@ -1,4 +1,9 @@
-import { ActionFunctionArgs, Form, redirect, useActionData } from "react-router-dom";
+import {
+  ActionFunctionArgs,
+  Form,
+  redirect,
+  useActionData,
+} from "react-router-dom";
 import { getApiClient } from "../../utils/authutils";
 import { AxiosError } from "axios";
 import Alert from "@mui/material/Alert";
@@ -10,7 +15,9 @@ interface CreateSandboxActionType {
   data: Response | string;
 }
 
-export default async function createSandboxAction({ request }: ActionFunctionArgs) {
+export default async function createSandboxAction({
+  request,
+}: ActionFunctionArgs) {
   const formData = await request.formData();
   const apiClient = getApiClient();
   const name = formData.get("name");
@@ -19,12 +26,15 @@ export default async function createSandboxAction({ request }: ActionFunctionArg
     await apiClient.post("/sandbox/", {
       title: name,
     });
-    return redirect("/" + username + "/" + name);
+    return redirect(("/" + username + "/" + name).toLowerCase());
   } catch (error) {
     if (error instanceof AxiosError) {
       return { error: true, data: await error?.response?.data.title[0] };
     }
-    return { error: true, data: "Something went wrong, check connection and try again" };
+    return {
+      error: true,
+      data: "Something went wrong, check connection and try again",
+    };
   }
 }
 
@@ -41,7 +51,10 @@ export function CreateSandboxComponent() {
         </h2>
         {data?.error && <Alert severity="error">{data?.data.toString()}</Alert>}
         <Form className="w-full flex flex-col gap-3" method="POST">
-          <label htmlFor="sandbox-name" className=" text-gray-900 dark:text-gray-200">
+          <label
+            htmlFor="sandbox-name"
+            className=" text-gray-900 dark:text-gray-200"
+          >
             Sandbox name
           </label>
           <input
@@ -53,7 +66,11 @@ export function CreateSandboxComponent() {
             placeholder="sandbox name (e.g Project X)"
             id="sandbox-name"
           />
-          <input type="hidden" name="username" value={authContext?.user?.username} />
+          <input
+            type="hidden"
+            name="username"
+            value={authContext?.user?.username}
+          />
           <div className="flex justify-end pr-10 p-2">
             <button className="bg-blue-600 text-gray-100 rounded-full px-2 w-20 py-1">
               Create

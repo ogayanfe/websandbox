@@ -22,13 +22,29 @@ interface TreeDataType {
 
 type NodeType = TreeDataType | TreeNodeType;
 
-type FileModeType = "javascript" | "text" | "html" | "css" | "json" | "markdown";
+type FileModeType =
+  | "javascript"
+  | "text"
+  | "html"
+  | "css"
+  | "json"
+  | "markdown";
 
 interface SandboxInfoType {
-  is_owner: boolean; 
-  title: string, 
-  is_starred: boolean
-  owner: {id: number; username: string}, 
+  id: number;
+  is_owner: boolean;
+  title: string;
+  is_starred: boolean;
+  owner: { id: number; username: string };
+  preview?: string | null;
 }
 
-export type { FileModeType, FolderNodeType, NodeType, TreeNodeType, TreeDataType, FileNodeType, SandboxInfoType };
+export type {
+  FileModeType,
+  FolderNodeType,
+  NodeType,
+  TreeNodeType,
+  TreeDataType,
+  FileNodeType,
+  SandboxInfoType,
+};

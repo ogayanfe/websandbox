@@ -10,7 +10,12 @@ import tempData, {
   hashString,
   toContainerFileSystemTree,
 } from "../utils/sandboxUtils";
-import { TreeDataType, FileModeType, TreeNodeType, SandboxInfoType } from "../types/utils/sandboxUtils";
+import {
+  TreeDataType,
+  FileModeType,
+  TreeNodeType,
+  SandboxInfoType,
+} from "../types/utils/sandboxUtils";
 import {
   deleteContainerNode,
   mountFiles,
@@ -55,16 +60,25 @@ const sandboxContext = createContext<SandboxContextDataType>({
 });
 
 function SandboxContextProvider({ children }: { children: React.ReactNode }) {
-  const [visibleSidebar, setVisibleSidebar] = useState<Boolean>(window.innerWidth > 800);
+  const [visibleSidebar, setVisibleSidebar] = useState<Boolean>(
+    window.innerWidth > 800
+  );
   const [treeData, setTreeData] = useState<TreeDataType>(tempData);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedFileId, setSelectedFileId] = useState<string>("");
   const [showBrowser, setShowBrowser] = useState(true);
   const [fileMode, setFileMode] = useState<FileModeType>("text");
-  const [fileTreeHash, setFileTreeHash] = useState({ lastSaved: "", current: "" });
-  const [currentNodeContextId, setCurrentNodeContextId] = useState<string | null>("");
+  const [fileTreeHash, setFileTreeHash] = useState({
+    lastSaved: "",
+    current: "",
+  });
+  const [currentNodeContextId, setCurrentNodeContextId] = useState<
+    string | null
+  >("");
   const [showForkComponent, setShowForkComponent] = useState(false);
-  const [sandboxInfo, setSandboxInfo] = useState<SandboxInfoType | undefined>(undefined)
+  const [sandboxInfo, setSandboxInfo] = useState<SandboxInfoType | undefined>(
+    undefined
+  );
 
   function deleteTreeNode(ids: string[]) {
     const treeCopy = { ...treeData };
@@ -79,18 +93,30 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
     setTreeData(treeCopy);
   }
 
-  function updateTreeNode(id: string, name: string, node: NodeApi<TreeNodeType>) {
+  function updateTreeNode(
+    id: string,
+    name: string,
+    node: NodeApi<TreeNodeType>
+  ) {
     const treeCopy = { ...treeData };
     const path = getNodePath(id, treeCopy);
     const updated = updateNode(id, name, treeCopy);
     if (!updated) return;
     if (!path) return;
-    deleteTreeNode([id])
-    const type = node.isLeaf ? "leaf": "internal"
-    createNode(node.parent?.id || null, name, node.id, type, node.data.content || undefined, node.data.children || undefined, treeCopy)
+    deleteTreeNode([id]);
+    const type = node.isLeaf ? "leaf" : "internal";
+    createNode(
+      node.parent?.id || null,
+      name,
+      node.id,
+      type,
+      node.data.content || undefined,
+      node.data.children || undefined,
+      treeCopy
+    );
     setTreeData(treeCopy);
     setSelectedFileId(id);
-    mountFiles(toContainerFileSystemTree(treeCopy))
+    mountFiles(toContainerFileSystemTree(treeCopy));
   }
 
   function updateFileFieldContent(id: string, content: string) {
@@ -105,9 +131,19 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
 
   function createTreeNode(parentId: string | null, type: "leaf" | "internal") {
     const treeCopy = { ...treeData };
-    const name = window.prompt(`Enter ${type === "leaf" ? "file" : "folder"} Name:`);
+    const name = window.prompt(
+      `Enter ${type === "leaf" ? "file" : "folder"} Name:`
+    );
     if (!name) return null;
-    let created = createNode(parentId, name, Math.random().toString(), type, undefined, undefined, treeCopy);
+    let created = createNode(
+      parentId,
+      name,
+      Math.random().toString(),
+      type,
+      undefined,
+      undefined,
+      treeCopy
+    );
     if (!created) return null;
     setTreeData(treeCopy);
     mountFiles(toContainerFileSystemTree(treeCopy));
@@ -125,7 +161,8 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const path = getNodePath(selectedFileId, treeData);
-    if (path && path.length > 0) setFileMode(getFileMode(path[path?.length - 1]));
+    if (path && path.length > 0)
+      setFileMode(getFileMode(path[path?.length - 1]));
   }, [selectedFileId]);
 
   useEffect(() => {
@@ -144,8 +181,8 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
 
   const context: SandboxContextDataType = {
     currentNodeContextId,
-    sandboxInfo, 
-    setSandboxInfo: (d:SandboxInfoType) => setSandboxInfo(d), 
+    sandboxInfo,
+    setSandboxInfo: (d: SandboxInfoType) => setSandboxInfo(d),
     visibleSidebar,
     showBrowser,
     showForkComponent,
@@ -162,7 +199,9 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
     showSidebar: () => setVisibleSidebar(true),
     hideSidebar: () => setVisibleSidebar(false),
     toggleSidebar: () => setVisibleSidebar((p) => !p),
-    updateSearchTerm: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    updateSearchTerm: (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
       setSearchTerm(e.target.value);
     },
     treeData: treeData,
@@ -179,7 +218,11 @@ function SandboxContextProvider({ children }: { children: React.ReactNode }) {
     selectFileId: (id: string) => setSelectedFileId(id),
   };
 
-  return <sandboxContext.Provider value={context}>{children}</sandboxContext.Provider>;
+  return (
+    <sandboxContext.Provider value={context}>
+      {children}
+    </sandboxContext.Provider>
+  );
 }
 
 function useSandboxContext() {

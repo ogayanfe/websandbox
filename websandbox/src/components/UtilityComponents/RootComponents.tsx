@@ -42,6 +42,10 @@ export function RootComponent() {
   return <BaseRootComponent>{<Outlet />}</BaseRootComponent>;
 }
 
-export function ErrorComponentContainer({ children }: { children: React.ReactNode }) {
+export function ErrorComponentContainer({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return <BaseRootComponent>{children}</BaseRootComponent>;
 }

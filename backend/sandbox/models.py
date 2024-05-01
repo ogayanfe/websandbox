@@ -5,8 +5,7 @@ from django.db import models
 from django.core.validators import RegexValidator
 from rest_framework.validators import ValidationError
 from django.utils.translation import gettext as _
-
-
+import hashlib
 from accounts.models import User
 
 message = _(
@@ -24,6 +23,16 @@ def get_default_files():
         { "id": f"{random.random()}{time.time()}", "name": "index.js", "content": "console.log(\"Hello World\")" } 
     ]
 
+def sandbox_preview_path(instance, filename: str) -> str:
+    """
+    Return a unique path for all user images
+    """
+    extension = filename.split(".").pop()
+    directory_name = f"{instance.owner.username}_{instance.title}"
+    hash = hashlib.md5(str(time.time()).encode()).hexdigest()
+    return f"images/{directory_name}/{hash}.{extension}"
+
+
 # Create your models here.
 class Sandbox(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE) 
@@ -33,7 +42,8 @@ class Sandbox(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     update = models.DateTimeField(auto_now=True)
     files = models.JSONField(default=get_default_files)
-    starred_users = models.ManyToManyField(User, related_name="starred")
+    starred_users = models.ManyToManyField(User, related_name="starred", null=True)
+    preview = models.ImageField(upload_to=sandbox_preview_path, default="", null=True)
 
     class Meta: 
         unique_together = ["owner", "title"]

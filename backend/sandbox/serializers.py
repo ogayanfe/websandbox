@@ -32,7 +32,7 @@ class SandboxSerializer(ModelSerializer):
     def get_starred(self, sandbox): 
         user = self.context.get("user", None)
         if user is None: 
-            raise ValidationError("Couldn't get user information")
+            return False
         return sandbox.starred_users.filter(id=user.id).exists()
 
 

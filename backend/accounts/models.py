@@ -32,6 +32,7 @@ class User(AbstractUser):
     # EMAIL_FIELD = "email"
     REQUIRED_FIELDS = []
     USERNAME_FIELD = "username"
+    is_demo = models.BooleanField(default=False, null=False, help_text="Designates if user is used to demo website content")
     objects = UserManager()
 
     def __str__(self):
