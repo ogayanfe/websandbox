@@ -42,7 +42,7 @@ class Sandbox(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     update = models.DateTimeField(auto_now=True)
     files = models.JSONField(default=get_default_files)
-    starred_users = models.ManyToManyField(User, related_name="starred", null=True)
+    starred_users = models.ManyToManyField(User, related_name="starred")
     preview = models.ImageField(upload_to=sandbox_preview_path, default="", null=True)
 
     class Meta: 
