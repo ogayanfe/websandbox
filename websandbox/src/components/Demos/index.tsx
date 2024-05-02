@@ -32,7 +32,7 @@ function ImageComponent({ src, alt, link, linkText }: ImageComponentType) {
           src={src}
           alt={alt}
           crossOrigin="anonymous"
-          className="rounded-t-xl h-60 hover:scale-[1.1] transition-all duration-1000"
+          className="rounded-t-xl h-60 object-contain hover:scale-[1.1] transition-all duration-1000"
         />
       </a>
     );
@@ -81,7 +81,7 @@ export default function Demos() {
         Project Demos
       </h2>
       {data && data.length > 0 ? (
-        <div className="grid w-full grid-cols-1 px-8 mxm:px-8 lg:grid-cols-3 mxm:grid-cols-2 mx-auto gap-8 py-8 max-w-7xl">
+        <div className="grid w-full grid-cols-1 px-8 mxm:px-8 lg:grid-cols-3 mxm:grid-cols-2 mx-auto gap-8 py-8 pb-20 max-w-7xl">
           {data.map((i) => (
             <DemoItem info={i} key={i.id} />
           ))}
