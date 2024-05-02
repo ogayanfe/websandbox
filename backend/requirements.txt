@@ -9,7 +9,9 @@ filelock==3.12.2
 Pillow==10.1.0
 platformdirs==3.10.0
 PyJWT==2.8.0
+python-dotenv==1.0.1
 pytz==2023.3.post1
+setuptools==69.5.1
 sqlparse==0.4.4
 tzdata==2023.3
 virtualenv==20.24.2
