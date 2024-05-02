@@ -2,12 +2,20 @@ import useSandboxContext from "../../contexts/sandboxContext";
 import { useState, useEffect } from "react";
 import getWebContainerInstance, {
   containerEventHandler,
+  destroyContainer,
   mountFiles,
   start,
 } from "../../utils/containerUtils";
 import { toContainerFileSystemTree } from "../../utils/sandboxUtils";
 import InputAdornment from "@mui/material/InputAdornment";
-import { IconButton, Stepper, TextField, Step, StepLabel, LinearProgress } from "@mui/material";
+import {
+  IconButton,
+  Stepper,
+  TextField,
+  Step,
+  StepLabel,
+  LinearProgress,
+} from "@mui/material";
 import { Icon } from "@iconify/react";
 import Tooltip from "@mui/material/Tooltip";
 
@@ -60,14 +68,16 @@ function BroserPlaceholderContent() {
     "Starting Vite Server",
     "Please Wait",
   ];
-  const getTreeData = () => sandboxContext.treeData;
-  containerEventHandler.addEvent("boot-finished", () => setCurrentStep(1));
-  containerEventHandler.addEvent("install-finished", () => setCurrentStep(2));
-  containerEventHandler.addEvent("server-started", () => {
-    const fileSystemTree = toContainerFileSystemTree(getTreeData());
-    mountFiles(fileSystemTree);
-    setCurrentStep(3);
-  });
+
+  useEffect(() => {
+    containerEventHandler.addEvent("boot-finished", () => setCurrentStep(1));
+    containerEventHandler.addEvent("install-finished", () => setCurrentStep(2));
+    containerEventHandler.addEvent("server-started", () => {
+      const fileSystemTree = toContainerFileSystemTree(sandboxContext.treeData);
+      mountFiles(fileSystemTree);
+      setCurrentStep(3);
+    });
+  }, [sandboxContext.treeData]);
 
   useEffect(() => {
     const placeHolderElement = document.querySelector("#browser-placeholder");
@@ -81,7 +91,10 @@ function BroserPlaceholderContent() {
       });
     });
     divObserver.observe(placeHolderElement);
-    return () => divObserver.disconnect();
+    return () => {
+      divObserver.disconnect();
+      containerEventHandler.resetEvents();
+    };
   }, []);
 
   const maxWidth = 700;
@@ -139,6 +152,25 @@ export default function Browser() {
       });
     });
   }, []);
+
+  useEffect(() => {
+    return () => {
+      // Destroy the webcontainer when user navaigates to another page
+      const current_path = window.location.pathname;
+      const project_path = `/${sandboxContext.sandboxInfo?.owner.username}/${sandboxContext.sandboxInfo?.title}/`;
+
+      // ensure the project path has been properly loader
+      if (
+        !sandboxContext.sandboxInfo?.owner.username &&
+        !sandboxContext.sandboxInfo?.title
+      )
+        return;
+
+      if (current_path === project_path) return;
+      destroyContainer();
+    };
+  }, [sandboxContext]);
+
   const visibleClass = sandboxContext.showBrowser ? "" : "hidden";
 
   return (
@@ -152,7 +184,10 @@ export default function Browser() {
       />
       <div className="flex-grow h-full">
         {browserUrl ? (
-          <iframe className="w-full h-full bg-white" src={browserUrl + "/" + currentRoute} />
+          <iframe
+            className="w-full h-full bg-white"
+            src={browserUrl + "/" + currentRoute}
+          />
         ) : (
           <BroserPlaceholderContent />
         )}

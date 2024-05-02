@@ -1,12 +1,26 @@
 import { FileSystemTree, WebContainer } from "@webcontainer/api";
 import { Mutex } from "async-mutex";
-import { containerEventName, containerEventStore } from "../types/utils/containderUtils";
-
+import {
+  containerEventName,
+  containerEventStore,
+} from "../types/utils/containderUtils";
 
 class ContainerEventsHandler {
   eventStore: containerEventStore;
+
   constructor() {
-    this.eventStore = {
+    this.eventStore = this.getEvents();
+  }
+
+  addEvent(type: containerEventName, event: () => any) {
+    this.eventStore[type].push(event);
+  }
+  fireEvent(type: containerEventName) {
+    for (let e of this.eventStore[type]) e();
+  }
+
+  private getEvents() {
+    return {
       "boot-start": [],
       "boot-finished": [],
       "install-start": [],
@@ -15,11 +29,9 @@ class ContainerEventsHandler {
       "server-started": [],
     };
   }
-  addEvent(type: containerEventName, event: () => any) {
-    this.eventStore[type].push(event);
-  }
-  fireEvent(type: containerEventName) {
-    for (let e of this.eventStore[type]) e();
+
+  public resetEvents() {
+    this.eventStore = this.getEvents();
   }
 }
 
@@ -42,9 +54,12 @@ export default async function getWebContainerInstance() {
 }
 
 export async function destroyContainer() {
+  console.log("Destroying container");
   if (!containerInstance) return;
   containerInstance.teardown();
   containerInstance = null;
+  installedDependencies = false;
+  installMutex.release();
 }
 
 let installedDependencies = false;
@@ -54,10 +69,12 @@ export async function installDependencies() {
   const webcontainerInstance = await getWebContainerInstance();
   if (installedDependencies) return;
   containerEventHandler.fireEvent("install-start");
-  
   console.log("Installing dependencies");
   while (true) {
-    const installProcess = await webcontainerInstance.spawn("npm", ["install", "vite"]);
+    const installProcess = await webcontainerInstance.spawn("npm", [
+      "install",
+      "vite",
+    ]);
 
     const installExitCode = await installProcess.exit;
 
@@ -72,20 +89,21 @@ export async function installDependencies() {
   }
 }
 
-async function configureVite(){
-  console.log("Configuring Vite")
+async function configureVite() {
+  console.log("Configuring Vite");
   const webcontainerInstance = await getWebContainerInstance();
   // Forces vite to show 404 page when application routes to non-existent route
-  const content = "import { defineConfig } from 'vite';export default defineConfig({appType: 'mpa'})"
-  await webcontainerInstance.fs.writeFile("/vite.config.js", content)
+  const content =
+    "import { defineConfig } from 'vite';export default defineConfig({appType: 'mpa'})";
+  await webcontainerInstance.fs.writeFile("/vite.config.js", content);
 }
 
 export async function startDevServer() {
   const webcontainerInstance = await getWebContainerInstance();
   containerEventHandler.fireEvent("server-starting");
-  
-  await configureVite()
-  
+
+  await configureVite();
+
   const serverStart = await webcontainerInstance.spawn("npx", ["vite", "."]);
   serverStart.output.pipeTo(
     new WritableStream({
@@ -102,7 +120,11 @@ export async function start() {
 }
 
 const writeTimeOutStore = new Map<string, number>();
-export async function updateContainerFile(id: string, path: string, content: string) {
+export async function updateContainerFile(
+  id: string,
+  path: string,
+  content: string
+) {
   clearTimeout(writeTimeOutStore.get(id));
   const value = setTimeout(async () => {
     const container = await getWebContainerInstance();
