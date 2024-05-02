@@ -4,6 +4,7 @@ import { useLoaderData } from "react-router-dom";
 import { SandboxInfoType } from "../../types/utils/sandboxUtils";
 import { capitalizeText } from "../../utils/sandboxUtils";
 import { CodeTwoTone } from "@mui/icons-material";
+import { useEffect } from "react";
 
 export async function demoRouteLoader() {
   const url = "sandbox/demos";
@@ -32,7 +33,7 @@ function ImageComponent({ src, alt, link, linkText }: ImageComponentType) {
           src={src}
           alt={alt}
           crossOrigin="anonymous"
-          className="rounded-t-xl h-60 object-contain hover:scale-[1.1] transition-all duration-1000"
+          className="rounded-t-xl h-60 object-fit hover:scale-[1.1] transition-all duration-1000"
         />
       </a>
     );
@@ -75,6 +76,9 @@ function DemoItem({ info }: demoItemType) {
 
 export default function Demos() {
   const data = useLoaderData() as SandboxInfoType[];
+  useEffect(() => {
+    document.title = "WebSandbox | Demos";
+  }, []);
   return (
     <div className="flex-col items-center w-full justify-center h-full pb-10">
       <h2 className="text-lg xl:text-2xl font-semibold text-gray-800 text-center dark:text-blue-100 p-4">
