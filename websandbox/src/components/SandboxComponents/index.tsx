@@ -1,4 +1,8 @@
-import { useRouteLoaderData, LoaderFunctionArgs, useLoaderData } from "react-router-dom";
+import {
+  useRouteLoaderData,
+  LoaderFunctionArgs,
+  useLoaderData,
+} from "react-router-dom";
 import { useEffect, useState } from "react";
 import Header from "../UtilityComponents/Header";
 import getAuthContext from "../../contexts/authContext";
@@ -10,7 +14,11 @@ import { FileContentComponent } from "./FileContent";
 import SplitPane from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 import { capitalizeText, hashString } from "../../utils/sandboxUtils";
-import { SandboxInfoType, TreeDataType, TreeNodeType } from "../../types/utils/sandboxUtils";
+import {
+  SandboxInfoType,
+  TreeDataType,
+  TreeNodeType,
+} from "../../types/utils/sandboxUtils";
 import Footer from "./Footer";
 import { ForkSandboxComponent } from "./ForkSandboxComponent";
 
@@ -26,11 +34,12 @@ export async function sandboxHomeLoader({ params }: LoaderFunctionArgs) {
 }
 
 interface SandboxLoaderDataType {
-  is_owner: boolean; 
-  title: string, 
-  is_starred: boolean
-  owner: {id: number; username: string}, 
-  files: TreeNodeType[],
+  id: number;
+  is_owner: boolean;
+  title: string;
+  is_starred: boolean;
+  owner: { id: number; username: string };
+  files: TreeNodeType[];
 }
 
 export default function SandboxHome() {
@@ -47,11 +56,12 @@ export default function SandboxHome() {
 
   useEffect(() => {
     const sandboxInfo: SandboxInfoType = {
-      is_owner: data.is_owner, 
-      title: data.title, 
-      is_starred: data.is_starred, 
-      owner: data.owner
-    }
+      id: data.id,
+      is_owner: data.is_owner,
+      title: data.title,
+      is_starred: data.is_starred,
+      owner: data.owner,
+    };
     authContext?.updateUserInfo(userData);
     sandboxContext.updateTreeData(treeData);
     sandboxContext.setSandboxInfo && sandboxContext.setSandboxInfo(sandboxInfo);
@@ -69,15 +79,19 @@ export default function SandboxHome() {
   }, [sandboxContext.visibleSidebar]);
 
   useEffect(() => {
-    const pre = ('@' + sandboxContext.sandboxInfo?.owner.username.toLowerCase()) || 'Sandbox';
+    const pre =
+      "@" + sandboxContext.sandboxInfo?.owner.username.toLowerCase() ||
+      "Sandbox";
     const suf = capitalizeText(sandboxContext.sandboxInfo?.title || "View");
     document.title = `websandbox - ${pre} / ${suf}`;
-
   }, [sandboxContext]);
 
   return (
     <div className="flex flex-col w-screen h-screen dark:bg-[rgb(14,_14,_14)]">
-      <Header className="border-b-[1px] dark:border-[#343434] px-6" />
+      <Header
+        homeRoute={authContext?.authenticated() ? "/dashboard" : "/"}
+        className="border-b-[1px] dark:border-[#343434] px-6"
+      />
       <div className="h-full w-full flex-grow">
         <SplitPane
           split="vertical"
@@ -88,7 +102,9 @@ export default function SandboxHome() {
           //@ts-ignore
           allowResize={sandboxContext.visibleSidebar}
         >
-          <div className={`absolute w-full top-0 h-full border-r-[1px] dark:border-[#343434]`}>
+          <div
+            className={`absolute w-full top-0 h-full border-r-[1px] dark:border-[#343434]`}
+          >
             {<Sidebar />}
           </div>
           <FileContentComponent />

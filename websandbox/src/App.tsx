@@ -43,9 +43,9 @@ const router = createBrowserRouter(
   createRoutesFromChildren(
     <Route loader={baseRouteLoader} id="base-route" errorElement={<Error />}>
       <Route element={<RootComponent />}>
+        <Route path="" index element={<HomeRoute />} />
         <Route path="demos" element={<DemosRoute />} loader={demoRouteLoader} />
         <Route loader={redirectAuthenticatedUserRouteLoader}>
-          <Route path="" index element={<HomeRoute />} />
           <Route path="login" element={<Login />} action={loginAction} />
           <Route path="signup" element={<Signup />} action={signupAction} />
         </Route>

@@ -11,19 +11,28 @@ import useThemeContext from "../../contexts/themeContext";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { Icon } from "@iconify/react";
 
-export default function DashboardHeader({ className }: { className?: string }) {
+interface DashboardHeaderPropType {
+  className?: string;
+  homeRoute?: string;
+}
+
+function DashboardHeader({ className, homeRoute }: DashboardHeaderPropType) {
   const authContext = useAuthContext();
   const themeContext = useThemeContext();
   const _className = className ? className : "";
   const navigation = useNavigation();
+  const _homeRoute = homeRoute ? homeRoute : "/";
 
   useEffect(() => {
     document.title = "WebSandbox | Dashboard";
   }, []);
   return (
     <div className={_className + " W-full p-3 text-lg"}>
-      {(navigation.state === "submitting" || navigation.state === "loading") && (
-        <LinearProgress sx={{ position: "fixed", width: "100%", left: 0, top: 0 }} />
+      {(navigation.state === "submitting" ||
+        navigation.state === "loading") && (
+        <LinearProgress
+          sx={{ position: "fixed", width: "100%", left: 0, top: 0 }}
+        />
       )}
       <nav className="flex w-fill items-center justify-between">
         <div className="text-gray-900 dark:text-gray-200 flex items-center gap-4">
@@ -33,15 +42,12 @@ export default function DashboardHeader({ className }: { className?: string }) {
             </span>
           </Tooltip>
           <h1 className="text-2xl italic font-bold">
-            <Link
-              to="/"
-              className="hidden xxm:inline-block"
-            >
+            <Link to={_homeRoute} className="hidden xxm:inline-block">
               WebSandbox
             </Link>
             <div className="xxm:hidden" aria-hidden>
               <Tooltip title="Websandbox">
-                <Link to="/">WSb</Link>
+                <Link to={_homeRoute}>WSb</Link>
               </Tooltip>
             </div>
           </h1>
@@ -54,16 +60,25 @@ export default function DashboardHeader({ className }: { className?: string }) {
               color="primary"
               size="small"
               to={authContext?.authenticated() ? "/logout" : "/login"}
-              startIcon={authContext?.authenticated() ? <LogoutIcon /> : <LoginIcon />}
+              startIcon={
+                authContext?.authenticated() ? <LogoutIcon /> : <LoginIcon />
+              }
             >
               {authContext?.authenticated() ? "Logout" : "Login"}
             </Button>
           </div>
 
           <Tooltip
-            title={themeContext?.darkTheme ? "Switch to light theme" : "Switch to dark Theme"}
+            title={
+              themeContext?.darkTheme
+                ? "Switch to light theme"
+                : "Switch to dark Theme"
+            }
           >
-            <IconButton aria-label="Toggle Theme" onClick={themeContext?.toggleTheme}>
+            <IconButton
+              aria-label="Toggle Theme"
+              onClick={themeContext?.toggleTheme}
+            >
               {themeContext?.darkTheme ? (
                 <LightModeIcon className="bg-inherit" />
               ) : (
@@ -77,13 +92,17 @@ export default function DashboardHeader({ className }: { className?: string }) {
               target="_blank"
               className="flex items-center"
             >
-              <span className="fixed left-[-1000000000000px]">Open project on github</span>
+              <span className="fixed left-[-1000000000000px]">
+                Open project on github
+              </span>
               <GitHubIcon />
             </IconButton>
           </Tooltip>
           <Tooltip
             title={`${
-              authContext?.user?.username ? "@" + authContext.user.username : "Anonymous user"
+              authContext?.user?.username
+                ? "@" + authContext.user.username
+                : "Anonymous user"
             }`}
           >
             <Avatar sx={{ width: 30, height: 30 }} variant="circular">
@@ -110,3 +129,5 @@ export default function DashboardHeader({ className }: { className?: string }) {
     </div>
   );
 }
+
+export default DashboardHeader;
