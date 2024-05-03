@@ -55,3 +55,8 @@ class Sandbox(models.Model):
 
     def __str__(self): 
         return f'{self.owner.username} / {self.title}'
+
+    def save(self, *args, **kwargs):
+        if self.title: 
+            self.title = self.title.lower()
+        return super().save(*args, **kwargs)
