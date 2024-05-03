@@ -17,6 +17,32 @@ import {
   ForkLeftOutlined,
 } from "@mui/icons-material";
 
+interface CommandComponentPropType {
+  text: string;
+  commands: string[];
+}
+
+function CommandComponent({ text, commands }: CommandComponentPropType) {
+  const CommandComponent = commands.map((s) => (
+    <span className="bg-gray-300 py-1 capitalize px-2 font-bold rounded-sm dark:bg-[#1e1d1d]">
+      {s}
+    </span>
+  ));
+
+  return (
+    <div className="flex text-sm items-center justify-center gap-3 w-full">
+      <div className="w-1/2 flex justify-end">
+        <span className="pb-[1.5px] text-md capitalize text-gray-500 dark:text-gray-300 font-semibold">
+          {text} :
+        </span>
+      </div>
+      <BreadCrumbs separator={" + "} sx={{ fontSize: "13px", flexGrow: "1" }}>
+        {CommandComponent}
+      </BreadCrumbs>
+    </div>
+  );
+}
+
 export default function NoFileOpenComponent() {
   return (
     <div className="flex gap-2 flex-col w-full h-5/6 items-center justify-center">
@@ -24,9 +50,19 @@ export default function NoFileOpenComponent() {
         <Icon icon="teenyicons:box-outline"></Icon>
         <div>Websandbox</div>
       </div>
-      <p className="text-gray-700 dark:text-blue-100 text-md">
+      <p className="text-gray-700 pb-4 dark:text-blue-100 text-md">
         Open file to view content
       </p>
+      <CommandComponent text="Toggle Fullscreen" commands={["F11"]} />
+      <CommandComponent
+        text="Save Project Files"
+        commands={["ctrl / cmd", "s"]}
+      />
+      <CommandComponent text="Toggle Sidebar" commands={["ctrl / cmd", "b"]} />
+      <CommandComponent
+        text="Toggle Browser"
+        commands={["ctrl / cmd", "shift", "b"]}
+      />
     </div>
   );
 }

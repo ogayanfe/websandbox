@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-if os.getenv('DEBUG', '') == 'False': 
+if os.getenv('DEBUG', 'True') == 'False': 
     DEBUG = False
 
 # SECURITY WARNING: keep the secret key used in production secret!
