@@ -5,7 +5,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import getAuthContext from "../../contexts/authContext";
 import { Link } from "react-router-dom";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import CodeOffOutlinedIcon from "@mui/icons-material/CodeOffOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { LinkedIn } from "@mui/icons-material";
 
 function FooterComponent() {
@@ -59,7 +59,7 @@ export default function HomeRoute() {
               : "Login To Websandbox"}
           </Button>
           <Button
-            endIcon={<CodeOffOutlinedIcon />}
+            endIcon={<VisibilityOutlinedIcon />}
             variant="contained"
             color="secondary"
             component={Link}

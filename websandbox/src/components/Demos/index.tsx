@@ -33,7 +33,7 @@ function ImageComponent({ src, alt, link, linkText }: ImageComponentType) {
           src={src}
           alt={alt}
           crossOrigin="anonymous"
-          className="rounded-t-xl h-60 object-fit hover:scale-[1.1] transition-all duration-1000"
+          className="rounded-t-xl h-60 object-fill hover:scale-[1.1] transition-all duration-1000"
         />
       </a>
     );
