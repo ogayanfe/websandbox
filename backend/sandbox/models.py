@@ -29,8 +29,8 @@ def sandbox_preview_path(instance, filename: str) -> str:
     """
     extension = filename.split(".").pop()
     directory_name = f"{instance.owner.username}_{instance.title}"
-    hash = hashlib.md5(str(time.time()).encode()).hexdigest()
-    return f"images/{directory_name}/{hash}.{extension}"
+    hash = hashlib.md5(directory_name.encode()).hexdigest()
+    return f"images/sandbox/{directory_name}/{hash}.{extension}"
 
 
 # Create your models here.

@@ -17,6 +17,7 @@ import os
 
 
 load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = bool(os.environ.get("DEBUG", 1))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-d%5dnq$6t$h#k0l-g%6v_5#3z*qn$@-f01kw!(-&dk098cn2l='
@@ -53,7 +54,7 @@ INSTALLED_APPS = [
     'corsheaders', 
     'rest_framework_simplejwt.token_blacklist',
     'django_cleanup.apps.CleanupConfig',  # for removing unused media files
-
+    'storages',  # provides us with access to external storage via amazon s3
 ]
 
 MIDDLEWARE = [
@@ -196,3 +197,21 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+
+## AWS S3 CONFIGURATIONS
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID', '')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY', '')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME', '')
+
+
+## FILE STORAGE 
+if os.getenv("USE_S3", str(not DEBUG)) == 'True':  
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+        },
+        "staticfiles": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+        },
+    }
