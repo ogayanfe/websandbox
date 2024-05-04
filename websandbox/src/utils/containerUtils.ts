@@ -54,8 +54,8 @@ export default async function getWebContainerInstance() {
 }
 
 export async function destroyContainer() {
-  console.log("Destroying container");
   if (!containerInstance) return;
+  console.log("Destroying container");
   containerInstance.teardown();
   containerInstance = null;
   installedDependencies = false;

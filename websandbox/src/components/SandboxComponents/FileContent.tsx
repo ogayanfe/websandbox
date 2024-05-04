@@ -24,7 +24,10 @@ interface CommandComponentPropType {
 
 function CommandComponent({ text, commands }: CommandComponentPropType) {
   const CommandComponent = commands.map((s) => (
-    <span className="bg-gray-300 py-1 capitalize px-2 font-bold rounded-sm dark:bg-[#1e1d1d]">
+    <span
+      className="bg-gray-300 py-1 capitalize px-2 font-bold rounded-sm dark:bg-[#1e1d1d]"
+      key={Math.random()}
+    >
       {s}
     </span>
   ));
@@ -167,22 +170,6 @@ function FileContentHeaderComponent() {
         <div></div>
       )}
       <div className="flex items-center justify-center">
-        <Tooltip title="Add to starred project">
-          <span>
-            <IconButton
-              aria-label="Fork Project"
-              onClick={handleStarSandbox}
-              disabled={!authContext?.authenticated()}
-            >
-              {sandboxContext.sandboxInfo &&
-              sandboxContext.sandboxInfo?.is_starred ? (
-                <StarOutlined />
-              ) : (
-                <StarBorderOutlined />
-              )}
-            </IconButton>
-          </span>
-        </Tooltip>
         <Tooltip
           title={
             sandboxContext?.visibleSidebar
@@ -222,6 +209,22 @@ function FileContentHeaderComponent() {
                   sandboxContext.showBrowser ? "ion:browsers" : "gg:browser"
                 }
               />
+            </IconButton>
+          </span>
+        </Tooltip>
+        <Tooltip title="Add to starred project">
+          <span>
+            <IconButton
+              aria-label="Fork Project"
+              onClick={handleStarSandbox}
+              disabled={!authContext?.authenticated()}
+            >
+              {sandboxContext.sandboxInfo &&
+              sandboxContext.sandboxInfo?.is_starred ? (
+                <StarOutlined />
+              ) : (
+                <StarBorderOutlined />
+              )}
             </IconButton>
           </span>
         </Tooltip>

@@ -151,7 +151,7 @@ export default function Browser() {
         setBrowserUrl(url);
       });
     });
-  }, []);
+  }, [sandboxContext.sandboxInfo]);
 
   useEffect(() => {
     return () => {
@@ -169,7 +169,7 @@ export default function Browser() {
       if (current_path === project_path) return;
       destroyContainer();
     };
-  }, [sandboxContext]);
+  }, [sandboxContext.sandboxInfo]);
 
   const visibleClass = sandboxContext.showBrowser ? "" : "hidden";
 
