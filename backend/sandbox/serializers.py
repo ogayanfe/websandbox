@@ -53,6 +53,7 @@ class SandboxRetrieveUpdateSerializer(ModelSerializer):
         return {
             "username": sandbox.owner.username,
             "id": sandbox.owner.id, 
+            "is_demo": sandbox.owner.is_demo
         }
 
     def get_is_starred(self, sandbox): 

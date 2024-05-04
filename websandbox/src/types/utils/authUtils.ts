@@ -1,6 +1,7 @@
 interface UserType {
   id: number;
   username: string;
+  is_demo: boolean;
 }
 
 interface CredentialsType {

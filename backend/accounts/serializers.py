@@ -6,9 +6,10 @@ class UserInfoSerializer(ModelSerializer):
 
     class Meta: 
         model = User
-        fields = ("id", "username", 'password')
+        fields = ("id", "username", 'password', 'is_demo')
         extra_kwargs = {
-            "password": {"write_only": True}
+            "password": {"write_only": True},
+            "password": {"read_only": True}
         }
 
     def validate_username(self, value): 

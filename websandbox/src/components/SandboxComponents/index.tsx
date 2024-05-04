@@ -38,7 +38,7 @@ interface SandboxLoaderDataType {
   is_owner: boolean;
   title: string;
   is_starred: boolean;
-  owner: { id: number; username: string };
+  owner: UserType;
   files: TreeNodeType[];
 }
 
@@ -84,12 +84,20 @@ export default function SandboxHome() {
       "Sandbox";
     const suf = capitalizeText(sandboxContext.sandboxInfo?.title || "View");
     document.title = `websandbox - ${pre} / ${suf}`;
+    console.log(sandboxContext.sandboxInfo?.owner);
   }, [sandboxContext]);
 
   return (
     <div className="flex flex-col w-screen h-screen dark:bg-[rgb(14,_14,_14)]">
       <Header
-        homeRoute={authContext?.authenticated() ? "/dashboard" : "/"}
+        homeRoute={
+          sandboxContext.sandboxInfo?.owner.is_demo &&
+          !(sandboxContext.sandboxInfo.owner.id === authContext?.user?.id)
+            ? "/demos"
+            : authContext?.authenticated()
+            ? "/dashboard"
+            : "/"
+        }
         className="border-b-[1px] dark:border-[#343434] px-6"
       />
       <div className="h-full w-full flex-grow">

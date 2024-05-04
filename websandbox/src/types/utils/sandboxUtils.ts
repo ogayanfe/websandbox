@@ -1,3 +1,5 @@
+import { UserType } from "./authUtils";
+
 interface FolderNodeType {
   id: string;
   name: string;
@@ -35,7 +37,7 @@ interface SandboxInfoType {
   is_owner: boolean;
   title: string;
   is_starred: boolean;
-  owner: { id: number; username: string };
+  owner: UserType;
   preview?: string | null;
 }
 

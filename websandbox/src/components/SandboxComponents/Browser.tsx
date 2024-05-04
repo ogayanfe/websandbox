@@ -151,9 +151,6 @@ export default function Browser() {
         setBrowserUrl(url);
       });
     });
-  }, [sandboxContext.sandboxInfo]);
-
-  useEffect(() => {
     return () => {
       // Destroy the webcontainer when user navaigates to another page
       const current_path = window.location.pathname;
