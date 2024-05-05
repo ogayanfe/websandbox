@@ -23,7 +23,7 @@ import Footer from "./Footer";
 import { ForkSandboxComponent } from "./ForkSandboxComponent";
 
 export async function sandboxHomeLoader({ params }: LoaderFunctionArgs) {
-  const url = `sandbox/${params.username}/${params.project}`;
+  const url = `sandbox/${params.username}/${params.project}`.toLowerCase();
   const apiClient = getApiClient();
   try {
     const response = await apiClient.get(url);
@@ -84,7 +84,6 @@ export default function SandboxHome() {
       "Sandbox";
     const suf = capitalizeText(sandboxContext.sandboxInfo?.title || "View");
     document.title = `websandbox - ${pre} / ${suf}`;
-    console.log(sandboxContext.sandboxInfo?.owner);
   }, [sandboxContext]);
 
   return (

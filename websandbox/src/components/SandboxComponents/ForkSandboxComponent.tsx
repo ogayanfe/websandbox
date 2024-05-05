@@ -12,11 +12,14 @@ interface forkSandboxReturnType {
   data: string;
 }
 
-async function forkSandbox(title: string, files: TreeNodeType[]): Promise<forkSandboxReturnType> {
+async function forkSandbox(
+  title: string,
+  files: TreeNodeType[]
+): Promise<forkSandboxReturnType> {
   const apiClient = getApiClient();
   try {
     await apiClient.post(`/sandbox/`, {
-      title: title,
+      title: title.toLowerCase(),
       files: files,
     });
     return { error: false, data: title };
@@ -27,7 +30,10 @@ async function forkSandbox(title: string, files: TreeNodeType[]): Promise<forkSa
         data: (await error?.response?.data.title[0]) || "Something Went Wrong",
       };
     }
-    return { error: true, data: "Something went wrong, check connection and try again" };
+    return {
+      error: true,
+      data: "Something went wrong, check connection and try again",
+    };
   }
 }
 
@@ -36,16 +42,23 @@ export function ForkSandboxComponent() {
     username: string;
     project: string;
   };
-  const [title, setTitle] = useState(`${params.project}_${Math.round(Math.random() * 1000000)}`);
+  const [title, setTitle] = useState(
+    `${params.project}_${Math.round(Math.random() * 1000000)}`
+  );
   const [error, setError] = useState("");
   const sandboxContext = useSandboxContext();
   const authContext = useAuthContext();
   const navigate = useNavigate();
 
-  async function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  async function handleSubmit(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
     e.preventDefault();
     e.stopPropagation();
-    const { error, data } = await forkSandbox(title, sandboxContext.treeData.children);
+    const { error, data } = await forkSandbox(
+      title,
+      sandboxContext.treeData.children
+    );
     if (error) {
       setError(data);
       return;
@@ -53,7 +66,9 @@ export function ForkSandboxComponent() {
     alert("Successfully forked project");
     sandboxContext.setShowForkComponent(false);
     const url = "/" + authContext?.user?.username + "/" + data;
-    const shouldNavigate = window.confirm(`Switch to forked version of project at "${url}"?`);
+    const shouldNavigate = window.confirm(
+      `Switch to forked version of project at "${url}"?`
+    );
     if (shouldNavigate) {
       navigate(url);
     }
@@ -72,7 +87,10 @@ export function ForkSandboxComponent() {
         </h2>
         {error !== "" && <Alert severity="error">{error}</Alert>}
         <form className="w-full flex flex-col gap-3">
-          <label htmlFor="sandbox-name" className=" text-gray-900 dark:text-gray-200">
+          <label
+            htmlFor="sandbox-name"
+            className=" text-gray-900 dark:text-gray-200"
+          >
             Sandbox name
           </label>
           <input

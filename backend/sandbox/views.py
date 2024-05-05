@@ -51,8 +51,8 @@ class SandboxRetrieveUpdateAPIView(RetrieveUpdateAPIView):
     serializer_class = SandboxRetrieveUpdateSerializer
 
     def get_object(self):
-        username = self.kwargs.get("username")
-        project = self.kwargs.get("project")
+        username = self.kwargs.get("username").lower()
+        project = self.kwargs.get("project").lower()
         sandbox = get_object_or_404(Sandbox, owner__username=username, title=project)
         return sandbox
     
