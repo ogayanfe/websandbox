@@ -14,6 +14,7 @@ function SidebarHeader() {
 
   function showContext(e: React.MouseEvent<HTMLElement, MouseEvent>) {
     e.stopPropagation();
+    e.preventDefault();
     sandboxContext.setCurrentNodeContextId(null);
   }
   return (
