@@ -12,11 +12,20 @@ function SidebarHeader() {
   const params = useParams();
   const sandboxContext = useSandboxContext();
 
+  function showContext(e: React.MouseEvent<HTMLElement, MouseEvent>) {
+    e.stopPropagation();
+    sandboxContext.setCurrentNodeContextId(null);
+  }
   return (
-    <div className="w-full h-full overflow-x-hidden">
+    <div
+      className="w-full h-full overflow-x-hidden"
+      onContextMenu={showContext}
+    >
       <div className="dark:text-gray-200 py-2 pt-4 text-md flex gap-4 items-center ">
         <Icon icon="mingcute:directory-fill" />
-        <p className="text-lg capitalize font-bold text-blue-600">{params.project}</p>
+        <p className="text-lg capitalize font-bold text-blue-600">
+          {params.project}
+        </p>
       </div>
       <TextField
         sx={{ width: "100%", fontStyle: "normal" }}
@@ -35,12 +44,7 @@ function SidebarHeader() {
         }}
       />
       <div className="absolute right-0 scale-[.65] top-3">
-        <IconButton
-          onClick={(e) => {
-            e.stopPropagation();
-            sandboxContext.setCurrentNodeContextId(null);
-          }}
-        >
+        <IconButton onClick={showContext}>
           <Icon icon="simple-line-icons:options-vertical" />
         </IconButton>
       </div>
@@ -51,7 +55,12 @@ function SidebarHeader() {
 
 export default function Sidebar() {
   return (
-    <div className="flex flex-col w-full overflow-hidden px-3">
+    <div
+      className="flex flex-col w-full overflow-hidden px-3"
+      onContextMenu={() => {
+        console.log;
+      }}
+    >
       <SidebarHeader />
       <div className="flex-grow w-full h-full mt-4">
         <DirectoryTree />

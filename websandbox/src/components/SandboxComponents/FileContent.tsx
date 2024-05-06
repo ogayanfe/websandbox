@@ -53,8 +53,11 @@ export default function NoFileOpenComponent() {
         <Icon icon="teenyicons:box-outline"></Icon>
         <div>Websandbox</div>
       </div>
-      <p className="text-gray-700 pb-4 dark:text-blue-100 text-md">
+      <p className="text-gray-700 pb-3 dark:text-blue-100 text-md">
         Open file to view content
+      </p>
+      <p className="dark:text-gray-300 text-sm px-2 mb-4 font-bold">
+        Drag and drop to move files between folders
       </p>
       <CommandComponent text="Toggle Fullscreen" commands={["F11"]} />
       <CommandComponent
