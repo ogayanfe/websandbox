@@ -1,6 +1,6 @@
 # Websandbox - Code. Experiment. Create. The Online Sandbox For Your Programming Ideas.<br/>
 > Build your web application completely on the web. With html, css, javascript and typescript support by default.<br/><br/>
-![localhost_5173_(GITHUB TEMPLATES) (1)](https://github.com/ogayanfe/websandbox/assets/95624629/3909c79d-add1-4605-8eaf-5bfafc0bb0d6)<br/>
+![websandbox-home-light](https://github.com/ogayanfe/websandbox/assets/95624629/c2a48e84-1dc1-4f0c-83c5-7bbb6e40eb73)
 
 ## Project Demo
 * Watch a video demo on <a href="https://www.youtube.com/watch?v=mwFe1FtTL7o" target="_blank">Youtube</a>
@@ -51,8 +51,8 @@
 
 ## Image Galary
 > ### Landing Page
->![localhost_5173_(GITHUB TEMPLATES) (1)](https://github.com/ogayanfe/websandbox/assets/95624629/3909c79d-add1-4605-8eaf-5bfafc0bb0d6)<br/>
-> ![localhost_5173_(GITHUB TEMPLATES)](https://github.com/ogayanfe/websandbox/assets/95624629/3c0c5177-43e6-4442-ae28-1362d9884908)<br/><br/>
+>![websandbox-home-light](https://github.com/ogayanfe/websandbox/assets/95624629/c2a48e84-1dc1-4f0c-83c5-7bbb6e40eb73)
+>![websandbox-home-dark](https://github.com/ogayanfe/websandbox/assets/95624629/faa16e44-e6f9-4774-b893-3fc676f830f0)
 
 ### Dashboard 
 > ![websandboxx netlify app_dashboard_ (3)](https://github.com/ogayanfe/websandbox/assets/95624629/86b866b5-b5a5-472b-8dc6-4404dd630398) <br/>
