@@ -10,10 +10,10 @@ import { LinkedIn } from "@mui/icons-material";
 
 function FooterComponent() {
   return (
-    <div className="p-5 border-t-[1px] w-full dark:border-[#343434] text-lg flex justify-between lg:px-20">
+    <div className="p-3 px-8 font-medium border-t-[1px] text-gray-800 dark:text-blue-100 w-full dark:border-[#343434] text-lg flex justify-between">
       <p className="text-center">Created by @ogayanfe</p>
-      <div>
-        <span className="max-sm:hidden">Connect With Me : </span>
+      <div className="flex items-center justify-center">
+        <span className="max-sm:hidden">Connect With Me: </span>
         <Tooltip title="Connect on Linkedin">
           <IconButton href="https://linkedin.com/in/ogayanfe" target="_blank">
             <LinkedIn />
@@ -65,7 +65,7 @@ export default function HomeRoute() {
             component={Link}
             to="/demos"
           >
-            View project demos
+            open project demos
           </Button>
         </div>
       </div>
