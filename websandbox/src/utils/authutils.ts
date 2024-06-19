@@ -2,12 +2,16 @@ import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import dayjs from "dayjs";
 import { jwtDecode } from "jwt-decode";
 import { redirect } from "react-router-dom";
-import { CredentialsType, AuthTokenType, AccessTokenDecodedType } from "../types/utils/authUtils";
+import {
+  CredentialsType,
+  AuthTokenType,
+  AccessTokenDecodedType,
+} from "../types/utils/authUtils";
 
 const SERVER_BASE_URL =
   location.hostname === "localhost" || location.hostname === "127.0.0.1"
     ? "http://127.0.0.1:8000"
-    : "https://websandbox.pythonanywhere.com/";
+    : "https://websandbox.pythonanywhere.com";
 
 const TOKEN_OBTAIN_URL = `${SERVER_BASE_URL}/accounts/token/`;
 const TOKEN_REFRESH_URL = `${SERVER_BASE_URL}/accounts/token/refresh/`;
@@ -101,8 +105,11 @@ function addInterceptors(apiClient: AxiosInstance) {
       // If the users don't have tokens do nothing
       return config;
     }
-    const accessTokenDecoded = jwtDecode<AccessTokenDecodedType>(authTokens.access); // decode access tokens
-    const isExpired = dayjs.unix(parseInt(accessTokenDecoded.exp)).diff(dayjs()) < 1; // check for expiration
+    const accessTokenDecoded = jwtDecode<AccessTokenDecodedType>(
+      authTokens.access
+    ); // decode access tokens
+    const isExpired =
+      dayjs.unix(parseInt(accessTokenDecoded.exp)).diff(dayjs()) < 1; // check for expiration
 
     if (!isExpired) {
       // Access token is still valid so set header and return
@@ -126,7 +133,10 @@ function logout() {
 
 async function login(credentials: CredentialsType): Promise<Boolean> {
   const apiClient = getApiClient();
-  const response = await apiClient.post<AuthTokenType>(TOKEN_OBTAIN_URL, credentials);
+  const response = await apiClient.post<AuthTokenType>(
+    TOKEN_OBTAIN_URL,
+    credentials
+  );
   if (response.status <= 399 && response.status >= 200) {
     updateAuthTokens(response.data);
     return true;
@@ -134,27 +144,35 @@ async function login(credentials: CredentialsType): Promise<Boolean> {
   return false;
 }
 
-async function signup(credentials: CredentialsType): Promise<AxiosResponse | null> {
+async function signup(
+  credentials: CredentialsType
+): Promise<AxiosResponse | null> {
   const apiClient = getApiClient();
   try {
-    const response = await apiClient.post<AuthTokenType>("/accounts/signup/", credentials);
+    const response = await apiClient.post<AuthTokenType>(
+      "/accounts/signup/",
+      credentials
+    );
     updateAuthTokens(response.data);
     return null;
   } catch (error) {
-    if (error instanceof AxiosError) return error.response ? error.response : null;
+    if (error instanceof AxiosError)
+      return error.response ? error.response : null;
     return null;
   }
 }
 
-async function updateProfile(credentials: {username?: string, password?: string}): Promise<AxiosResponse | null>{
+async function updateProfile(credentials: {
+  username?: string;
+  password?: string;
+}): Promise<AxiosResponse | null> {
   const apiClient = getApiClient();
-  try{
-    await apiClient.patch<AuthTokenType>("/accounts/update/", credentials)
-    return null
-  }
-  catch(error){
+  try {
+    await apiClient.patch<AuthTokenType>("/accounts/update/", credentials);
+    return null;
+  } catch (error) {
     if (error instanceof AxiosError) return error?.response || null;
-    return null
+    return null;
   }
 }
 
@@ -171,7 +189,7 @@ export {
   login,
   signup,
   logout,
-  updateProfile, 
+  updateProfile,
   SERVER_BASE_URL,
   updateAuthTokens,
   clearAuthTokens,
