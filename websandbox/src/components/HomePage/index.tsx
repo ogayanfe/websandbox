@@ -10,7 +10,7 @@ import { Email, LinkedIn } from "@mui/icons-material";
 
 function FooterComponent() {
   return (
-    <div className="items-center font-semibold capitalize border-t-2 gap-2 py-6 border-dashed text-gray-800 dark:text-gray-100 w-full dark:border-[#343434] text-lg flex justify-center flex-wrap">
+    <div className="items-center font-semibold capitalize border-t-2 gap-2 py-6 px-3 border-dashed text-gray-800 dark:text-gray-100 w-full dark:border-[#343434] text-lg flex justify-center flex-wrap">
       <p className="text-center text-xl tracking-wider">
         Copyright © 2024 Odule Ayanfeoluwa
       </p>
