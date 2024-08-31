@@ -6,14 +6,18 @@ import getAuthContext from "../../contexts/authContext";
 import { Link } from "react-router-dom";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { LinkedIn } from "@mui/icons-material";
+import { Email, LinkedIn } from "@mui/icons-material";
 
 function FooterComponent() {
   return (
-    <div className="p-3 px-8 font-medium border-t-[1px] text-gray-800 dark:text-blue-100 w-full dark:border-[#343434] text-lg flex justify-between">
-      <p className="text-center">Created by @ogayanfe</p>
-      <div className="flex items-center justify-center">
-        <span className="max-sm:hidden">Connect With Me: </span>
+    <div className="items-center font-semibold capitalize border-t-2 gap-2 py-6 border-dashed text-gray-800 dark:text-gray-100 w-full dark:border-[#343434] text-lg flex justify-center flex-wrap">
+      <p className="text-center text-xl tracking-wider">
+        Copyright © 2024 Odule Ayanfeoluwa
+      </p>
+      <span>—</span>
+      Connect
+      <span>—</span>
+      <div className="flex items-center justify-center pt-1">
         <Tooltip title="Connect on Linkedin">
           <IconButton href="https://linkedin.com/in/ogayanfe" target="_blank">
             <LinkedIn />
@@ -22,6 +26,14 @@ function FooterComponent() {
         <Tooltip title="View github profile">
           <IconButton href="https://github.com/ogayanfe" target="_blank">
             <GitHubIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Contact me">
+          <IconButton
+            href="https://ogayanfe.netlify.app/#contact"
+            target="_blank"
+          >
+            <Email />
           </IconButton>
         </Tooltip>
       </div>
@@ -42,9 +54,13 @@ export default function HomeRoute() {
           <p>Code. Experiment. Create</p>
           <p>The Online Sandbox for Your Programming Ideas.</p>
         </div>
-        <p className="capitalize texT-md lg:text-lg text-center dark:text-gray-500 font-medium text-gray-700">
+        <a
+          className="capitalize texT-md lg:text-lg text-center dark:text-gray-400 font-medium text-gray-600 transition-colors hover:text-blue-500 underline hover:dark:text-white"
+          target="_blank"
+          href="https://github.com/ogayanfe/websandbox?tab=GPL-3.0-1-ov-file"
+        >
           licensed under GPL-3.0
-        </p>
+        </a>
         <div className="flex w-full gap-2 justify-center items-center max-sm:flex-col max-md:max-w-screen">
           <Button
             startIcon={
