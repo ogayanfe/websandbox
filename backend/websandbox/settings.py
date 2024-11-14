@@ -26,12 +26,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-if os.getenv('DEBUG', 'True') == 'False': 
+if os.getenv('DEBUG', 'True') == 'False':
     DEBUG = False
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-d%5dnq$6t$h#k0l-g%6v_5#3z*qn$@-f01kw!(-&dk098cn2l='
-if DEBUG is False: 
+if DEBUG is False:
     SECRET_KEY = os.environ.get("SECRET_KEY")
 
 ALLOWED_HOSTS = ["*"]
@@ -48,12 +48,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Local Apps
-    'accounts', 
+    'accounts',
     'sandbox',
 
     # Third Party Apps
-    'rest_framework', 
-    'corsheaders', 
+    'rest_framework',
+    'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
     'django_cleanup.apps.CleanupConfig',  # for removing unused media files
     'storages',  # provides us with access to external storage via amazon s3
@@ -201,14 +201,14 @@ SIMPLE_JWT = {
 }
 
 
-## AWS S3 CONFIGURATIONS
+# AWS S3 CONFIGURATIONS
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID', '')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY', '')
 AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME', '')
 
 
-## FILE STORAGE 
-if os.getenv("USE_S3", str(not DEBUG)) == 'True':  
+# FILE STORAGE
+if os.getenv("USE_S3", str(not DEBUG)) == 'True':
     STORAGES = {
         "default": {
             "BACKEND": "storages.backends.s3.S3Storage",
