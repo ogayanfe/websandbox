@@ -156,6 +156,7 @@ async function signup(
     updateAuthTokens(response.data);
     return null;
   } catch (error) {
+    console.log(error);
     if (error instanceof AxiosError)
       return error.response ? error.response : null;
     return null;

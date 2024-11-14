@@ -1,4 +1,9 @@
-import { Form, Link, ActionFunctionArgs, useActionData } from "react-router-dom";
+import {
+  Form,
+  Link,
+  ActionFunctionArgs,
+  useActionData,
+} from "react-router-dom";
 import { signup } from "../../utils/authutils";
 import { useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
@@ -6,11 +11,15 @@ import Alert from "@mui/material/Alert";
 
 export async function signupAction({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
-  const [username, password] = [formData.get("username"), formData.get("password")];
+  const [username, password] = [
+    formData.get("username"),
+    formData.get("password"),
+  ];
   const credentials = {
     username: username ? username.toString() : "",
     password: password ? password.toString() : "",
   };
+  console.log(credentials);
   return signup(credentials);
 }
 
@@ -71,11 +80,20 @@ export default function Signup() {
         <h1 className="text-2xl text-gray-800 pb-4 font-semibold dark:text-gray-300 flex justify-center gap-1 items-center m-22">
           Create An Account
         </h1>
-        <Form method="post" className="w-full flex flex-col gap-3" onSubmit={handleSubmit}>
+        <Form
+          method="post"
+          className="w-full flex flex-col gap-3"
+          onSubmit={handleSubmit}
+        >
           {(error.username || error.password) && (
-            <Alert severity="error">{error.username ? error.username : error.password}</Alert>
+            <Alert severity="error">
+              {error.username ? error.username : error.password}
+            </Alert>
           )}
-          <label htmlFor="signup-username" className=" text-gray-900 dark:text-gray-200">
+          <label
+            htmlFor="signup-username"
+            className=" text-gray-900 dark:text-gray-200"
+          >
             Username
           </label>
           <input
@@ -87,7 +105,10 @@ export default function Signup() {
             placeholder="username"
             id="signup-username"
           />
-          <label htmlFor="signup-password" className=" text-gray-900 dark:text-gray-200">
+          <label
+            htmlFor="signup-password"
+            className=" text-gray-900 dark:text-gray-200"
+          >
             Password
           </label>
           <input
@@ -98,7 +119,10 @@ export default function Signup() {
             required
             placeholder="Password"
           />
-          <label htmlFor="signup-password-2" className=" text-gray-900 dark:text-gray-200">
+          <label
+            htmlFor="signup-password-2"
+            className=" text-gray-900 dark:text-gray-200"
+          >
             Password Again
           </label>
           <input

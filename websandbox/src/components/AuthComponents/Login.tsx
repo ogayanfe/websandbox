@@ -10,10 +10,10 @@ import Alert from "@mui/material/Alert";
 import { useEffect } from "react";
 
 export async function loginAction({ request }: ActionFunctionArgs) {
-  let formData = await request.formData();
-  let credentials = {
-    username: formData.get("username")?.toString() || "",
-    password: formData.get("password")?.toString() || "",
+  const formData = await request.formData();
+  const credentials = {
+    username: formData.get("username")?.toString() ?? "",
+    password: formData.get("password")?.toString() ?? "",
   };
   try {
     await login(credentials);
@@ -27,7 +27,7 @@ export async function loginAction({ request }: ActionFunctionArgs) {
 
 export default function Login() {
   const data = useActionData();
-  let error = data === undefined ? false : true;
+  const error = data === undefined ? false : true;
 
   useEffect(() => {
     document.title = "Websandbox | Login";
