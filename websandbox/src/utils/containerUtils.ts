@@ -12,11 +12,11 @@ class ContainerEventsHandler {
     this.eventStore = this.getEvents();
   }
 
-  addEvent(type: containerEventName, event: () => any) {
+  addEvent(type: containerEventName, event: () => unknown) {
     this.eventStore[type].push(event);
   }
   fireEvent(type: containerEventName) {
-    for (let e of this.eventStore[type]) e();
+    for (const e of this.eventStore[type]) e();
   }
 
   private getEvents() {
@@ -70,6 +70,8 @@ export async function installDependencies() {
   if (installedDependencies) return;
   containerEventHandler.fireEvent("install-start");
   console.log("Installing dependencies");
+
+  // eslint-disable-next-line no-constant-condition
   while (true) {
     const installProcess = await webcontainerInstance.spawn("npm", [
       "install",
@@ -135,7 +137,7 @@ export async function updateContainerFile(
 
 export async function createContainerFile(path: string, content?: string) {
   const container = await getWebContainerInstance();
-  container.fs.writeFile(path, content || "");
+  container.fs.writeFile(path, content ?? "");
 }
 
 export async function deleteContainerNode(path: string) {

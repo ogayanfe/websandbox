@@ -15,10 +15,12 @@ export default function CodeEditor() {
   const themeContext = useThemeContext();
   const sandboxContext = useSandboxContext();
   const id = sandboxContext.selectedFileId;
-  const node = getNode(sandboxContext.selectedFileId, sandboxContext.treeData) as FileNodeType;
-  
+  const node = getNode(
+    sandboxContext.selectedFileId,
+    sandboxContext.treeData
+  ) as FileNodeType;
+
   return (
-    //@ts-ignore
     <AceEditor
       mode={sandboxContext.fileMode}
       value={node.content}

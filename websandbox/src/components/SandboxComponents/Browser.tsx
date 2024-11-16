@@ -29,7 +29,7 @@ function BrowserHeader({
   currentRoute,
   updateCurrentRoute,
   refreshBrowser,
-}: TypeBrowserHeaderProp) {
+}: Readonly<TypeBrowserHeaderProp>) {
   return (
     <div className="border-b-[1px] dark:border-[#343434] dark:bg-inherit p-1 px-2 flex text-xm">
       <Tooltip title="Refresh">
@@ -182,6 +182,7 @@ export default function Browser() {
       <div className="flex-grow h-full">
         {browserUrl ? (
           <iframe
+            title="Code output"
             className="w-full h-full bg-white"
             src={browserUrl + "/" + currentRoute}
           />
